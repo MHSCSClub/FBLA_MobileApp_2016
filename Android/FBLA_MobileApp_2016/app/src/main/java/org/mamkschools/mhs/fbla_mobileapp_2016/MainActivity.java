@@ -2,10 +2,12 @@ package org.mamkschools.mhs.fbla_mobileapp_2016;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -21,15 +23,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         myContext = getApplicationContext();
-
         new HTTPS_TEST().execute();
+        Button legalButton = (Button) findViewById(R.id.legal_button);
+        legalButton.setOnClickListener(this);
     }
 
 
     @Override
     public void onClick(View v) {
         switch(v.getId()){
-
+            case R.id.legal_button:
+                startActivity(new Intent(this, LegalInfoActivity.class));
+                break;
             default:
                 Toast.makeText(this, "No action implemented", Toast.LENGTH_SHORT).show();
         }

@@ -23,9 +23,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         myContext = getApplicationContext();
-        new HTTPS_TEST().execute();
+        Button testButton = (Button) findViewById(R.id.testHTTPS);
         Button legalButton = (Button) findViewById(R.id.legal_button);
         legalButton.setOnClickListener(this);
+        testButton.setOnClickListener(this);
+        new HTTPS_TEST().execute();
     }
 
 
@@ -34,6 +36,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch(v.getId()){
             case R.id.legal_button:
                 startActivity(new Intent(this, LegalInfoActivity.class));
+                break;
+            case R.id.testHTTPS:
+                new HTTPS_TEST().execute();
                 break;
             default:
                 Toast.makeText(this, "No action implemented", Toast.LENGTH_SHORT).show();
@@ -49,19 +54,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         protected Void doInBackground(Void... params) {
-            SecureAPI api = SecureAPI.getInstance();
+            Constants.HTTPS = SecureAPI.getInstance();
             try {
-                ret = api.HTTPSGET("asdfasdf");
+                ret = Constants.HTTPS.HTTPSGET(Commands.TEST);
             } catch(Exception ex) {
-                Log.d(Constants.DEBUG, ex.getMessage());
+                Log.d(Constants.DEBUG, "Exception: " + ex.getMessage());
             }
             return null;
         }
 
         @Override
         protected void onPostExecute(Void v) {
-            if(ret != null)
+            if(ret != null) {
                 Log.d(Constants.DEBUG, ret.toString());
+                Toast.makeText(MainActivity.getContext(), ret.toString(), Toast.LENGTH_SHORT).show();
+            } else {
+                Log.d(Constants.DEBUG, "(null)");
+                Toast.makeText(MainActivity.getContext(), "(null)", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

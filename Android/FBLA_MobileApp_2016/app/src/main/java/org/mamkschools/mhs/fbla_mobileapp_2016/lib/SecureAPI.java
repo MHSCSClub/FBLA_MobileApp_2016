@@ -87,7 +87,7 @@ public class SecureAPI {
         this.createSocketFactory(is);
     }
 
-    public JSONObject HTTPSGET(String action) throws Exception {
+   public JSONObject HTTPSGET(String action) throws Exception {
         URL url = new URL(Constants.API_BASE_URL + action);
         HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
         conn.setSSLSocketFactory(mySocketFactory);

@@ -22,11 +22,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         myContext = getApplicationContext();
+
         Button testButton = (Button) findViewById(R.id.testHTTPS);
+        testButton.setOnClickListener(this);
+
         Button legalButton = (Button) findViewById(R.id.legal_button);
         legalButton.setOnClickListener(this);
-        testButton.setOnClickListener(this);
+
         new HTTPS_TEST().execute();
     }
 

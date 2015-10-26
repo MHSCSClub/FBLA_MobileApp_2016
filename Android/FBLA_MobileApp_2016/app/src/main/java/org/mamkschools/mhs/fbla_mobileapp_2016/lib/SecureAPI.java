@@ -23,7 +23,7 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
 
 /**
- * com.yizzle.androidstudio.WebAPI
+ * SecureAPI singleton class
  */
 public class SecureAPI {
 

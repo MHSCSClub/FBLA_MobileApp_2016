@@ -9,6 +9,7 @@ and other important details. It should allow users to post outfits and interact 
 * Android Studio, for app development
 * Git LFS
 * A LAMP server (Prefferably Ubuntu Server), for the backend
+* Java JDK 8, required for android studio
 
 ####Deadlines
 * FBLA State Competition: 4/13-15

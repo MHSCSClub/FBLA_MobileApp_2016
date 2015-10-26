@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button legalButton = (Button) findViewById(R.id.legal_button);
         legalButton.setOnClickListener(this);
 
+        Constants.HTTPS = SecureAPI.getInstance(this);
+
         new HTTPS_TEST().execute();
     }
 
@@ -58,8 +60,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         protected Void doInBackground(Void... params) {
-            Constants.HTTPS = SecureAPI.getInstance();
             try {
+                Constants.HTTPS = SecureAPI.getInstance();
                 ret = Constants.HTTPS.HTTPSGET(Commands.TEST);
             } catch(Exception ex) {
                 Log.d(Constants.DEBUG, "Exception: " + ex.getMessage());

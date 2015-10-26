@@ -1,6 +1,8 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016.lib;
 
 
+import android.content.Context;
+
 import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.MainActivity;
 import org.mamkschools.mhs.fbla_mobileapp_2016.R;
@@ -30,17 +32,22 @@ public class SecureAPI {
     private static SecureAPI mySecureAPI = null;
     private SSLSocketFactory mySocketFactory = null;
 
-    public static SecureAPI getInstance(){
+    public static SecureAPI getInstance(Context c){
         if( mySecureAPI == null){
             try {
-                mySecureAPI = new SecureAPI(MainActivity.getContext()
-                        .getResources().openRawResource(R.raw.servercert));
+                mySecureAPI = new SecureAPI(c.getResources().openRawResource(R.raw.servercert));
             }catch (Exception e){
                 e.printStackTrace();
             }
         }
         return mySecureAPI;
 
+    }
+    public static SecureAPI getInstance() throws Exception{
+        if( mySecureAPI == null){
+            throw new NullPointerException();
+        }
+        return getInstance(null);
     }
     private void createSocketFactory(InputStream is) throws Exception {
         CertificateFactory cf = CertificateFactory.getInstance("X.509");

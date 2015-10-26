@@ -8,6 +8,9 @@ public final class Constants {
     //API URL
     public static final String API_BASE_URL = "https://aakatz3.asuscomm.com:9084/fbla2016/api/";
 
+    //HTTPS API (constant because no need to keep recreating)
+    public static SecureAPI HTTPS = null;
+
     //Debug string to identify in Log
     public static final String DEBUG = "FBLA_MobileApp_2016-DBG";
 

@@ -4,7 +4,6 @@ package org.mamkschools.mhs.fbla_mobileapp_2016.lib;
 import android.content.Context;
 
 import org.json.JSONObject;
-import org.mamkschools.mhs.fbla_mobileapp_2016.MainActivity;
 import org.mamkschools.mhs.fbla_mobileapp_2016.R;
 
 import java.io.BufferedWriter;
@@ -35,7 +34,8 @@ public class SecureAPI {
     public static SecureAPI getInstance(Context c){
         if( mySecureAPI == null){
             try {
-                mySecureAPI = new SecureAPI(c.getResources().openRawResource(R.raw.servercert));
+                mySecureAPI = new SecureAPI(c.getApplicationContext()
+                        .getResources().openRawResource(R.raw.servercert));
             }catch (Exception e){
                 e.printStackTrace();
             }

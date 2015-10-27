@@ -97,6 +97,8 @@ public class SecureAPI {
    public JSONObject HTTPSGET(String action) throws Exception {
         URL url = new URL(Constants.API_BASE_URL + action);
         HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+        conn.setReadTimeout(10000);
+        conn.setConnectTimeout(15000);
         conn.setSSLSocketFactory(mySocketFactory);
 
         String response = getResponseFromStream(conn.getInputStream());

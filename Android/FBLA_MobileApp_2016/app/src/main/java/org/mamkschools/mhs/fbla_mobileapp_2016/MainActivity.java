@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -69,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Constants.HTTPS = SecureAPI.getInstance();
                 ret = Constants.HTTPS.HTTPSGET(Commands.TEST);
             } catch (Exception ex) {
-                Log.d(Constants.DEBUG, "Exception: " + ex.getMessage());
+                Constants.log(ex.getMessage());
             }
             return null;
         }
@@ -77,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         protected void onPostExecute(Void v) {
             String retStr = ret == null ? "(null)" : ret.toString();
-            Log.d(Constants.DEBUG, retStr);
+            Constants.log(retStr);
             Toast.makeText(MainActivity.getContext(), retStr, Toast.LENGTH_SHORT).show();
         }
     }

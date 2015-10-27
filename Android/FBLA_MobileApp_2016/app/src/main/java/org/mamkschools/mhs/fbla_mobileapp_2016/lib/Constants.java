@@ -1,5 +1,7 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016.lib;
 
+import android.util.Log;
+
 /**
  * Constants for APP
  * Created by Andrew on 10/16/2015.
@@ -15,8 +17,18 @@ public final class Constants {
     //Debug string to identify in Log
     public static final String DEBUG = "FBLA_MobileApp_2016-DBG";
 
+    //Output debug info
+    public static final boolean DEBUG_MODE = true;
+
+    //Show static demos in case of server problems
+    public static final boolean DEMO_MODE = false;
+
     private Constants(){
         //Do nothing constructor, exists to defeat instantiation.
     }
-
+    public static void log(String message){
+        if(Constants.DEBUG_MODE){
+            Log.d(Constants.DEBUG, message);
+        }
+    }
 }

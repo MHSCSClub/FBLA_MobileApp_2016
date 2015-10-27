@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
+
 import java.util.Scanner;
 
 public class LegalInfoActivity extends AppCompatActivity {
@@ -20,7 +22,7 @@ public class LegalInfoActivity extends AppCompatActivity {
                 text += s.nextLine();
             } while(s.hasNextLine());
         }catch(Exception e){
-            e.printStackTrace();
+            Constants.log(e.getMessage());
         }
         LegalText.setText(text);
     }

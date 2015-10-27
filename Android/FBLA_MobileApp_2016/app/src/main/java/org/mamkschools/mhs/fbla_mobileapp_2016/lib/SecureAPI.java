@@ -37,7 +37,7 @@ public class SecureAPI {
                 mySecureAPI = new SecureAPI(c.getApplicationContext()
                         .getResources().openRawResource(R.raw.servercert));
             }catch (Exception e){
-                e.printStackTrace();
+                Constants.log(e.getMessage());
             }
         }
         return mySecureAPI;

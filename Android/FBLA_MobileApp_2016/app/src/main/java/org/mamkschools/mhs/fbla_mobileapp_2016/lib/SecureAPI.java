@@ -18,6 +18,8 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
+
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
@@ -50,81 +52,82 @@ public class SecureAPI {
         return getInstance(null);
     }
     private void createSocketFactory(InputStream is) throws Exception {
-        CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        Certificate ca = cf.generateCertificate(is);
-        System.out.println("ca=" + ((X509Certificate) ca).getSubjectDN());
+        CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+        Certificate certificate = certificateFactory.generateCertificate(is);
+        Constants.log("ca=" + ((X509Certificate) certificate).getSubjectDN());
 
-        String kst = KeyStore.getDefaultType();
-        KeyStore ks = KeyStore.getInstance(kst);
-        ks.load(null, null);
-        ks.setCertificateEntry("ca", ca);
 
-        String tmfa = TrustManagerFactory.getDefaultAlgorithm();
-        TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfa);
-        tmf.init(ks);
+        KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+        keyStore.load(null, null);
+        keyStore.setCertificateEntry("ca", certificate);
 
-        SSLContext sslc = SSLContext.getInstance("TLS");
-        sslc.init(null, tmf.getTrustManagers(), null);
+        TrustManagerFactory trustManagerFactory =
+                TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+        trustManagerFactory.init(keyStore);
 
-        mySocketFactory = sslc.getSocketFactory();
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
+
+        mySocketFactory = sslContext.getSocketFactory();
     }
 
     private String getPostString(HashMap<String, String> params) throws Exception {
-        StringBuilder res = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         boolean first = true;
         for(Map.Entry<String, String> p : params.entrySet()) {
             if(first)
                 first = false;
             else
-                res.append("&");
+                stringBuilder.append("&");
 
-            res.append(URLEncoder.encode(p.getKey(), "UTF-8"));
-            res.append("=");
-            res.append(URLEncoder.encode(p.getValue(), "UTF-8"));
+            stringBuilder.append(URLEncoder.encode(p.getKey(), "UTF-8"));
+            stringBuilder.append("=");
+            stringBuilder.append(URLEncoder.encode(p.getValue(), "UTF-8"));
         }
-        return res.toString();
+        return stringBuilder.toString();
     }
 
     private String getResponseFromStream(InputStream is) {
-        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
-        return s.hasNext() ? s.next() : "";
+        Scanner scanner = new java.util.Scanner(is).useDelimiter("\\A");
+        return scanner.hasNext() ? scanner.next() : "";
     }
 
-    private SecureAPI(InputStream is) throws Exception {
-        this.createSocketFactory(is);
+    private SecureAPI(InputStream inputStream) throws Exception {
+        this.createSocketFactory(inputStream);
     }
 
    public JSONObject HTTPSGET(String action) throws Exception {
-        URL url = new URL(Constants.API_BASE_URL + action);
-        HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-        conn.setReadTimeout(10000);
-        conn.setConnectTimeout(15000);
-        conn.setSSLSocketFactory(mySocketFactory);
+        URL url = new URL(Constants.API_BASE_URL + URLEncoder.encode(action, "UTF-8"));
+        HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+        httpsURLConnection.setReadTimeout(10000);
+        httpsURLConnection.setConnectTimeout(15000);
+        httpsURLConnection.setSSLSocketFactory(mySocketFactory);
 
-        String response = getResponseFromStream(conn.getInputStream());
+        String response = getResponseFromStream(httpsURLConnection.getInputStream());
         return new JSONObject(response);
     }
 
     public JSONObject HTTPSPOST(String action, HashMap<String, String> params) throws Exception {
         URL url = new URL(Constants.API_BASE_URL + action);
-        HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+        HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
 
-        conn.setSSLSocketFactory(mySocketFactory);
-        conn.setReadTimeout(10000);
-        conn.setConnectTimeout(15000);
-        conn.setRequestMethod("POST");
-        conn.setDoInput(true);
-        conn.setDoOutput(true);
+        httpsURLConnection.setSSLSocketFactory(mySocketFactory);
+        httpsURLConnection.setReadTimeout(10000);
+        httpsURLConnection.setConnectTimeout(15000);
+        httpsURLConnection.setRequestMethod("POST");
+        httpsURLConnection.setDoInput(true);
+        httpsURLConnection.setDoOutput(true);
 
-        OutputStream os = conn.getOutputStream();
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-        bw.write(getPostString(params));
-        bw.flush();
-        bw.close();
-        os.close();
-        conn.connect();
+        OutputStream outputStream = httpsURLConnection.getOutputStream();
+        BufferedWriter bufferedWriter =
+                new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+        bufferedWriter.write(getPostString(params));
+        bufferedWriter.flush();
+        bufferedWriter.close();
+        outputStream.close();
+        httpsURLConnection.connect();
 
-        String response = getResponseFromStream(conn.getInputStream());
+        String response = getResponseFromStream(httpsURLConnection.getInputStream());
         return new JSONObject(response);
     }
 }

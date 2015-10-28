@@ -14,6 +14,8 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Commands;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static Context myContext = null;
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(this, LegalInfoActivity.class));
                 break;
             case R.id.testHTTPS:
-                new HTTPS_TEST().execute();
+                new HTTPS_TEST().execute(Commands.HELLO_WORLD, Commands.TEST);
                 break;
             case R.id.login_activity_btn:
                 startActivity(new Intent(this, LoginActivity.class));
@@ -58,26 +60,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private class HTTPS_TEST extends AsyncTask<Void, Void, Void> {
+    private class HTTPS_TEST extends AsyncTask<String, Void, Void>{
 
-        private JSONObject ret;
+        private ArrayList<JSONObject> ret = new ArrayList<>();
 
         @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                Constants.HTTPS = SecureAPI.getInstance();
-                ret = Constants.HTTPS.HTTPSGET(Commands.TEST);
-            } catch (Exception ex) {
-                Constants.log(ex.getMessage());
+        protected Void doInBackground(String... params) {
+            for(String url : params) {
+                try {
+                    Constants.HTTPS = SecureAPI.getInstance();
+                    ret.add(Constants.HTTPS.HTTPSGET(url));
+                } catch (Exception ex) {
+                    Constants.log(ex.getMessage());
+                }
             }
             return null;
         }
 
         @Override
         protected void onPostExecute(Void v) {
-            String retStr = ret == null ? "(null)" : ret.toString();
-            Constants.log(retStr);
-            Toast.makeText(MainActivity.getContext(), retStr, Toast.LENGTH_SHORT).show();
+            for(JSONObject jsonObject : ret) {
+                String retStr = jsonObject == null ? "(null)" : jsonObject.toString();
+                Constants.log(retStr);
+                Toast.makeText(MainActivity.getContext(), retStr, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

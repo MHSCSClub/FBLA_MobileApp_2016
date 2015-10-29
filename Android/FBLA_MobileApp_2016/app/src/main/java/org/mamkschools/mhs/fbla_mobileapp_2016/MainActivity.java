@@ -40,6 +40,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button loginActivityButton = (Button) findViewById(R.id.login_activity_btn);
         loginActivityButton.setOnClickListener(this);
 
+        Button swipeActivityButton = (Button) findViewById(R.id.swipetest);
+        swipeActivityButton.setOnClickListener(this);
+
         Constants.HTTPS = SecureAPI.getInstance(this);
     }
 
@@ -54,6 +57,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.login_activity_btn:
                 startActivity(new Intent(this, LoginActivity.class));
+                break;
+            case R.id.swipetest:
+                startActivity(new Intent(this, MainActivitySwipes.class));
                 break;
             default:
                 Toast.makeText(this, "No action implemented", Toast.LENGTH_SHORT).show();
@@ -83,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String retStr = jsonObject == null ? "(null)" : jsonObject.toString();
                 Constants.log(retStr);
                 Toast.makeText(MainActivity.getContext(), retStr, Toast.LENGTH_SHORT).show();
+                //Any UI updates...........
             }
         }
     }

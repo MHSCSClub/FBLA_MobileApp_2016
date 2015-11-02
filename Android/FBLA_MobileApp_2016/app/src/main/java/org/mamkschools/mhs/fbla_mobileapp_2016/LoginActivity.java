@@ -201,6 +201,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
+        //TODO: Should have 1 cap, 1 lower, 1 number, be at least 8 long
         return password.length() > 4;
     }
 
@@ -331,7 +332,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
             }
 
-            // TODO: register the new account here.
+            // TODO: Report correct or not, attempt to register if not (give user option)
             return true;
         }
 

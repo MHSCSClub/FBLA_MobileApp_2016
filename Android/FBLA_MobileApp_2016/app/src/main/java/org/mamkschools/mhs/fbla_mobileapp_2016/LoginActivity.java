@@ -30,7 +30,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.*;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -299,10 +302,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private final String mEmail;
         private final String mPassword;
+        private Map<String, String> creds;
 
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
+            creds = new HashMap<String,String>();
+            creds.put("username", email);
+            creds.put("password", password);
         }
 
         @Override

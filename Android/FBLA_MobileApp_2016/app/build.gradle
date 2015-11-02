@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "org.mamkschools.mhs.fbla_mobileapp_2016"
-        minSdkVersion 13
+        minSdkVersion 14
         targetSdkVersion 23
         versionCode 0
         versionName "0.1"

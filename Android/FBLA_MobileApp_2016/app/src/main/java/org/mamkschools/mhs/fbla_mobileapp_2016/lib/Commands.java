@@ -10,7 +10,7 @@ public class Commands {
 
     public static final String TEST = "Test";
     public static final String HELLO_WORLD = "Hello, World!!!";
-
+    public static final String LOGIN = "login";
 
     private Commands(){
         //Exists to defeat instantiation

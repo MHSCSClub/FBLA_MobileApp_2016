@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.*;
 
 public class MainActivitySwipes extends AppCompatActivity {
 

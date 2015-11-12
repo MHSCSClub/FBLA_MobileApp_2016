@@ -41,6 +41,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button swipeActivityButton = (Button) findViewById(R.id.swipetest);
         swipeActivityButton.setOnClickListener(this);
 
+        Button settingsActivityButton = (Button) findViewById(R.id.settings);
+        settingsActivityButton.setOnClickListener(this);
+
         Constants.HTTPS = SecureAPI.getInstance(this);
     }
 
@@ -58,6 +61,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.swipetest:
                 startActivity(new Intent(this, MainActivitySwipes.class));
+                break;
+            case R.id.settings:
+                startActivity(new Intent(this, SettingsActivity.class));
                 break;
             default:
                 Toast.makeText(this, "No action implemented", Toast.LENGTH_SHORT).show();

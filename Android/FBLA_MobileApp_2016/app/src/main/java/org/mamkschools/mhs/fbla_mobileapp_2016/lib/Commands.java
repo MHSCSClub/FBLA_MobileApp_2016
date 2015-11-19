@@ -15,4 +15,16 @@ public class Commands {
     private Commands(){
         //Exists to defeat instantiation
     }
+    public class Get{
+
+        private Get(){
+
+        }
+    }
+    public class Post{
+
+        private Post() {
+            //Exists to defeat instantiation
+        }
+    }
 }

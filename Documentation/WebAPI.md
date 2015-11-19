@@ -31,11 +31,11 @@ Server data will always be sent down in JSON format in the following protocol:
 
 Basic server tests. Destination : `api/test/action`
 
-get (GET, ND)
+#### get (GET, ND)
 
 Get request test, server will always send back success
 
-post (POST)
+#### post (POST)
 
 Send:
 + foo: test paramater, can be anything

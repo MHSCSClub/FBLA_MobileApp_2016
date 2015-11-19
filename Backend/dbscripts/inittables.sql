@@ -1,5 +1,7 @@
 #Create tables
 
+USE DATABASE fbla2016;
+
 CREATE TABLE users
 (
 	userid int unsigned not null auto_increment primary key,

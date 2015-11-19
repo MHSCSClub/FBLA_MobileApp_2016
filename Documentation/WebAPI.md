@@ -71,8 +71,6 @@ Example: `/API/user/info?authcode=XxxxXxxxX`
 
 Verifies authcode is valid or invalid, returns success/failure.
 
-Recieve: `null`
-
 #### info (GET)
 
 Returns user info

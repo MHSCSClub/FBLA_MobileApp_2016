@@ -1,6 +1,6 @@
 #Create tables
 
-USE DATABASE fbla2016;
+USE fbla2016;
 
 CREATE TABLE users
 (

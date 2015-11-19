@@ -1,4 +1,5 @@
-CREATE DATABASE fbla2016;
+#Create Users
+
 CREATE USER 'admin'@'localhost' IDENTIFIED BY 'changeme';
 GRANT ALL PRIVILEGES on *.* TO 'admin'@'localhost' WITH GRANT OPTION;
 CREATE USER 'fblaadmin'@'localhost' IDENTIFIED BY '123456';

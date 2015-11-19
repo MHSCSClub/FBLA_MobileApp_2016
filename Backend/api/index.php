@@ -2,6 +2,8 @@
 
 	header('Content-Type: application/json');
 
+	$user_request = $_GET['request'];
+
 	function notFound() {
 		header("HTTP/1.0 404 Not Found");
 		die();
@@ -59,7 +61,7 @@
 	);
 
 	//Divide user request into tokens
-	$user_action = explode("/", $request);
+	$user_action = explode("/", $user_request);
 	$ulen = count($user_action) - 1;
 
 	//cd is like the cd command, specifies current directory, starts at root

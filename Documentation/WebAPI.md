@@ -25,11 +25,27 @@ Server data will always be sent down in JSON format in the following protocol:
 }
 ```
 
-**ND specifies that the action will have a NULL `data` payload**
+**ND specifies that the action will have a NULL `data` payload back from the server**
+
+### Testing
+
+Basic server tests. Destination : `api/test/action`
+
+get (GET, ND)
+
+Get request test, server will always send back success
+
+post (POST)
+
+Send:
++ foo: test paramater, can be anything
+
+Server will indicate success if `foo` parameter is set. Recieve:
++ fooback: server will echo foo back
 
 ### User actions
 
-Handles all user actions. Destination: `/API/user/action`.
+Handles all user actions. Destination: `/api/user/action`.
 
 #### register (POST, ND)
 

@@ -5,7 +5,8 @@
 		Server return data payload representation
 
 		status: bool (indicates success/error)
-		data:
+		data: payload data
+		message: success/error message
 	*/
 
 	class ISignal {
@@ -19,25 +20,32 @@
 			$this->data = $data;
 			$this->message = $message;
 		}
+
 		public function isError() {
 			return $this->type;
 		}
-		public function getMessage() {
-			return $this->mes;
+
+		public function setData($data) {
+			$this->data = $data;
+		}
+
+		public function toJSON() {
+			$arr = array("status" => $status, "data" => $data, "message" => $message);
+			return json_encode($arr);
 		}
 	}
 
 	/*
 		Commonly used signals collection
 	*/
+
 	class Signal {
-		public static $error;
 		public static $dbConnectionError;
 		public static $authenticationError;
 		public static $success;
 	}
-	Signal::$error = new ISignal("Generic error", 0);
-	Signal::$dbConnectionError = new ISignal("Database connection error", 0);
-	Signal::$authenticationError = new ISignal("Authentication error", 0);
-	Signal::$success = new ISignal("Generic success", 1);
+
+	Signal::$dbConnectionError = new ISignal(False, NULL, "Database connection error");
+	Signal::$authenticationError = new ISignal(False, NULL, "Authentication error");
+	Signal::$success = new ISignal(True, NULL, "Generic success");
 ?>

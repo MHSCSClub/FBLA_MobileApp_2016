@@ -1,6 +1,6 @@
 <?php
-
-	header('Content-Type: application/json');
+	
+	require_once("../lib/signal.class.php");
 
 	$user_request = $_GET['request'];
 
@@ -26,11 +26,22 @@
 		"test" => array(
 
 			"get" => function() {
-
+				return Signal::$success;
 			},
 
 			"post" => function() {
+				$foo = $_POST["foo"];
+				$ret = NULL;
+				
+				if(isset($foo)) {
+					$ret = Signal::$success;
+					$data = array("fooback" => $foo);
+					$ret->setData($data);
+				} else {
+					$ret = new ISignal(False, NULL, "foo paramater not set");
+				}
 
+				return $ret;
 			}
 
 		),
@@ -83,5 +94,7 @@
 	}
 
 	$ret = call_user_func($cd[$user_func]);
-	echo json_encode($ret);
+
+	header('Content-Type: application/json');
+	echo $ret->toJSON();
 ?>

@@ -9,7 +9,8 @@
 		message: success/error message
 	*/
 
-	class ISignal {
+	class ISignal
+	{
 
 		private $status;
 		private $data;
@@ -39,13 +40,12 @@
 		Commonly used signals collection
 	*/
 
-	class Signal {
-		public static $dbConnectionError;
-		public static $authenticationError;
+	class Signal
+	{
+		public static $error;
 		public static $success;
 	}
 
-	Signal::$dbConnectionError = new ISignal(False, NULL, "Database connection error");
-	Signal::$authenticationError = new ISignal(False, NULL, "Authentication error");
+	Signal::$error = new ISignal(False, NULL, "Generic error");
 	Signal::$success = new ISignal(True, NULL, "Generic success");
 ?>

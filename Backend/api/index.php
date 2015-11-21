@@ -1,6 +1,7 @@
 <?php
 	
-	require_once("../lib/signal.class.php");
+	require_once("signal.class.php");
+	require_once("dataAccess.class.php");
 
 	$user_request = $_GET['request'];
 
@@ -19,7 +20,6 @@
 					}
 				)
 			)
-		
 	*/
 	$requestChoice = array(
 

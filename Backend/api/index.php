@@ -26,7 +26,7 @@
 		"test" => array(
 
 			"get" => function() {
-				return Signal::$success;
+				return Signal::success();
 			},
 
 			"post" => function() {
@@ -34,7 +34,7 @@
 				$ret = NULL;
 				
 				if(isset($foo)) {
-					$ret = Signal::$success;
+					$ret = Signal::success();
 					$data = array("fooback" => $foo);
 					$ret->setData($data);
 				} else {

@@ -30,6 +30,10 @@
 			$this->data = $data;
 		}
 
+		public function setMessage($message) {
+			$this->message = $message;
+		}
+
 		public function toJSON() {
 			$arr = array("status" => $status, "data" => $data, "message" => $message);
 			return json_encode($arr);
@@ -42,10 +46,18 @@
 
 	class Signal
 	{
-		public static $error;
-		public static $success;
-	}
+		public static function error() {
+			return new ISignal(False, NULL, "Generic error");
+		}
+		public static function dbConnectionError() {
+			return new ISignal(False, NULL, "Database connection error");
+		}
+		public static function authError() {
+			return new ISignal(False, NULL, "Authentication error");
+		}
 
-	Signal::$error = new ISignal(False, NULL, "Generic error");
-	Signal::$success = new ISignal(True, NULL, "Generic success");
+		public static function success() {
+			return new ISignal(True, NULL, "Generic success");
+		}
+	}
 ?>

@@ -114,7 +114,7 @@
 			$stmt->bind_param('sss', $username, $hshpass, $salt);
 			$stmt->execute();
 			$stmt->close();
-			return Signal::$success;
+			return Signal::success();
 		}
 
 		private static function REAL_login($username, $password) {

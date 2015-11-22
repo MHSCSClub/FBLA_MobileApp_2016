@@ -35,7 +35,8 @@
 		}
 
 		public function toJSON() {
-			$arr = array("status" => $status, "data" => $data, "message" => $message);
+			$rstat = $status == True ? "success" : "failure";
+			$arr = array("status" => $rstat, "data" => $data, "message" => $message);
 			return json_encode($arr);
 		}
 	}

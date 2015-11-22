@@ -49,11 +49,15 @@
 		"user" => array(
 
 			"register" => function() {
-
+				$uname = $_POST["username"];
+				$pword = $_POST["password"];
+				return DataAccess::register($username, $password);
 			},
 
 			"login" => function() {
-
+				$uname = $_POST["username"];
+				$pword = $_POST["password"];
+				return DataAccess::login($username, $password);
 			},
 
 			"verify" => function() {

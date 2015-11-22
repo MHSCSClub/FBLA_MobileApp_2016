@@ -4,7 +4,7 @@
 		ISignal class
 		Server return data payload representation
 
-		status: bool (indicates success/error)
+		status: success/error
 		data: payload data
 		message: success/error message
 	*/
@@ -23,7 +23,7 @@
 		}
 
 		public function isError() {
-			return $this->type;
+			return $this->status == "error";
 		}
 
 		public function setData($data) {
@@ -35,8 +35,7 @@
 		}
 
 		public function toJSON() {
-			$rstat = $status == True ? "success" : "failure";
-			$arr = array("status" => $rstat, "data" => $data, "message" => $message);
+			$arr = array("status" => $status, "data" => $data, "message" => $message);
 			return json_encode($arr);
 		}
 	}
@@ -48,17 +47,17 @@
 	class Signal
 	{
 		public static function error() {
-			return new ISignal(False, NULL, "Generic error");
+			return new ISignal("error", NULL, "Generic error");
 		}
 		public static function dbConnectionError() {
-			return new ISignal(False, NULL, "Database connection error");
+			return new ISignal("error", NULL, "Database connection error");
 		}
 		public static function authError() {
-			return new ISignal(False, NULL, "Authentication error");
+			return new ISignal("error", NULL, "Authentication error");
 		}
 
 		public static function success() {
-			return new ISignal(True, NULL, "Generic success");
+			return new ISignal("success", NULL, "Generic success");
 		}
 	}
 ?>

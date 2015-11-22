@@ -67,7 +67,7 @@
 			} catch(AuthException $e) {
 				return Signal::authError();
 			} catch(Exception $e) {
-				return new ISignal(False, NULL, $e->getMessage());
+				return Signal::error()->setMessage($e->getMessage());
 			}
 		}
 

@@ -34,11 +34,10 @@
 				$ret = NULL;
 				
 				if(isset($foo)) {
-					$ret = Signal::success();
 					$data = array("fooback" => $foo);
-					$ret->setData($data);
+					$ret = Signal::success()->setData($data);
 				} else {
-					$ret = new ISignal(False, NULL, "foo paramater not set");
+					$ret = Signal::error()->setMessage("foo parameter not set error");
 				}
 
 				return $ret;

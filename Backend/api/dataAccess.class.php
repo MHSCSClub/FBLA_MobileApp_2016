@@ -92,7 +92,7 @@
 			All actions
 		*/
 
-		private static function REAL_register($db, $username, $password) {
+		private static function REAL_register($username, $password) {
 			$db = self::getConnection();
 			
 			//Check if user exists
@@ -117,7 +117,7 @@
 			return Signal::$success;
 		}
 
-		private static function REAL_login($db, $username, $password) {
+		private static function REAL_login($username, $password) {
 			$db = self::getConnection();
 
 			//Fetch salt + check if user exists

@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(this, LegalInfoActivity.class));
                 break;
             case R.id.testHTTPS:
-                new HTTPS_TEST().execute(Commands.HELLO_WORLD, Commands.TEST);
+                new HTTPS_TEST().execute(Commands.Get.HELLO_WORLD, Commands.Get.TEST);
                 break;
             case R.id.login_activity_btn:
                 startActivity(new Intent(this, LoginActivity.class));

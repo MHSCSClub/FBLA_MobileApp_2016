@@ -35,7 +35,7 @@
 		}
 
 		public function toJSON() {
-			$arr = array("status" => $status, "data" => $data, "message" => $message);
+			$arr = array("status" => $this->status, "data" => $this->data, "message" => $this->message);
 			return json_encode($arr);
 		}
 	}

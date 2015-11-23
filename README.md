@@ -3,13 +3,10 @@
 ## [From the FBLA competitive events guidelines](https://www.dropbox.com/s/s8vhg07vr8epbi9/FBLA%202016%20NLC%20Topics.docx?dl=0#)
 An app is to be created that allows FBLA members to interact and share their opinions on style, fashion, and attire. Users can snap a picture with their phone. It should allow users to post outfits and interact with anyone else who has posted outfits. They can share what they want to know, for example:
 
-+ Is this outfit stylish?
-
-+ Is this outfit professional?
-
-+ Is this outfit within the FBLA-PBL dress code?
-
-+ What should I change to make this outfit better?
+* Is this outfit stylish?
+* Is this outfit professional?
+* Is this outfit within the FBLA-PBL dress code?
+* What should I change to make this outfit better?
 
 #### Software needed
 * Your favorite text editor. We recommend Sublime Text or Atom.
@@ -20,8 +17,8 @@ An app is to be created that allows FBLA members to interact and share their opi
 
 #### Documentation
 All documentation is located in the Doc folder.
-+ Web-API: PHP API use documentation
-+ Git: Git use documentation
+* Web-API: PHP API use documentation
+* Git: Git use documentation
 
 #### Deadlines
 * FBLA State Competition: 4/13-15

@@ -158,7 +158,7 @@
 			}
 
 			//Return success with data
-			$data = array("authcode" => $authcode));
+			$data = array("authcode" => $authcode);
 			return Signal::success()->setData($data);
 		}
 

@@ -35,7 +35,7 @@
 				
 				if(isset($foo)) {
 					$data = array("fooback" => $foo);
-					$ret = Signal::success()->setData($data);
+					return Signal::success()->setData($data);
 				} else {
 					$ret = Signal::error()->setMessage("foo parameter not set error");
 				}
@@ -48,14 +48,14 @@
 		"user" => array(
 
 			"register" => function() {
-				$uname = $_POST["username"];
-				$pword = $_POST["password"];
+				$username = $_POST["username"];
+				$password = $_POST["password"];
 				return DataAccess::register($username, $password);
 			},
 
 			"login" => function() {
-				$uname = $_POST["username"];
-				$pword = $_POST["password"];
+				$username = $_POST["username"];
+				$password = $_POST["password"];
 				return DataAccess::login($username, $password);
 			},
 

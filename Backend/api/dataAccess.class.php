@@ -32,14 +32,14 @@
 		*/
 
 		public static function register($username, $password) {
-			return run(function() {
-				REAL_register($username, $password);
+			return self::run(function() use ($username, $password) {
+				DataAccess::REAL_register($username, $password);
 			});
 		}
 
 		public static function login($username, $password) {
-			return run(function() {
-				REAL_login($username, $password);
+			return self::run(function() use ($username, $password) {
+				DataAccess::REAL_login($username, $password);
 			});
 		}
 
@@ -72,7 +72,7 @@
 		}
 
 		private static function getConnection() {
-			$db = new mysqli(self::$ip, Secret::$username, Secret::$password, $dbName);
+			$db = new mysqli(self::$ip, Secret::$username, Secret::$password, self::$dbName);
 
 			if($db->connect_error)
 				throw new DBConnectException();

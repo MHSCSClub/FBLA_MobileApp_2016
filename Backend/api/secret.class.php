@@ -7,8 +7,8 @@
 
 	class Secret
 	{
-		public static $username = "username";
-		public static $password = "password";
+		public static $username = "fblaadmin";
+		public static $password = "fbla2016";
 	}
 	
 ?>

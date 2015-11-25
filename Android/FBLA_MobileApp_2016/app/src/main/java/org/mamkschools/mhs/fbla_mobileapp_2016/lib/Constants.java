@@ -8,7 +8,7 @@ import android.util.Log;
  */
 public final class Constants {
     //API URL
-    public static final String API_BASE_URL = "https://aakatz3.asuscomm.com:9084/fbla2016/api/";
+    public static final String API_BASE_URL = "https://aakatz3.aakportfolio.com:9084/fbla2016/api/";
 
     //HTTPS API (constant because no need to keep recreating)
     //This will be removed in a later build

@@ -33,22 +33,34 @@
 
 		public static function register($username, $password) {
 			return self::run(function() use ($username, $password) {
-				DataAccess::REAL_register($username, $password);
+				return DataAccess::REAL_register($username, $password);
 			});
 		}
 
 		public static function login($username, $password) {
 			return self::run(function() use ($username, $password) {
-				DataAccess::REAL_login($username, $password);
+				return DataAccess::REAL_login($username, $password);
 			});
 		}
 
 		public static function authGET($authcode, $funcname) {
+			return self::run(function() use ($authcode, $funcname) {
+				$realfunc = "DataAccess::GET_$funcname";
+				$db = self::getConnection();
+				$userid = DataAccess::authSetup($db, $authcode);
 
+				return call_user_func($realfunc, $db, $userid);
+			});
 		}
 
 		public static function authPOST($authcode, $funcname, $params) {
+			return self::run(function() use ($authcode, $funcname) {
+				$realfunc = "DataAccess::POST_$funcname";
+				$db = self::getConnection();
+				$userid = DataAccess::authSetup($db, $authcode);
 
+				return call_user_func($realfunc, $db, $userid, $params);
+			});
 		}
 
 		/*
@@ -56,7 +68,7 @@
 
 			All functions are ran through the run() method
 			This ensures consistent error handling
-			
+
 		*/
 
 		private static function run($function) {
@@ -89,12 +101,44 @@
 		}
 
 		/*
+			Helper functions that interface with the database
+		*/
+
+		private static function authSetup($db, $authcode) {
+			//Get userid from auth
+			$stmt = $db->prepare("SELECT userid FROM auth WHERE authcode=? AND NOW() < expire");
+			$stmt->bind_param('s', $authcode);
+			$stmt->execute();
+			$res = $stmt->get_result();
+			$stmt->close();
+
+			if($res->num_rows != 1)
+				throw new AuthException();
+
+			$userid = $res->fetch_assoc()['userid'];
+
+			//Update authcode expiration
+			self::updateAuthExpiration($userid);
+			return $userid;
+		}
+
+		private static function updateAuthExpiration($userid) {
+			$db = self::getConnection();
+			$db->query("UPDATE auth SET expire=DATE_ADD(NOW(), INTERVAL 1 MONTH) WHERE userid=$userid");
+		}
+
+		/*
 			All actions
 		*/
 
 		private static function REAL_register($username, $password) {
 			$db = self::getConnection();
-			
+
+			//Verify basic UN + Pass checks
+			//UN >= 4 chars, Pass >= 8 chars
+			if(strlen($username) < 5 || strlen($password) < 8)
+				throw new Exception("Parameter length error");
+
 			//Check if user exists
 			$stmt = $db->prepare('SELECT userid FROM users WHERE username=?');
 			$stmt->bind_param('s', $username);
@@ -127,9 +171,9 @@
 			$res = $stmt->get_result();
 			$stmt->close();
 
-			//User found
+			//User found (note same error)
 			if($res->num_rows != 1)
-				throw new Exception("Username doesn't exist error");
+				throw new Exception("Invalid credentials error");
 
 			$row = $res->fetch_assoc();
 			$username = $row['username']; //username is safe now: no risk of sql injection
@@ -142,6 +186,7 @@
 			//Authentication
 			if($res->num_rows != 1)
 				throw new Exception("Invalid credentials error");
+			$userid = $res->fetch_assoc()["userid"];
 
 			//Check if user in auth table
 			$res = $db->query("SELECT authcode FROM auth WHERE userid=$userid");
@@ -151,7 +196,7 @@
 			$authcode = self::hash($random);
 
 			if($res->num_rows >= 1) {
-				$db->query("UPDATE auth SET expire=DATE_ADD(NOW(), INTERVAL 1 MONTH) WHERE userid=$userid");
+				self::updateAuthExpiration($userid);
 				$authcode = $res->fetch_assoc()['authcode'];
 			} else {
 				$db->query("INSERT INTO auth VALUES ( null, $userid, '$authcode', DATE_ADD(NOW(), INTERVAL 1 MONTH) )");
@@ -163,7 +208,28 @@
 		}
 
 		private static function GET_verify($db, $userid) {
+			//If userid exists, it means that authcode is valid already
+			return Signal::success();
+		}
 
+		private static function GET_info($db, $userid) {
+			$db = self::getConnection();
+
+			//Username
+			$res = $db->query("SELECT username FROM users WHERE userid=?");
+			$username = $res->fetch_assoc()["username"];
+
+			//Data
+			$data = array("username" => $username);
+			return Signal::success()->setData($data);
+		}
+
+		private static function GET_logout($db, $userid) {
+			$db = self::getConnection();
+
+			//Remove authcode from table
+			$db->query("DELETE FROM auth WHERE userid=$userid");
+			return Signal::success();
 		}
 
 	}

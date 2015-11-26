@@ -118,12 +118,11 @@
 			$userid = $res->fetch_assoc()['userid'];
 
 			//Update authcode expiration
-			self::updateAuthExpiration($userid);
+			self::updateAuthExpiration($db, $userid);
 			return $userid;
 		}
 
-		private static function updateAuthExpiration($userid) {
-			$db = self::getConnection();
+		private static function updateAuthExpiration($db, $userid) {
 			$db->query("UPDATE auth SET expire=DATE_ADD(NOW(), INTERVAL 1 MONTH) WHERE userid=$userid");
 		}
 
@@ -196,7 +195,7 @@
 			$authcode = self::hash($random);
 
 			if($res->num_rows >= 1) {
-				self::updateAuthExpiration($userid);
+				self::updateAuthExpiration($db, $userid);
 				$authcode = $res->fetch_assoc()['authcode'];
 			} else {
 				$db->query("INSERT INTO auth VALUES ( null, $userid, '$authcode', DATE_ADD(NOW(), INTERVAL 1 MONTH) )");
@@ -213,8 +212,6 @@
 		}
 
 		private static function GET_info($db, $userid) {
-			$db = self::getConnection();
-
 			//Username
 			$res = $db->query("SELECT username FROM users WHERE userid=?");
 			$username = $res->fetch_assoc()["username"];
@@ -225,8 +222,6 @@
 		}
 
 		private static function GET_logout($db, $userid) {
-			$db = self::getConnection();
-
 			//Remove authcode from table
 			$db->query("DELETE FROM auth WHERE userid=$userid");
 			return Signal::success();

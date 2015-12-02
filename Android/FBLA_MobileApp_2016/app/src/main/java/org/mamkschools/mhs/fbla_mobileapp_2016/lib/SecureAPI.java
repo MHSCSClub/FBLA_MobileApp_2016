@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.R;
 
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -71,7 +72,7 @@ public class SecureAPI {
         mySocketFactory = sslContext.getSocketFactory();
     }
 
-    private String getPostString(HashMap<String, String> params) throws Exception {
+    private String getPostString(Map<String, String> params) throws Exception {
         StringBuilder stringBuilder = new StringBuilder();
         boolean first = true;
         for(Map.Entry<String, String> p : params.entrySet()) {
@@ -107,7 +108,7 @@ public class SecureAPI {
         return new JSONObject(response);
     }
 
-    public JSONObject HTTPSPOST(String action, HashMap<String, String> params) throws Exception {
+    public JSONObject HTTPSPOST(String action, Map<String, String> params) throws Exception{
         URL url = new URL(Constants.API_BASE_URL + action);
         HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
 

@@ -316,14 +316,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
+            SecureAPI loginAPI = SecureAPI.getInstance(LoginActivity.this);
+
+
 
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
+                loginAPI.HTTPSPOST(Commands.Post.LOGIN, creds);
+            } catch (Exception e) {
+                if(Constants.DEBUG_MODE){
+                    Constants.log(e.getMessage());
+                }
                 return false;
             }
-
+            //TODO parse response
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
                 if (pieces[0].equals(mEmail)) {

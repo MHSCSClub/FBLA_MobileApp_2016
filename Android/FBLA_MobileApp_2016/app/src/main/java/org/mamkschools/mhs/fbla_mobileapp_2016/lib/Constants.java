@@ -15,7 +15,7 @@ public final class Constants {
     public static SecureAPI HTTPS = null;
 
     //Debug string to identify in Log
-    public static final String DEBUG = "FBLA_MobileApp_2016-DBG";
+    private static final String DEBUG = "FBLA_MobileApp_2016-DBG";
 
     //Output debug info
     public static final boolean DEBUG_MODE = true;

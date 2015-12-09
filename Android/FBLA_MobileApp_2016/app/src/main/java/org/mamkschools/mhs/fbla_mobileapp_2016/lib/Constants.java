@@ -23,6 +23,9 @@ public final class Constants {
     //Show static demos in case of server problems
     public static final boolean DEMO_MODE = false;
 
+    //Authcode needs to be saved and loaded
+    public static String AUTHCODE = null;
+
     private Constants(){
         //Do nothing constructor, exists to defeat instantiation.
     }

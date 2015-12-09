@@ -7,7 +7,6 @@ import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.R;
 
 import java.io.BufferedWriter;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -17,7 +16,6 @@ import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -98,7 +96,7 @@ public class SecureAPI {
     }
 
    public JSONObject HTTPSGET(String action) throws Exception {
-        URL url = new URL(Constants.API_BASE_URL + URLEncoder.encode(action, "UTF-8"));
+        URL url = new URL(Constants.API_BASE_URL + action);
         HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
         httpsURLConnection.setReadTimeout(10000);
         httpsURLConnection.setConnectTimeout(15000);

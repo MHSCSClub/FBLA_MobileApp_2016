@@ -1,5 +1,5 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
-
+//TODO: Also needs to offer registration
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -34,6 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.*;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -318,10 +320,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // TODO: attempt authentication against a network service.
             SecureAPI loginAPI = SecureAPI.getInstance(LoginActivity.this);
 
-
+            JSONObject returnedJSON = null;
 
             try {
-                loginAPI.HTTPSPOST(Commands.Post.LOGIN, creds);
+                returnedJSON = loginAPI.HTTPSPOST(Commands.Post.LOGIN, creds);
             } catch (Exception e) {
                 if(Constants.DEBUG_MODE){
                     Constants.log(e.getMessage());
@@ -329,12 +331,32 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
             //TODO parse response
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+            try {
+                String status = returnedJSON.getString("status");
+                String message = returnedJSON.getString("message");
+                if(status.equals("error")){
+                    if(message.equals("autherror")){
+                        //TODO Bad user or pass
+                    }
+                    if(message.equals("nousr")){
+                        //TODO Procede to offer registration, if needed
+                    }
+                } else if(status.equals("success")) {
+                    //TODO save authcode
+                    //Constants.AUTHCODE = returnedJSON.get("data")
+                } else{
+                    throw new IllegalStateException(status + ": " + message);
                 }
+            } catch (JSONException jse){
+                if(Constants.DEBUG_MODE){
+                    Constants.log(jse.getMessage());
+                }
+            } catch (IllegalStateException ise){
+                if(Constants.DEBUG_MODE){
+                    Constants.log("Invalid message: " + ise.getMessage());
+                }
+            } catch (Exception ex){
+                return false;
             }
 
             // TODO: Report correct or not, attempt to register if not (give user option)

@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -28,6 +29,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -336,14 +338,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 String message = returnedJSON.getString("message");
                 if(status.equals("error")){
                     if(message.equals("autherror")){
-                        //TODO Bad user or pass
+                        Toast.makeText(getApplicationContext(),
+                                R.string.error_incorrect_password, Toast.LENGTH_SHORT).show();
+
                     }
                     if(message.equals("nousr")){
                         //TODO Procede to offer registration, if needed
                     }
                 } else if(status.equals("success")) {
-                    //TODO save authcode
-                    //Constants.AUTHCODE = returnedJSON.get("data")
+                    Constants.AUTHCODE = returnedJSON.getString("data");
                 } else{
                     throw new IllegalStateException(status + ": " + message);
                 }

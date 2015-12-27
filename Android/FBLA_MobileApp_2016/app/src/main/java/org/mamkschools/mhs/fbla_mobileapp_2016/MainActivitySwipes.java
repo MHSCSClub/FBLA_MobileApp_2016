@@ -1,5 +1,6 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,9 +18,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
+
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.*;
 
-public class MainActivitySwipes extends AppCompatActivity {
+public class MainActivitySwipes extends AppCompatActivity implements View.OnClickListener{
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -53,13 +56,7 @@ public class MainActivitySwipes extends AppCompatActivity {
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        fab.setOnClickListener(this);
 
     }
 
@@ -80,10 +77,23 @@ public class MainActivitySwipes extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.fab:
+                Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+                break;
+            default:
+                Toast.makeText(this, "No Assigned Action", Toast.LENGTH_SHORT).show();
+        }
     }
 
 

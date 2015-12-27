@@ -51,22 +51,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.legal_button:
-                startActivity(new Intent(this, LegalInfoActivity.class));
+                startActivity(new Intent(getApplicationContext(), LegalInfoActivity.class));
                 break;
             case R.id.testHTTPS:
                 new HTTPS_TEST().execute(Commands.Get.TEST);
                 break;
             case R.id.login_activity_btn:
-                startActivity(new Intent(this, LoginActivity.class));
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 break;
             case R.id.swipetest:
-                startActivity(new Intent(this, MainActivitySwipes.class));
+                startActivity(new Intent(getApplicationContext(), MainActivitySwipes.class));
                 break;
             case R.id.settings:
-                startActivity(new Intent(this, SettingsActivity.class));
+                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                 break;
             default:
-                Toast.makeText(this, "No action implemented", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "No action implemented", Toast.LENGTH_SHORT).show();
         }
     }
 

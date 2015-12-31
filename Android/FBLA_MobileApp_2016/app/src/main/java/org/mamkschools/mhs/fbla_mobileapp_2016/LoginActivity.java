@@ -200,7 +200,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return email.contains("@");
+        return true;
     }
 
     private boolean isPasswordValid(String password) {
@@ -347,6 +347,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     }
                 } else if(status.equals("success")) {
                     Constants.AUTHCODE = returnedJSON.getString("data");
+                    Toast.makeText(getApplicationContext(), "SUCESS!!!", Toast.LENGTH_LONG).show();
                 } else{
                     throw new IllegalStateException(status + ": " + message);
                 }

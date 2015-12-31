@@ -214,7 +214,7 @@
 
 		private static function GET_info($db, $userid) {
 			//Username
-			$res = $db->query("SELECT username FROM users WHERE userid=?");
+			$res = $db->query("SELECT username FROM users WHERE userid=$userid");
 			$username = $res->fetch_assoc()["username"];
 
 			//Data

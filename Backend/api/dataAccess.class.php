@@ -97,7 +97,7 @@
 		}
 
 		private static function hashPass($pass, $salt) {
-			self::hash($pass.$salt);
+			return self::hash($pass.$salt);
 		}
 
 		/*
@@ -180,7 +180,7 @@
 
 			//Salt password
 			$hshpass = self::hashPass($password, $salt); //hshpass also safe, no sql injection in a hash
-			$res = $db->query("SELECT userid FROM users WHERE username=$username AND password=$hshpass");
+			$res = $db->query("SELECT userid FROM users WHERE username='$username' AND password='$hshpass'");
 
 			//Authentication
 			if($res->num_rows != 1)
@@ -195,11 +195,12 @@
 			$authcode = self::hash($random);
 
 			if($res->num_rows >= 1) {
-				self::updateAuthExpiration($db, $userid);
 				$authcode = $res->fetch_assoc()['authcode'];
 			} else {
-				$db->query("INSERT INTO auth VALUES ( null, $userid, '$authcode', DATE_ADD(NOW(), INTERVAL 1 MONTH) )");
+				//Set temporary expiration date and then update
+				$db->query("INSERT INTO auth VALUES (null, $userid, '$authcode', NOW() )");
 			}
+			self::updateAuthExpiration($db, $userid);
 
 			//Return success with data
 			$data = array("authcode" => $authcode);

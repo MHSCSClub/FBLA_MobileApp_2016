@@ -61,15 +61,15 @@
 			},
 
 			"verify" => function() {
-
+				return DataAccess::authGet($_GET['authcode'], "verify");
 			},
 
 			"info" => function() {
-
+				return DataAccess::authGet($_GET['authcode'], "info");
 			},
 
 			"logout" => function() {
-
+				return DataAccess::authGet($_GET['authcode'], "logout");
 			}
 		)
 

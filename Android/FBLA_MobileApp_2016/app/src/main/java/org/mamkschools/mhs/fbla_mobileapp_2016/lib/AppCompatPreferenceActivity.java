@@ -1,4 +1,4 @@
-package org.mamkschools.mhs.fbla_mobileapp_2016;
+package org.mamkschools.mhs.fbla_mobileapp_2016.lib;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

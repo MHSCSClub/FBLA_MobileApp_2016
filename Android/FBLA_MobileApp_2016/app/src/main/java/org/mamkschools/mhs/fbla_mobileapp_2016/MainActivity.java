@@ -92,8 +92,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             for(JSONObject jsonObject : ret) {
                 String retStr = jsonObject == null ? "(null)" : jsonObject.toString();
                 Constants.log(retStr);
-                Toast.makeText(MainActivity.getContext(), retStr, Toast.LENGTH_SHORT).show();
-                //Any UI updates...........
+                Toast.makeText(getApplicationContext(), retStr, Toast.LENGTH_SHORT).show();
+                //TODO Any UI updates, save pic objs, db stuff.....
             }
         }
     }

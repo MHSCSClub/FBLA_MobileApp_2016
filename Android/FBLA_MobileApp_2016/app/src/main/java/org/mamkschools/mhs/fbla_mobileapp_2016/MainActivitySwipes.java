@@ -1,6 +1,7 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
 import android.content.Intent;
+import android.graphics.Camera;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -88,8 +89,15 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.fab:
-                Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+                if(true) {
+                    //Temporary code to prevent crash
+                    Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else {
+                    //TODO Photo chooser (include default, cam, file (see Google Inbox on Android))
+                    Intent choosePhotoMethod = new Intent();
+                    startActivity(choosePhotoMethod);
+                }
                 break;
             default:
                 Toast.makeText(this, "No Assigned Action", Toast.LENGTH_SHORT).show();

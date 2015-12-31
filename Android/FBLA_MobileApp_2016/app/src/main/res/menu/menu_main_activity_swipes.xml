@@ -2,6 +2,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.mamkschools.mhs.fbla_mobileapp_2016.MainActivitySwipes">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
+
+    <!-- Always show (Critical functions) -->
+
+
+    <!-- Show if room (nice to have out, have icons, not super important) -->
+
+
+    <!-- Never Show (not often needed, no icon_ -->
+    <item android:id="@+id/action_settings"  android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
+
 </menu>

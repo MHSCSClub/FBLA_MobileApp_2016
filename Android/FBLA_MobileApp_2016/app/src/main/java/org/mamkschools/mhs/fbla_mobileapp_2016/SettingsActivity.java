@@ -20,6 +20,8 @@ import android.preference.RingtonePreference;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.AppCompatPreferenceActivity;
+
 import java.util.List;
 
 /**
@@ -48,6 +50,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         if (actionBar != null) {
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
+
         }
     }
 

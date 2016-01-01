@@ -348,6 +348,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 } else if(status.equals("success")) {
                     Constants.AUTHCODE = returnedJSON.getString("data");
                     Toast.makeText(getApplicationContext(), "SUCESS!!!", Toast.LENGTH_LONG).show();
+                    return true;
                 } else{
                     throw new IllegalStateException(status + ": " + message);
                 }

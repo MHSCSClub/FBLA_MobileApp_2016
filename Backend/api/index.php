@@ -80,8 +80,10 @@
 	});
 
 	try {
+		$response = $RH->call($user_request);
+
 		header('Content-Type: application/json');
-		echo $RH->call($user_request)->toJSON();
+		echo $response->toJSON();
 	} catch(Exception $e) {
 		notFound();
 	}

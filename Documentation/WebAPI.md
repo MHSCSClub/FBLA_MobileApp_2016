@@ -100,6 +100,7 @@ Send (URL params):
 + geoloc: current geographic location
 
 Recieve:
+
 An array of image ids with there geoloc and created-by timestamp along with a SHA-256 hash of the image
 ```
 [
@@ -120,6 +121,7 @@ An array of image ids with there geoloc and created-by timestamp along with a SH
 Fetches actual image data of image id
 
 Recieve:
+
 Actual picture data
 
 #### {id} (DELETE, ND)

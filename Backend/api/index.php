@@ -22,6 +22,7 @@
 				)
 			)
 	*/
+
 	$requestChoice = array(
 
 		"test" => array(
@@ -71,6 +72,22 @@
 			"logout" => function() {
 				return DataAccess::authGet($_GET['authcode'], "logout");
 			}
+		)
+
+		"picture" => array(
+
+			"*" => array(
+
+
+			),
+
+			"upload" => array(
+
+			),
+
+			"fetch" => array(
+
+			)
 		)
 
 	);

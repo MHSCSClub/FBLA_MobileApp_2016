@@ -1,6 +1,6 @@
 # API Usage Guide
 
-### General Protocol
+## General Protocol
 Server data will always be sent down in JSON format in the following protocol:
 
 ##### Success
@@ -27,9 +27,9 @@ Server data will always be sent down in JSON format in the following protocol:
 
 **ND specifies that the action will have a NULL `data` payload back from the server**
 
-### Testing
+## Testing
 
-Basic server tests. Destination : `api/test/action`
+Basic server tests. Destination: `api/test/action`
 
 #### get (GET, ND)
 
@@ -43,7 +43,7 @@ Send:
 Server will indicate success if `foo` parameter is set. Recieve:
 + fooback: server will echo foo back
 
-### User actions
+## User actions
 
 Handles all user actions. Destination: `/api/user/action`.
 
@@ -82,3 +82,43 @@ Recieve:
 #### logout (GET, ND)
 
 Logs out of account, CHANGES authcode!
+
+## Picture Handling
+
+Handles everything picture related. Destination: `api/picture/action`
+
+#### upload (POST, ND)
+
+Send:
+picture: picture file in to be specified format
+geoloc: current geographic location
+
+#### fetch (GET)
+
+Send (URL params):
++ amount: amount of images to recieve
++ geoloc: current geographic location
+
+Recieve:
+A list of image ids with there geoloc and created-by timestamp along with a SHA-256 hash of the image
+```
+{
+    {
+        "pid": xxx, //picture id
+        "geoloc": //pic taken location
+        "createtime": //created by time
+        "psha": //SHA-256 hash of the picture
+    }
+}
+```
+
+#### {id} (GET)
+
+Fetches actual image data
+
+Recieve:
+Actual picture data
+
+#### {id} (DELETE, ND)
+
+Deletes image

@@ -100,25 +100,28 @@ Send (URL params):
 + geoloc: current geographic location
 
 Recieve:
-A list of image ids with there geoloc and created-by timestamp along with a SHA-256 hash of the image
+An array of image ids with there geoloc and created-by timestamp along with a SHA-256 hash of the image
 ```
-{
+[
     {
         "pid": xxx, //picture id
         "geoloc": //pic taken location
         "createtime": //created by time
         "psha": //SHA-256 hash of the picture
+    },
+    {
+        //...
     }
-}
+]
 ```
 
 #### {id} (GET)
 
-Fetches actual image data
+Fetches actual image data of image id
 
 Recieve:
 Actual picture data
 
 #### {id} (DELETE, ND)
 
-Deletes image
+Deletes image specified by id

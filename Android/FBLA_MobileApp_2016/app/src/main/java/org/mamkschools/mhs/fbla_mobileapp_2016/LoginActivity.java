@@ -356,10 +356,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 if(Constants.DEBUG_MODE){
                     Constants.log(jse.getMessage());
                 }
+                return false;
             } catch (IllegalStateException ise){
                 if(Constants.DEBUG_MODE){
                     Constants.log("Invalid message: " + ise.getMessage());
                 }
+                return false;
             } catch (Exception ex){
                 return false;
             }

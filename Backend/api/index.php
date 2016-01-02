@@ -1,5 +1,6 @@
 <?php
 	
+	require_once("requestHandler.class.php");
 	require_once("signal.class.php");
 	require_once("dataAccess.class.php");
 
@@ -11,111 +12,78 @@
 		die();
 	}
 
-	/*
-		Holds all request options. Example: /API/foo/bar/mhs (GET)
-		Requires
-			"foo" => array(
-				"bar" => array(
-					"mhs" => function() {
-						......
-					}
-				)
-			)
-	*/
+	//Using RequestHandler class, look in class to find documentation
+	$RH = new RequestHandler();
+	$WC = $RH->getWildcard();
 
-	$requestChoice = array(
+	$RH->D("", "test");
 
-		"test" => array(
-
-			"get" => function() {
-				return Signal::success();
-			},
-
-			"post" => function() {
-				$foo = $_POST["foo"];
-				$ret = NULL;
-				
-				if(isset($foo)) {
-					$data = array("fooback" => $foo);
-					return Signal::success()->setData($data);
-				} else {
-					$ret = Signal::error()->setMessage("foo parameter not set error");
-				}
-
-				return $ret;
-			}
-
-		),
-
-		"user" => array(
-
-			"register" => function() {
-				$username = $_POST["username"];
-				$password = $_POST["password"];
-				return DataAccess::register($username, $password);
-			},
-
-			"login" => function() {
-				$username = $_POST["username"];
-				$password = $_POST["password"];
-				return DataAccess::login($username, $password);
-			},
-
-			"verify" => function() {
-				return DataAccess::authGet($_GET['authcode'], "verify");
-			},
-
-			"info" => function() {
-				return DataAccess::authGet($_GET['authcode'], "info");
-			},
-
-			"logout" => function() {
-				return DataAccess::authGet($_GET['authcode'], "logout");
-			}
-		)
-
-		"picture" => array(
-
-			"*" => array(
-
-
-			),
-
-			"upload" => array(
-
-			),
-
-			"fetch" => array(
-
-			)
-		)
-
-	);
-
-	//Divide user request into tokens
-	$user_action = explode("/", $user_request);
-	$ulen = count($user_action) - 1;
-
-	//cd is like the cd command, specifies current directory, starts at root
-	$cd = $requestChoice;
-	for($i = 0; $i < $ulen; ++$i) {
-		$cur = $cd[$user_action[$i]];
-		if(isset($cur) && is_array($cur)) {
-			$cd = $cur;
+	// test/get
+	$RH->F("test", "get", function() {
+		return Signal::success();
+	});
+	// test/post
+	$RH->F("test", "post", function() {
+		$foo = $_POST["foo"];
+		$ret = NULL;
+		
+		if(isset($foo)) {
+			$data = array("fooback" => $foo);
+			return Signal::success()->setData($data);
 		} else {
-			notFound();
+			$ret = Signal::error()->setMessage("foo parameter not set error");
 		}
-	}
 
-	$user_func = $user_action[$ulen];
+		return $ret;
+	});
 
-	//Check if user_func is actually a function
-	if(!is_callable($cd[$user_func])) {
+	$RH->D("", "user");
+
+	// user/register
+	$RH->F("user", "register", function() {
+		$username = $_POST["username"];
+		$password = $_POST["password"];
+		return DataAccess::register($username, $password);
+	});
+	// user/login
+	$RH->F("user", "login", function() {
+		$username = $_POST["username"];
+		$password = $_POST["password"];
+		return DataAccess::login($username, $password);
+	});
+	// user/verify
+	$RH->F("user", "verify", function() {
+		return DataAccess::authGet($_GET['authcode'], "verify");
+	});
+	// user/info
+	$RH->F("user", "info", function() {
+		return DataAccess::authGet($_GET['authcode'], "info");
+	});
+	// user/logout
+	$RH->F("user", "logout", function() {
+		return DataAccess::authGet($_GET['authcode'], "logout");
+	});
+
+	$RH->D("", "picture");
+
+	// picture/upload
+	$RH->F("picture", "upload", function() {
+		//todo
+	});
+	// picture/fetch
+	$RH->F("picture", "fetch", function() {
+		//todo
+	});
+	// picture/* GET/DELETE
+	$RH->F("picture", $WC, function($id) {
+		//todo
+	});
+
+	try {
+		header('Content-Type: application/json');
+		echo $RH->call($user_request)->toJSON();
+	} catch(Exception $e) {
 		notFound();
 	}
 
-	$ret = call_user_func($cd[$user_func]);
-
-	header('Content-Type: application/json');
-	echo $ret->toJSON();
 ?>

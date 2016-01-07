@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,13 +53,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -199,14 +193,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
+        //TODO: Replace this with your own logic, change to not email
         return true;
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
+
         //TODO: Should have 1 cap, 1 lower, 1 number, be at least 8 long
-        return password.length() > 4;
+
+        return password.length() >= 8 && password.matches(".*\\d+.*") &&
+                Pattern.compile("[^A-Za-z0-9]+").matcher(password).find();
     }
 
     /**
@@ -343,6 +339,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                     }
                     if(message.equals("nousr")){
+                        Toast.makeText(getApplicationContext(), "nousr", Toast.LENGTH_SHORT).show();
                         //TODO Procede to offer registration, if needed
                     }
                 } else if(status.equals("success")) {

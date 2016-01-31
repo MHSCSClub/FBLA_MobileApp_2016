@@ -100,6 +100,11 @@ Send:
 + picture: picture file in to be specified format
 + geolat & geolong: current geographic location in latitude and longitude
 
+Recieve:
+
+Server will send back picture id of your uploaded pic
++ pid: picture id
+
 #### fetch (GET)
 
 Send (URL params):

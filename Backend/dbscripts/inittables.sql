@@ -17,3 +17,12 @@ CREATE TABLE auth
 	authcode char(64),
 	expire DATETIME
 );
+
+CREATE TABLE pictures
+(
+	pid int unsigned not null auto_increment primary key,
+	geolat DECIMAL(4,2) not null,
+	geolong DECIMAL(4,2) not null,
+	created DATETIME not null,
+	data MEDIUMBLOB not null
+)

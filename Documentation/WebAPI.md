@@ -43,6 +43,13 @@ Send:
 Server will indicate success if `foo` parameter is set. Recieve:
 + fooback: server will echo foo back
 
+#### file (POST)
+Send:
++ f"test": file named test
+
+Server will send back the SHA-256 hash of your file
++ sha256: SHA-256 hash of file
+
 ## User actions
 
 Handles all user actions. Destination: `/api/user/action`.
@@ -90,14 +97,14 @@ Handles everything picture related. Destination: `api/picture/action`
 #### upload (POST, ND)
 
 Send:
-picture: picture file in to be specified format
-geoloc: current geographic location
++ picture: picture file in to be specified format
++ geolat & geolong: current geographic location in latitude and longitude
 
 #### fetch (GET)
 
 Send (URL params):
 + amount: amount of images to recieve
-+ geoloc: current geographic location
++ geolat & geolong: current geographic location in latitude and longitude
 
 Recieve:
 

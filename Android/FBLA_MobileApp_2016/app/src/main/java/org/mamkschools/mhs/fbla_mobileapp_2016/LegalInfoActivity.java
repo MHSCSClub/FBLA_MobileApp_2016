@@ -16,7 +16,7 @@ public class LegalInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_legal_info);
         TextView LegalText = (TextView) findViewById(R.id.legaltext);
         Scanner s = new Scanner(this.getResources().openRawResource(R.raw.filler));
-        String text = "";
+        String text = Constants.AUTHCODE == null ? "" : Constants.AUTHCODE;
         try{
             do{
                 text += s.nextLine();

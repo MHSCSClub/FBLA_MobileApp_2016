@@ -201,7 +201,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         //TODO: Should have 1 cap, 1 lower, 1 number, be at least 8 long
 
-        return password.length() >= 8 && password.matches(".*\\d+.*") &&
+        return true || password.length() >= 8 && password.matches(".*\\d+.*") &&
                 Pattern.compile("[^A-Za-z0-9]+").matcher(password).find();
     }
 
@@ -299,7 +299,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserLoginTask extends AsyncTask<Void, Void, Integer> {
 
         private final String mEmail;
         private final String mPassword;
@@ -314,10 +314,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected Integer doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             SecureAPI loginAPI = SecureAPI.getInstance(LoginActivity.this);
-
+            Constants.log("Hello");
             JSONObject returnedJSON = null;
 
             try {
@@ -326,26 +326,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 if(Constants.DEBUG_MODE){
                     Constants.log(e.getMessage());
                 }
-                return false;
+                return -1;
             }
             //TODO parse response
             try {
                 String status = returnedJSON.getString("status");
                 String message = returnedJSON.getString("message");
-                if(status.equals("error")){
-                    if(message.equals("autherror")){
-                        Toast.makeText(getApplicationContext(),
-                                R.string.error_incorrect_password, Toast.LENGTH_SHORT).show();
 
-                    }
-                    if(message.equals("nousr")){
-                        Toast.makeText(getApplicationContext(), "nousr", Toast.LENGTH_SHORT).show();
-                        //TODO Procede to offer registration, if needed
-                    }
+                if(status.equals("error")) {
+                    return 0;
                 } else if(status.equals("success")) {
-                    Constants.AUTHCODE = returnedJSON.getString("data");
-                    Toast.makeText(getApplicationContext(), "SUCESS!!!", Toast.LENGTH_LONG).show();
-                    return true;
+                    Constants.AUTHCODE = returnedJSON.getJSONObject("data").getString("authcode");
+                    return 1;
                 } else{
                     throw new IllegalStateException(status + ": " + message);
                 }
@@ -353,30 +345,33 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 if(Constants.DEBUG_MODE){
                     Constants.log(jse.getMessage());
                 }
-                return false;
+                return -1;
             } catch (IllegalStateException ise){
                 if(Constants.DEBUG_MODE){
                     Constants.log("Invalid message: " + ise.getMessage());
                 }
-                return false;
+                return -1;
             } catch (Exception ex){
-                return false;
+                Constants.log(ex.getMessage());
+                return -1;
             }
 
             // TODO: Report correct or not, attempt to register if not (give user option)
-            return true;
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        protected void onPostExecute(final Integer retStatus) {
             mAuthTask = null;
             showProgress(false);
 
-            if (success) {
+            if (retStatus == 1) {
                 finish();
-            } else {
+            } else if(retStatus == 0) {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
+            } else if(retStatus == -1){
+                mEmailView.setError(getString(R.string.error_other));
+                mEmailView.requestFocus();
             }
         }
 

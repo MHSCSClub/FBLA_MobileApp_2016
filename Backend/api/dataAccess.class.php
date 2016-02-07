@@ -266,14 +266,14 @@
 
 			//Filtering
 			if(isset($params["distance"])) {
-				$stmt = $db->prepare("SELECT pic, geolat, geolong, created, $dist_func AS dist FROM pictures HAVING $dist < ? ORDER BY dist LIMIT 0, ?");
+				$stmt = $db->prepare("SELECT pid, geolat, geolong, created, $dist_func AS dist FROM pictures HAVING $dist < ? ORDER BY dist LIMIT 0, ?");
 				$stmt->bind_param('dddi', $userlat, $userlong, $userlat, $params["distance"], $amount);
 				$stmt->execute();
 
 				$res = $stmt->get_result();
 
 			} else if(isset($params["time"])) {
-				$stmt = $db->prepare("SELECT pic, geolat, geolong, created, $dist_func AS dist FROM pictures HAVING created > ? ORDER BY dist LIMIT 0, ?");
+				$stmt = $db->prepare("SELECT pid, geolat, geolong, created, $dist_func AS dist FROM pictures HAVING created > ? ORDER BY dist LIMIT 0, ?");
 				$stmt->bind_param('dddi', $userlat, $userlong, $userlat, $params["time"], $amount);
 				$stmt->execute();
 
@@ -290,6 +290,15 @@
 			}
 			return Signal::success()->setData($rows);
 
+		}
+
+		private static function POST_picfetchraw($db, $userid, $params) {
+			$stmt = $db->prepare("SELECT data FROM pictures WHERE $pid = ?");
+			$stmt->bind_param('i', $params["pid"]);
+			$stmt->execute();
+
+			$res = $stmt->get_result()->fetch_assoc()['data'];
+			return Signal::success()->setType("IMG")->setData($res);
 		}
 
 	}

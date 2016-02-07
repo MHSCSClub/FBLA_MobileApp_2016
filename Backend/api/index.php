@@ -97,14 +97,43 @@
 	});
 	// picture/* GET/DELETE
 	$RH->F("picture", $WC, function($id) {
-		//todo
+		$params = array("pid" => $id);
+
+		switch ($_SERVER['REQUEST_METHOD']) {
+			case 'GET':
+				return DataAccess::authPost($_GET['authcode'], "picfetchraw", $params)
+				break;
+			
+			case 'DELETE':
+				//todo
+				break;
+
+			default:
+				//todo
+				break;
+		}
 	});
 
 	try {
 		$response = $RH->call($user_request);
 
-		header('Content-Type: application/json');
-		echo $response->toJSON();
+		switch ($response->getType()) {
+			case 'JSON':
+				header('Content-Type: application/json');
+				echo json_encode($response->toArray());
+				break;
+
+			case 'IMG':
+				if($response->isError())
+					notFound();
+				header('content-type: image/jpeg');
+				echo $response->getData();
+				break;
+			
+			default:
+				throw new Exception();
+				break;
+		}
 	} catch(Exception $e) {
 		notFound();
 	}

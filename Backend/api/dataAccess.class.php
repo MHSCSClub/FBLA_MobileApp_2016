@@ -130,6 +130,8 @@
 			All actions
 		*/
 
+		//User
+
 		private static function REAL_register($username, $password) {
 			$db = self::getConnection();
 
@@ -226,6 +228,68 @@
 			//Remove authcode from table
 			$db->query("DELETE FROM auth WHERE userid=$userid");
 			return Signal::success();
+		}
+
+		//Picture
+
+		private static function POST_picupload($db, $userid, $params) {
+			$stmt = $db->prepare("INSERT INTO pictures VALUES (null, $userid, ?, ?, NOW(), ?)");
+			$stmt->bind_param('ddb', $params['geolat'], $params['geolong'], $params['data']);
+			$stmt->execute();
+			$stmt->close();
+
+			$res = $db->query("SELECT LAST_INSERT_ID()");
+			$pid = $res->fetch_assoc()['LAST_INSERT_ID()'];
+
+			$data = array("pid" => $pid);
+			return Signal::success()->setData($data);
+		}
+
+		private static function POST_picfetch($db, $userid, $params) {
+			$res = NULL;
+
+			//Distance function between two lats and long (Haversine function)
+			//IN MILES
+			$mylat = '?';
+			$mylong = '?';
+			$dist_func = 
+				"3959 * acos (".
+    				"  cos( radians($mylat) )".
+    				"* cos( radians(geolat) )".
+    				"* cos( radians(geolong) - radians($mylong) )".
+    				"+ sin( radians($mylat) )".
+    				"* sin( radians(geolong) )".
+    			")"; 
+			$userlat = $params["geolat"];
+			$userlong = $params["geolong"];
+			$amount = $params["amount"];
+
+			//Filtering
+			if(isset($params["distance"])) {
+				$stmt = $db->prepare("SELECT pic, geolat, geolong, created, $dist_func AS dist FROM pictures HAVING $dist < ? ORDER BY dist LIMIT 0, ?");
+				$stmt->bind_param('dddi', $userlat, $userlong, $userlat, $params["distance"], $amount);
+				$stmt->execute();
+
+				$res = $stmt->get_result();
+
+			} else if(isset($params["time"])) {
+				$stmt = $db->prepare("SELECT pic, geolat, geolong, created, $dist_func AS dist FROM pictures HAVING created > ? ORDER BY dist LIMIT 0, ?");
+				$stmt->bind_param('dddi', $userlat, $userlong, $userlat, $params["time"], $amount);
+				$stmt->execute();
+
+				$res = $stmt->get_result();
+			}
+
+			if(is_null($res))
+				throw new Exception("Invalid filter error");
+
+			//Format results
+			$rows = array();
+			while($r = $res->fetch_assoc()) {
+				$rows[] = $r;
+			}
+			return Signal::success()->setData($rows);
+
 		}
 
 	}

@@ -36,6 +36,13 @@
 
 		return $ret;
 	});
+	// test/file
+	$RH->F("test", "file", function() {
+		$fdata = file_get_contents($_FILES['test']['tmp_name']);
+
+		$back = array("sha256" => hash("sha256", $fdata));
+		return Signal::success()->setData($back);
+	});
 
 	$RH->D("", "user");
 
@@ -68,11 +75,25 @@
 
 	// picture/upload
 	$RH->F("picture", "upload", function() {
-		//todo
+		$params = array();
+		$params['geolat']= $_GET['geolat'];
+		$params['geolong'] = $_GET['geolong'];
+		$params['picdata'] = file_get_contents($_FILES['picture']['tmp_name']);
+
+		return DataAccess::authPost($_GET['authcode'], "picupload", $params);
 	});
 	// picture/fetch
 	$RH->F("picture", "fetch", function() {
-		//todo
+		$params = array();
+
+		$params['geolat']= $_GET['geolat'];
+		$params['geolong'] = $_GET['geolong'];
+		$params['amount'] = $_GET['amount'];
+
+		$params['distance'] = $_GET['ft_dist'];
+		$params['time'] = $_GET['ft_time']
+
+		return DataAccess::authPost($_GET['authcode'], "picfetch", $params);
 	});
 	// picture/* GET/DELETE
 	$RH->F("picture", $WC, function($id) {

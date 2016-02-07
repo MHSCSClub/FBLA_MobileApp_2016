@@ -15,11 +15,15 @@
 		private $status;
 		private $data;
 		private $message;
+		private $type;
+
+		public static $DEFAULT_TYPE = "JSON";
 
 		public function __construct($status, $data, $message) {
 			$this->status = $status;
 			$this->data = $data;
 			$this->message = $message;
+			$this->type = self::$DEFAULT_TYPE;
 		}
 
 		public function isError() {
@@ -31,14 +35,30 @@
 			return $this;
 		}
 
+		public function getData() {
+			return $this->data;
+		}
+
 		public function setMessage($message) {
 			$this->message = $message;
 			return $this;
 		}
 
-		public function toJSON() {
-			$arr = array("status" => $this->status, "data" => $this->data, "message" => $this->message);
-			return json_encode($arr);
+		public function getMessage() {
+			return $this->message();
+		}
+
+		public function setType($type) {
+			$this->type = $type;
+			return $this;
+		}
+
+		public function getType() {
+			return $this->type;
+		}
+
+		public function toArray() {
+			return array("status" => $this->status, "data" => $this->data, "message" => $this->message);
 		}
 	}
 

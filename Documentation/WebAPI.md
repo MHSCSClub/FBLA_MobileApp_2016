@@ -110,6 +110,9 @@ Server will send back picture id of your uploaded pic
 Send (URL params):
 + amount: amount of images to recieve
 + geolat & geolong: current geographic location in latitude and longitude
++ Filter specifications:
+ + ft_dist: Filter by distance (specify distance)
+ + ft_time: Filter by create time (specify time)
 
 Recieve:
 

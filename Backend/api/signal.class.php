@@ -17,7 +17,7 @@
 		private $message;
 		private $type;
 
-		const $DEFAULT_TYPE = 'JSON';
+		const DEFAULT_TYPE = 'JSON';
 
 		public function __construct($status, $data, $message, $type = self::DEFAULT_TYPE) {
 			$this->status = $status;

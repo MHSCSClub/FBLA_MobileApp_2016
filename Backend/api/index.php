@@ -76,8 +76,8 @@
 	// picture/upload
 	$RH->F("picture", "upload", function() {
 		$params = array();
-		$params['geolat']= $_GET['geolat'];
-		$params['geolong'] = $_GET['geolong'];
+		$params['geolat']= $_POST['geolat'];
+		$params['geolong'] = $_POST['geolong'];
 		$params['picdata'] = file_get_contents($_FILES['picture']['tmp_name']);
 
 		return DataAccess::authPost($_GET['authcode'], "picupload", $params);
@@ -91,7 +91,7 @@
 		$params['amount'] = $_GET['amount'];
 
 		$params['distance'] = $_GET['ft_dist'];
-		$params['time'] = $_GET['ft_time']
+		$params['time'] = $_GET['ft_time'];
 
 		return DataAccess::authPost($_GET['authcode'], "picfetch", $params);
 	});
@@ -101,17 +101,14 @@
 
 		switch ($_SERVER['REQUEST_METHOD']) {
 			case 'GET':
-				return DataAccess::authPost($_GET['authcode'], "picfetchraw", $params)
+				return DataAccess::authPost($_GET['authcode'], "picfetchraw", $params);
 				break;
 			
 			case 'DELETE':
 				//todo
 				break;
-
-			default:
-				//todo
-				break;
 		}
+		return Signal::error()->setMessage("Invalid request type");
 	});
 
 	try {
@@ -126,6 +123,7 @@
 			case 'IMG':
 				if($response->isError())
 					notFound();
+				ob_clean();
 				header('content-type: image/jpeg');
 				echo $response->getData();
 				break;

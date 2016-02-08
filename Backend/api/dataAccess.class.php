@@ -54,7 +54,7 @@
 		}
 
 		public static function authPOST($authcode, $funcname, $params) {
-			return self::run(function() use ($authcode, $funcname) {
+			return self::run(function() use ($authcode, $funcname, $params) {
 				$realfunc = "DataAccess::POST_$funcname";
 				$db = self::getConnection();
 				$userid = DataAccess::authSetup($db, $authcode);
@@ -233,11 +233,11 @@
 		//Picture
 
 		private static function POST_picupload($db, $userid, $params) {
-			if(is_null(($params['geolat']) || is_null($params['geolong']) ||  is_null($params['data']))
-				throw new Exception("Invalid data");
+			if(is_null($params['geolat']) || is_null($params['geolong']) ||  is_null($params['picdata']))
+				throw new Exception("Invalid POST data");
 
 			$stmt = $db->prepare("INSERT INTO pictures VALUES (null, $userid, ?, ?, NOW(), ?)");
-			$stmt->bind_param('ddb', $params['geolat'], $params['geolong'], $params['data']);
+			$stmt->bind_param('dds', $params['geolat'], $params['geolong'], $params['picdata']);
 			$stmt->execute();
 			$stmt->close();
 
@@ -269,7 +269,7 @@
 
 			//Filtering
 			if(isset($params["distance"])) {
-				$stmt = $db->prepare("SELECT pid, geolat, geolong, created, $dist_func AS dist FROM pictures HAVING $dist < ? ORDER BY dist LIMIT 0, ?");
+				$stmt = $db->prepare("SELECT pid, geolat, geolong, created, $dist_func AS dist FROM pictures HAVING dist < ? ORDER BY dist LIMIT 0, ?");
 				$stmt->bind_param('dddi', $userlat, $userlong, $userlat, $params["distance"], $amount);
 				$stmt->execute();
 
@@ -296,7 +296,7 @@
 		}
 
 		private static function POST_picfetchraw($db, $userid, $params) {
-			$stmt = $db->prepare("SELECT data FROM pictures WHERE $pid = ?");
+			$stmt = $db->prepare("SELECT data FROM pictures WHERE pid=?");
 			$stmt->bind_param('i', $params["pid"]);
 			$stmt->execute();
 

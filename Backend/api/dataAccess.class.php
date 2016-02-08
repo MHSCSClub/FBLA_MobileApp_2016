@@ -261,7 +261,7 @@
     				"* cos( radians(geolat) )".
     				"* cos( radians(geolong) - radians($mylong) )".
     				"+ sin( radians($mylat) )".
-    				"* sin( radians(geolong) )".
+    				"* sin( radians(geolat) )".
     			")"; 
 			$userlat = $params["geolat"];
 			$userlong = $params["geolong"];
@@ -270,14 +270,14 @@
 			//Filtering
 			if(isset($params["distance"])) {
 				$stmt = $db->prepare("SELECT pid, geolat, geolong, created, $dist_func AS dist FROM pictures HAVING dist < ? ORDER BY dist LIMIT 0, ?");
-				$stmt->bind_param('dddi', $userlat, $userlong, $userlat, $params["distance"], $amount);
+				$stmt->bind_param('ddddi', $userlat, $userlong, $userlat, $params["distance"], $amount);
 				$stmt->execute();
 
 				$res = $stmt->get_result();
 
 			} else if(isset($params["time"])) {
 				$stmt = $db->prepare("SELECT pid, geolat, geolong, created, $dist_func AS dist FROM pictures HAVING created > ? ORDER BY dist LIMIT 0, ?");
-				$stmt->bind_param('dddi', $userlat, $userlong, $userlat, $params["time"], $amount);
+				$stmt->bind_param('dddsi', $userlat, $userlong, $userlat, $params["time"], $amount);
 				$stmt->execute();
 
 				$res = $stmt->get_result();

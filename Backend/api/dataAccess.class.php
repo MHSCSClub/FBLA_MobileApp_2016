@@ -78,6 +78,8 @@
 				return Signal::dbConnectionError();
 			} catch(AuthException $e) {
 				return Signal::authError();
+			} catch(IMGException $e) {
+				return Signal::imgError()->setMessage($e->getMessage);
 			} catch(Exception $e) {
 				return Signal::error()->setMessage($e->getMessage());
 			}
@@ -300,11 +302,13 @@
 			$stmt->bind_param('i', $params["pid"]);
 			$stmt->execute();
 
-			if($res->num_rows != 1)
-				throw new Exception("Image not found");
+			$res = $stmt->get_result();
 
-			$res = $stmt->get_result()->fetch_assoc()['data'];
-			return Signal::success()->setType("IMG")->setData($res);
+			if($res->num_rows != 1)
+				throw new IMGException("Image not found");
+
+			$imgdata = $res->fetch_assoc()['data'];
+			return Signal::success()->setType("IMG")->setData($imgdata);
 		}
 
 	}

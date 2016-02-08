@@ -19,11 +19,11 @@
 
 		public static $DEFAULT_TYPE = "JSON";
 
-		public function __construct($status, $data, $message) {
+		public function __construct($status, $data, $message, $type = self::$DEFAULT_TYPE) {
 			$this->status = $status;
 			$this->data = $data;
 			$this->message = $message;
-			$this->type = self::$DEFAULT_TYPE;
+			$this->type = $type;
 		}
 
 		public function isError() {
@@ -76,6 +76,9 @@
 		}
 		public static function authError() {
 			return new ISignal("error", NULL, "Authentication error");
+		}
+		public static function imgError() {
+			return new ISignal("error", NULL, "Image error", "IMG");
 		}
 
 		public static function success() {

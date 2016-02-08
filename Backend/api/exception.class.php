@@ -8,5 +8,6 @@
 
 	class DBConnectException extends Exception { }
 	class AuthException extends Exception { }
+	class IMGException extends Exception { }
 
 ?>

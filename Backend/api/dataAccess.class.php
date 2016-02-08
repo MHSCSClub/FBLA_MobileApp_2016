@@ -300,6 +300,9 @@
 			$stmt->bind_param('i', $params["pid"]);
 			$stmt->execute();
 
+			if($res->num_rows != 1)
+				throw new Exception("Image not found");
+
 			$res = $stmt->get_result()->fetch_assoc()['data'];
 			return Signal::success()->setType("IMG")->setData($res);
 		}

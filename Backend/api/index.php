@@ -108,6 +108,7 @@
 				//todo
 				break;
 		}
+		
 		return Signal::error()->setMessage("Invalid request type");
 	});
 
@@ -121,10 +122,12 @@
 				break;
 
 			case 'IMG':
+
+				//Return not found in case of error
 				if($response->isError())
 					notFound();
-				ob_clean();
-				header('content-type: image/jpeg');
+				ob_clean(); //Prevent stray new lines
+				header('Content-Type: image/jpeg');
 				echo $response->getData();
 				break;
 			

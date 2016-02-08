@@ -233,6 +233,9 @@
 		//Picture
 
 		private static function POST_picupload($db, $userid, $params) {
+			if(is_null(($params['geolat']) || is_null($params['geolong']) ||  is_null($params['data']))
+				throw new Exception("Invalid data");
+
 			$stmt = $db->prepare("INSERT INTO pictures VALUES (null, $userid, ?, ?, NOW(), ?)");
 			$stmt->bind_param('ddb', $params['geolat'], $params['geolong'], $params['data']);
 			$stmt->execute();

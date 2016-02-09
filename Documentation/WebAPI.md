@@ -110,20 +110,21 @@ Server will send back picture id of your uploaded pic
 Send (URL params):
 + amount: amount of images to recieve
 + geolat & geolong: current geographic location in latitude and longitude
-+ Filter specifications:
++ Filter specifications: (currently only 1 filter works at a time)
  + ft_dist: Filter by distance (specify distance)
  + ft_time: Filter by create time (specify time)
 
 Recieve:
 
-An array of image ids with there geoloc and created-by timestamp along with a SHA-256 hash of the image
+An array of image ids containing the following info:
 ```
 [
     {
         "pid": xxx, //picture id
-        "geoloc": //pic taken location
+        "geolat": //pic taken location latitude (STRING)
+        "geolong": //pic taken location longitude (STRING)
         "createtime": //created by time
-        "psha": //SHA-256 hash of the picture
+        "dist": //distance from current location in miles
     },
     {
         //...
@@ -137,7 +138,7 @@ Fetches actual image data of image id
 
 Recieve:
 
-Actual picture data
+Raw picture data, `404 not found` on case of incorrect id
 
 #### {id} (DELETE, ND)
 

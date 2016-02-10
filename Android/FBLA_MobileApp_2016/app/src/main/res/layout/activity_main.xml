@@ -61,6 +61,13 @@
                 android:layout_below="@+id/legal_button"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Register Activity"
+                android:id="@+id/register_activity" />
         </LinearLayout>
     </ScrollView>
+
 </RelativeLayout>

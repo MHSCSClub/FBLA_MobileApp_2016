@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button settingsActivityButton = (Button) findViewById(R.id.settings);
         settingsActivityButton.setOnClickListener(this);
 
+
         Constants.HTTPS = SecureAPI.getInstance(this);
     }
 
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.settings:
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                 break;
+
             default:
                 Toast.makeText(getApplicationContext(), "No action implemented", Toast.LENGTH_SHORT).show();
         }

@@ -26,6 +26,9 @@ public final class Constants {
     //Authcode needs to be saved and loaded
     public static String AUTHCODE = null;
 
+    //Authcode expiration time, to kick user back to login. We need a "renew" function to extend time
+    public static int AUTHCODE_EXP;
+
     private Constants(){
         //Do nothing constructor, exists to defeat instantiation.
     }
@@ -34,4 +37,13 @@ public final class Constants {
             Log.d(Constants.DEBUG, message);
         }
     }
+
+    public static void load_prefs(){
+        //TODO: Load preferences
+    }
+
+    public static void save_prefs(){
+        //TODO: Save preferences
+    }
+
 }

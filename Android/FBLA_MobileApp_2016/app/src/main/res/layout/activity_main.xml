@@ -15,58 +15,38 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="wrap_content">
 
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Legal Info"
-                android:id="@+id/legal_button"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:id="@+id/legal_button"/>
 
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Test HTTPS"
-                android:id="@+id/testHTTPS"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/legal_button"
-                android:layout_toEndOf="@+id/legal_button" />
+                android:id="@+id/testHTTPS" />
 
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Login Activity"
-                android:id="@+id/login_activity_btn"
-                android:layout_below="@+id/legal_button"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:id="@+id/login_activity_btn" />
 
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Swipe Activity"
-                android:id="@+id/swipetest"
-                android:layout_below="@+id/legal_button"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:id="@+id/swipetest" />
 
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Settings Activity"
-                android:id="@+id/settings"
-                android:layout_below="@+id/legal_button"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:id="@+id/settings" />
 
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Register Activity"
-                android:id="@+id/register_activity" />
         </LinearLayout>
     </ScrollView>
 

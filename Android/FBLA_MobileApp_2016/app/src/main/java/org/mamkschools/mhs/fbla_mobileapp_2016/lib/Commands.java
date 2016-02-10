@@ -6,21 +6,21 @@ package org.mamkschools.mhs.fbla_mobileapp_2016.lib;
  * Contains allowed commands that can be run against server.
  * Created by Andrew Katz on 10/23/2015.
  */
-public class Commands {
+public final class Commands {
 
 
 
     private Commands(){
         //Exists to defeat instantiation
     }
-    public class Get{
+    public final class Get{
         public static final String TEST = "test/get";
 
         private Get(){
             //Exists to defeat instantiation
         }
     }
-    public class Post{
+    public final class Post{
         public static final String LOGIN = "user/login";
         public static final String REGISTER = "user/register";
         private Post() {

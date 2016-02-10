@@ -16,18 +16,12 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private static Context myContext = null;
-
-    public static Context getContext() {
-        return myContext;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        myContext = getApplicationContext();
 
         Button testButton = (Button) findViewById(R.id.testHTTPS);
         testButton.setOnClickListener(this);
@@ -45,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         settingsActivityButton.setOnClickListener(this);
 
 
-        Constants.HTTPS = SecureAPI.getInstance(this);
+        Constants.HTTPS = SecureAPI.getInstance(getApplicationContext());
     }
 
     @Override
@@ -79,9 +73,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         protected Void doInBackground(String... params) {
             for(String url : params) {
-                try {
-                    Constants.HTTPS = SecureAPI.getInstance();
-                    ret.add(Constants.HTTPS.HTTPSGET(url));
+                try{
+                    ret.add(SecureAPI.getInstance().HTTPSGET(url));
                 } catch (Exception ex) {
                     Constants.log(ex.getMessage());
                 }

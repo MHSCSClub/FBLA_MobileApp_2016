@@ -201,16 +201,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic, change to not email
-        return true;
+
+        return email.length() >= 5;
     }
 
     private boolean isPasswordValid(String password) {
 
         //TODO: Should have 1 cap, 1 lower, 1 number, be at least 8 long
 
-        return true || password.length() >= 8 && password.matches(".*\\d+.*") &&
-                Pattern.compile("[^A-Za-z0-9]+").matcher(password).find();
+        return password.length() >= 8;
     }
 
     /**
@@ -327,7 +326,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected Integer doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             SecureAPI loginAPI = SecureAPI.getInstance(LoginActivity.this);
-            Constants.log("Hello");
             JSONObject returnedJSON = null;
 
             try {
@@ -342,12 +340,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             try {
                 String status = returnedJSON.getString("status");
                 String message = returnedJSON.getString("message");
-                Constants.log(message);
-
                 if(status.equals("error")) {
                     if(mLogin) {
                         return 0;
                     } else {
+                       // if(message.equals())
                         return -10;
                     }
                 } else if(status.equals("success")) {
@@ -403,4 +400,3 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 }
-

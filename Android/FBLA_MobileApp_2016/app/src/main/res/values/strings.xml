@@ -9,8 +9,8 @@
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short or does not meet complexity requirements</string>
+    <string name="error_invalid_email">Username is too short</string>
+    <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">The email or password is incorrect. If you do not have an account, please register</string>
     <string name="error_user_exists">User already exists, please try logging in or choose another username.</string>
     <string name="registration_complete">Account registered, you may now log in</string>
@@ -18,7 +18,6 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="confirm_pass">Confirm Password</string>
 
 
     <string name="title_activity_main_activity_swipes">MainActivitySwipes</string>

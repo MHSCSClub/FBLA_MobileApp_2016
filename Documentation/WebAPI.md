@@ -58,8 +58,8 @@ Handles all user actions. Destination: `/api/user/action`.
 
 Send:
 
-+ username: user username
-+ password: user password
++ username: user username, must be above 5 characters in length
++ password: user password, must be above 8 characters in length
 
 #### login (POST)
 

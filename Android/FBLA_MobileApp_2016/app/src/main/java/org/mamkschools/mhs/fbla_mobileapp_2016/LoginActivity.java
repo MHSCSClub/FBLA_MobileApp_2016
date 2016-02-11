@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
+                    attemptAuth(true);
                     return true;
                 }
                 return false;
@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                attemptAuth(true);
             }
         });
 
@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailRegisterButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptRegister();
+                attemptAuth(false);
             }
         });
 
@@ -147,18 +147,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    private void attemptRegister(){
-        //TODO: Dialog for password confirmation
-        //TODO: Input validation
-        //TODO: Register task
-    }
 
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private void attemptLogin() {
+    private void attemptAuth(boolean login) {
         if (mAuthTask != null) {
             return;
         }
@@ -200,7 +195,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new UserLoginTask(email, password, login);
             mAuthTask.execute((Void) null);
         }
     }
@@ -317,8 +312,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         private final String mEmail;
         private final String mPassword;
         private Map<String, String> creds;
+        private boolean mLogin;
 
-        UserLoginTask(String email, String password) {
+        UserLoginTask(String email, String password, boolean login) {
+            mLogin = login;
             mEmail = email;
             mPassword = password;
             creds = new HashMap<String,String>();
@@ -334,7 +331,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             JSONObject returnedJSON = null;
 
             try {
-                returnedJSON = loginAPI.HTTPSPOST(Commands.Post.LOGIN, creds);
+                returnedJSON = loginAPI.HTTPSPOST(mLogin ? Commands.Post.LOGIN : Commands.Post.REGISTER, creds);
             } catch (Exception e) {
                 if(Constants.DEBUG_MODE){
                     Constants.log(e.getMessage());
@@ -345,11 +342,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             try {
                 String status = returnedJSON.getString("status");
                 String message = returnedJSON.getString("message");
+                Constants.log(message);
 
                 if(status.equals("error")) {
-                    return 0;
+                    if(mLogin) {
+                        return 0;
+                    } else {
+                        return -10;
+                    }
                 } else if(status.equals("success")) {
-                    Constants.AUTHCODE = returnedJSON.getJSONObject("data").getString("authcode");
+                    if(mLogin) {
+                        Constants.AUTHCODE = returnedJSON.getJSONObject("data").getString("authcode");
+                    }
                     return 1;
                 } else{
                     throw new IllegalStateException(status + ": " + message);
@@ -378,12 +382,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (retStatus == 1) {
-                finish();
+                if(mLogin) {
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.registration_complete, Toast.LENGTH_LONG).show();
+                }
             } else if(retStatus == 0) {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
-            } else if(retStatus == -1){
-                mEmailView.setError(getString(R.string.error_other));
+            } else if(retStatus == -10){
+                mEmailView.setError(getString(R.string.error_user_exists));
                 mEmailView.requestFocus();
             }
         }

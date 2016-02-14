@@ -1,6 +1,6 @@
 #Task Assignments
 ##Yi
-* Backend picture uploading and comment handling
+* Comment handling
 
 ##Andrew
 * Login Functionality

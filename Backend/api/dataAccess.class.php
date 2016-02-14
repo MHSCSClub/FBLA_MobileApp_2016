@@ -269,24 +269,26 @@
 			$userlong = $params["geolong"];
 			$amount = $params["amount"];
 
-			//Filtering
-			if(isset($params["distance"])) {
-				$stmt = $db->prepare("SELECT pid, geolat, geolong, created, $dist_func AS dist FROM pictures HAVING dist < ? ORDER BY dist LIMIT 0, ?");
-				$stmt->bind_param('ddddi', $userlat, $userlong, $userlat, $params["distance"], $amount);
-				$stmt->execute();
+			$userdist = 0;
+			$distquery = 'dist > ?';
 
-				$res = $stmt->get_result();
+			$usertime = '1970-01-01 00:00:00';
+			$timequery = 'created > ?';
 
-			} else if(isset($params["time"])) {
-				$stmt = $db->prepare("SELECT pid, geolat, geolong, created, $dist_func AS dist FROM pictures HAVING created > ? ORDER BY dist LIMIT 0, ?");
-				$stmt->bind_param('dddsi', $userlat, $userlong, $userlat, $params["time"], $amount);
-				$stmt->execute();
-
-				$res = $stmt->get_result();
+			//Distance filter
+			if(isset($params['distance'])) {
+				$userdist = $params['distance'];
+				$distquery = 'dist < ?';
 			}
 
-			if(is_null($res))
-				throw new Exception("Invalid filter error");
+			//Time filter
+			if(isset($params['time'])) {
+				$usertime = $params['time'];
+			}
+
+			$query = "SELECT pid, geolat, geolong, created, $dist_func AS dist FROM pictures HAVING $distquery AND $timequery ORDER BY dist LIMIT 0, ?";
+			$stmt = $db->prepare($query);
+			$stmt->bind_param('ddddsi', $userlat, $userlong, $userlat, $params['distance'], $params['time'], $amount);
 
 			//Format results
 			$rows = array();

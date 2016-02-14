@@ -30,6 +30,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,12 +65,14 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    private ImageView image;
+    private static File location;
+    private static int picture = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         GetPicture picupload = new GetPicture();
         picupload.execute((Void) null);
+        location = getFilesDir();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity_swipes);
 
@@ -83,9 +86,17 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        image = (ImageView) findViewById(R.id.imagecool);
+
+        Button yes = (Button) findViewById(R.id.yesButton);
+        yes.setOnClickListener(this);
+
+        Button no = (Button) findViewById(R.id.noButton);
+        no.setOnClickListener(this);
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this);
+
 
 
 
@@ -131,6 +142,16 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                     openImageIntent();
                 }
                 break;
+            case R.id.yesButton:
+                picture += 1;
+                mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+                mViewPager.setAdapter(mSectionsPagerAdapter);
+                break;
+            case R.id.noButton:
+                picture += 1;
+                mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+                mViewPager.setAdapter(mSectionsPagerAdapter);
+                break;
             default:
                 Toast.makeText(this, "No Assigned Action", Toast.LENGTH_SHORT).show();
 
@@ -145,35 +166,8 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
-        private Cursor c;
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
-
-            PictureHelper mDbHelper = new PictureHelper(getApplicationContext());
-            SQLiteDatabase db = mDbHelper.getWritableDatabase();
-            String[] projection = {
-                    PictureEntry._ID,
-                    PictureEntry.COLUMN_NAME_PICTURE_ID,
-                    PictureEntry.COLUMN_NAME_GEOLONG,
-                    PictureEntry.COLUMN_NAME_GEOLAT
-            };
-
-// How you want the results sorted in the resulting Cursor
-            String sortOrder =
-                    PictureEntry.COLUMN_NAME_PICTURE_ID + " DESC";
-
-                c = db.query(
-                        PictureEntry.TABLE_NAME,  // The table to query
-                        projection,                               // The columns to return
-                        null,                                // The columns for the WHERE clause
-                        null,                            // The values for the WHERE clause
-                        null,                                     // don't group the rows
-                        null,                                     // don't filter by row groups
-                        sortOrder                                 // The sort order
-                );
-
-
-
         }
 
         @Override
@@ -181,24 +175,15 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             //System.out.println(position);
-            if(c.getCount() > 0) {
-                c.moveToPosition(position);
-                int id = c.getInt(
-                        c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_PICTURE_ID)
-                );
-                double geolat = c.getDouble(
-                        c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_GEOLAT)
-                );
-
-                return PlaceholderFragment.newInstance(position + 1, id, geolat);
-            }
-            return PlaceholderFragment.newInstance(position + 1, 1, 1);
+            PictureHelper mDbHelper = new PictureHelper(getApplicationContext());
+            SQLiteDatabase db = mDbHelper.getWritableDatabase();
+            return PlaceholderFragment.newInstance(position, db);
 
         }
 
         @Override
         public int getCount() {
-            return c.getCount();
+            return 3;
         }
 
         @Override
@@ -221,28 +206,62 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber, int pictureID, double geolat) {
-            PlaceholderFragment fragment = new PlaceholderFragment(pictureID, geolat);
+        private static SQLiteDatabase db;
+        public static PlaceholderFragment newInstance(int sectionNumber, SQLiteDatabase db1) {
+            PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
+            db = db1;
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+
             fragment.setArguments(args);
             return fragment;
         }
-        private int pictureID;
-        private double geolat;
 
-        public PlaceholderFragment(int pictureID, double geolat) {
-            this.pictureID = pictureID;
-            this.geolat = geolat;
-        }
+        public PlaceholderFragment() {}
 
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+
+            if(getArguments().getInt(ARG_SECTION_NUMBER) == 0) {
+                String[] projection = {
+                        PictureEntry._ID,
+                        PictureEntry.COLUMN_NAME_PICTURE_ID,
+                        PictureEntry.COLUMN_NAME_GEOLONG,
+                        PictureEntry.COLUMN_NAME_GEOLAT
+                };
+
+                String sortOrder =
+                        PictureEntry.COLUMN_NAME_PICTURE_ID + " ASC";
+
+                Cursor c = db.query(
+                        PictureEntry.TABLE_NAME,  // The table to query
+                        projection,                               // The columns to return
+                        null,                                // The columns for the WHERE clause
+                        null,                            // The values for the WHERE clause
+                        null,                                     // don't group the rows
+                        null,                                     // don't filter by row groups
+                        sortOrder                                 // The sort order
+                );
+                View rootView = inflater.inflate(R.layout.fragment_main_activity_swipes, container, false);
+                TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+                textView.setText("NA");
+                ImageView image = (ImageView) rootView.findViewById(R.id.imageView);
+
+                if(c.getCount() > 0){
+                    c.moveToPosition(picture % c.getCount());
+                    int itemId = c.getInt(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_PICTURE_ID));
+                    textView.setText("This is Picture: " + itemId);
+                    image.setImageURI(Uri.fromFile(new File(location, "picture" + itemId + ".jpg")));
+                }
+
+                return rootView;
+            }
+
             View rootView = inflater.inflate(R.layout.fragment_main_activity_swipes, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)) + geolat + pictureID);
+            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
         }
     }
@@ -318,6 +337,12 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
         @Override
         protected Void doInBackground(Void... params) {
+            String authCode = "fd60f0349432ef094b75f864495ee25922d87094dd335610dbdb54f4f88ea48b";
+            double geolong = -73.748687;
+            double geolat = 40.934710;
+            int amount = 3;
+            int dist = 1000;
+
             PictureHelper mDbHelper = new PictureHelper(getApplicationContext());
             SQLiteDatabase db = mDbHelper.getWritableDatabase();
             db.execSQL("Delete from " + PictureEntry.TABLE_NAME);
@@ -326,7 +351,8 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
 
             try {
-                JSONObject response = picture.HTTPSGET("picture/fetch?authcode=fd60f0349432ef094b75f864495ee25922d87094dd335610dbdb54f4f88ea48b&geolong=-73.748687&geolat=40.934710&amount=3&ft_dist=100000000000000");
+                JSONObject response = picture.HTTPSGET("picture/fetch?authcode=" + authCode + "&geolong=" + geolong + "&geolat=" + geolat + "&amount=" + amount + "&ft_dist=" + dist);
+
                 JSONArray array = response.getJSONArray("data");
                 for(int i = 0; i < array.length(); i++ ){
                     values.put(PictureEntry.COLUMN_NAME_PICTURE_ID, array.getJSONObject(i).getInt("pid"));
@@ -338,6 +364,9 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                             PictureEntry.TABLE_NAME,
                             "null",
                             values);
+                    int pid = array.getJSONObject(i).getInt("pid");
+                    File file = picture.HTTPSPIC("picture/" + pid  + "?authcode=" + authCode, new File(getFilesDir(), "picture" + pid + ".jpg"));
+
 
                 }
             }catch (Exception e){
@@ -345,26 +374,17 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                     Constants.log(e.getMessage());
                 }
             }
-            try{
-                File file = picture.HTTPSPIC("picture/1?authcode=fd60f0349432ef094b75f864495ee25922d87094dd335610dbdb54f4f88ea48b", new File(getFilesDir(), "picture.jpg"));
-                uri = Uri.fromFile(file);
 
-            }catch (Exception e){
-                if(Constants.DEBUG_MODE){
-                    Constants.log(e.getMessage());
-                }
-            }
 
             return null;
         }
 
         @Override
         protected void onPostExecute(Void v) {
-            System.out.println("Cool");
+            Constants.log("Done With Picture Download");
             mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
             mViewPager.setAdapter(mSectionsPagerAdapter);
-            image.setImageURI(uri);
+
 
 
         }

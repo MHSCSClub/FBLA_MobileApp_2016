@@ -20,12 +20,15 @@
             android:id="@+id/scrollView3" >
 
             <ImageView
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/imageView"
                 android:src="@drawable/cslogo"
                 android:adjustViewBounds="true" />
+
         </ScrollView>
+
+
 
     </LinearLayout>
 

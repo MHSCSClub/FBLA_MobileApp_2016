@@ -2,14 +2,20 @@ package org.mamkschools.mhs.fbla_mobileapp_2016.lib;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
 
 import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.R;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.security.KeyStore;
@@ -104,6 +110,31 @@ public class SecureAPI {
 
         String response = getResponseFromStream(httpsURLConnection.getInputStream());
         return new JSONObject(response);
+    }
+    public File HTTPSPIC(String action, File file) throws Exception {
+        URL url = new URL(Constants.API_BASE_URL + action);
+        HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+        //httpsURLConnection.setReadTimeout(10000);
+        //httpsURLConnection.setConnectTimeout(15000);
+        httpsURLConnection.setSSLSocketFactory(mySocketFactory);
+
+        InputStream input = new BufferedInputStream(httpsURLConnection.getInputStream(), 8192);
+        // Output stream
+        OutputStream output = new FileOutputStream(file);
+
+        int count;
+        byte data[] = new byte[1024];
+
+        while ((count = input.read(data)) != -1) {
+
+            output.write(data, 0, count);
+        }
+        output.flush();
+        output.close();
+        input.close();
+        //File file = new File(name);
+        return file;
+
     }
 
     public JSONObject HTTPSPOST(String action, Map<String, String> params) throws Exception{

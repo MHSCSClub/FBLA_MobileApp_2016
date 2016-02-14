@@ -78,8 +78,8 @@
 		$params = array();
 		$params['geolat']= $_POST['geolat'];
 		$params['geolong'] = $_POST['geolong'];
-		if($_FILES['upfile']['error'] != UPLOAD_ERR_OK) {
-			return Signal::error()->setMessage("File not uploaded")
+		if(!isset($_FILES['picture'])) {
+			return Signal::error()->setMessage("File not uploaded");
 		}
 		$params['picdata'] = file_get_contents($_FILES['picture']['tmp_name']);
 

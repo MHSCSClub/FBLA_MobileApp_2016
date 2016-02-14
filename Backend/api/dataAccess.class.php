@@ -270,10 +270,10 @@
 			$amount = $params["amount"];
 
 			$userdist = 0;
-			$distquery = 'dist > ?';
+			$distquery = ' dist > ? ';
 
 			$usertime = '1970-01-01 00:00:00';
-			$timequery = 'created > ?';
+			$timequery = ' created > ? ';
 
 			//Distance filter
 			if(isset($params['distance'])) {
@@ -288,8 +288,10 @@
 
 			$query = "SELECT pid, geolat, geolong, created, $dist_func AS dist FROM pictures HAVING $distquery AND $timequery ORDER BY dist LIMIT 0, ?";
 			$stmt = $db->prepare($query);
-			$stmt->bind_param('ddddsi', $userlat, $userlong, $userlat, $params['distance'], $params['time'], $amount);
+			$stmt->bind_param('ddddsi', $userlat, $userlong, $userlat, $userdist, $usertime, $amount);
+			$stmt->execute();
 
+			$res = $stmt->get_result();
 			//Format results
 			$rows = array();
 			while($r = $res->fetch_assoc()) {

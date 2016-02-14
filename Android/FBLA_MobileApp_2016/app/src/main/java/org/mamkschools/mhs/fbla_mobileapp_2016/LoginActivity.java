@@ -1,5 +1,4 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
-//TODO: Also needs to offer registration
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -81,8 +80,6 @@ public class LoginActivity extends AppCompatActivity {
         mProgressView = findViewById(R.id.login_progress);
     }
 
-
-
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
@@ -101,34 +98,21 @@ public class LoginActivity extends AppCompatActivity {
         String username = mUserView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        boolean cancel = false;
-        View focusView = null;
-
-        // Check for a valid password, if the user entered one.
-        if (password.length() < 8) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        // Check for a valid email address.
+        // Check for a valid username.
         if (username.length() < 5) {
             mUserView.setError(getString(R.string.error_invalid_email));
-            focusView = mUserView;
-            cancel = true;
+            mUserView.requestFocus();
+            return;
+        }
+        // Check for a valid password, if the user entered one.
+        if (!login && password.length() < 8) {
+            mPasswordView.setError(getString(R.string.error_invalid_password));
+            mPasswordView.requestFocus();
+            return;
         }
 
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(username, password, login);
-            mAuthTask.execute((Void) null);
-        }
+        mAuthTask = new UserLoginTask(username, password, login);
+        mAuthTask.execute((Void) null);
     }
 
     /**
@@ -167,12 +151,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private Map<String, String> creds;

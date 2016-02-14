@@ -111,6 +111,7 @@ public class SecureAPI {
         String response = getResponseFromStream(httpsURLConnection.getInputStream());
         return new JSONObject(response);
     }
+
     public File HTTPSPIC(String action, File file) throws Exception {
         URL url = new URL(Constants.API_BASE_URL + action);
         HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();

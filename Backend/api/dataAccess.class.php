@@ -239,7 +239,7 @@
 				throw new Exception("Invalid POST data");
 
 			$stmt = $db->prepare("INSERT INTO pictures VALUES (null, $userid, ?, ?, ?, NOW(), 0, 0, ?)");
-			$stmt->bind_param('dds', $params['title'], $params['geolat'], $params['geolong'], $params['picdata']);
+			$stmt->bind_param('sdds', $params['title'], $params['geolat'], $params['geolong'], $params['picdata']);
 			$stmt->execute();
 			$stmt->close();
 

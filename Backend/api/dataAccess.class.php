@@ -292,11 +292,12 @@
 				$namequery = 'username = ?';
 			}
 
-			$query = "SELECT pid, geolat, geolong, created, $dist_func AS dist, username FROM pictures INNER JOIN users ON pictures.userid = users.userid".
+			$query = "SELECT pid, geolat, geolong, created, $dist_func AS dist, username FROM pictures INNER JOIN users ON pictures.userid = users.userid ".
 						 "HAVING $distquery AND $timequery AND $namequery ORDER BY dist LIMIT 0, ?";
+			//return Signal::error()->setMessage($query);
 
 			$stmt = $db->prepare($query);
-			$stmt->bind_param('ddddssi', $userlat, $userlong, $userlat, $userdist, $usertime, $amount);
+			$stmt->bind_param('ddddssi', $userlat, $userlong, $userlat, $userdist, $usertime, $username, $amount);
 			$stmt->execute();
 
 			$res = $stmt->get_result();

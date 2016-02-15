@@ -293,14 +293,14 @@
 			}
 
 			//Views filter
-			$userview = -1;
-			$viewquery = ' views > ? ';
+			$userviews = 0;
+			$viewquery = ' views >= ? ';
 			if(isset($params['views'])) {
 				$userview = $params['views'];
 				$viewquery = ' views <= ? ';
 			}
 
-			$query = "SELECT pid, title, geolat, geolong, created, $dist_func AS dist, username, (likes + dislikes) AS views FROM pictures INNER JOIN users ON pictures.userid = users.userid".
+			$query = "SELECT pid, title, geolat, geolong, created, $dist_func AS dist, username, (likes + dislikes) AS views FROM pictures INNER JOIN users ON pictures.userid = users.userid ".
 						 "HAVING $distquery AND $timequery AND $namequery AND $viewquery ORDER BY dist LIMIT 0, ?";
 
 			$stmt = $db->prepare($query);

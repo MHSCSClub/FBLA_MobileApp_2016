@@ -97,6 +97,7 @@ Handles everything picture related. Destination: `api/picture/action`
 #### upload (POST, ND)
 
 Send:
++ title: title of picture
 + picture: picture file in to be specified format
 + geolat & geolong: current geographic location in latitude and longitude
 
@@ -111,9 +112,10 @@ Send (URL params):
 + amount: amount of images to recieve
 + geolat & geolong: current geographic location in latitude and longitude
 + Filter specifications: (supports multiple filters)
- + ft_dist: Filter by distance (specify distance)
- + ft_time: Filter by create time (specify time)
- + ft_name: Filter by username
+ + ft_dist: Filter by distance (specify distance), will return `d <= ft_dist`
+ + ft_time: Filter by create time (specify time), will return `t >= ft_time`
+ + ft_name: Filter by username, will return `n == ft_name`
+ + ft_views: Filter by views, will return `v <= ft_views`
 
 Recieve:
 
@@ -122,10 +124,13 @@ An array of image ids containing the following info:
 [
     {
         "pid": xxx, //picture id
+        "title": //Title of the image
         "geolat": //pic taken location latitude (STRING)
         "geolong": //pic taken location longitude (STRING)
-        "createtime": //created by time
+        "created": //created by time
         "dist": //distance from current location in miles
+        "username": //username of picture creator
+        "views": //number of views (likes + dislikes)
     },
     {
         //...
@@ -140,7 +145,3 @@ Fetches actual image data of image id
 Recieve:
 
 Raw picture data, `404 not found` on case of incorrect id
-
-#### {id} (DELETE, ND)
-
-Deletes image specified by id

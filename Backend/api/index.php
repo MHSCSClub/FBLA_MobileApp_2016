@@ -97,12 +97,13 @@
 		$params['distance'] = $_GET['ft_dist'];
 		$params['time'] = $_GET['ft_time'];
 		$params['name'] = $_GET['ft_name'];
+		$params['views']= $_GET['ft_views'];
 
 		return DataAccess::authPost($_GET['authcode'], "picfetch", $params);
 	});
 	// picture/* GET/DELETE
-	$RH->F("picture", $WC, function($id) {
-		$params = array("pid" => $id);
+	$RH->F("picture", $WC, function($trace) {
+		$params = array("pid" => $trace[1]);
 
 		switch ($_SERVER['REQUEST_METHOD']) {
 			case 'GET':

@@ -30,6 +30,14 @@
 		$RH->D("foo", $WC); 
 		$RH->F("foo/$WC", "mhs", function(){...}); //Will this call "foo/xxx/mhs", where xxx can be anything
 
+		The request handler will pass every function a $trace variable, which is an array of the requests, useful for handling wildcard directories
+
+		Request: foo/aaa/func -> Trace [0 => "foo", 1 = "aaa", 2 = "func"]
+
+		$RH->F("foo/$WC", "bar", function($trace) {
+			//$trace[1] to get $WC in the original request
+		});
+
 		//Note that registered functions has priority
 
 		$RH->F("foo", $WC, function($val){ }) //Will allow for "foo/xxx", xxx is passed into your function specified
@@ -110,6 +118,7 @@
 		//THROWS EXCEPTION on invalid path
 		public function call($path) {
 			$ptoken = explode("/", $path);
+			$trace = $ptoken;
 			$fname = end($ptoken);
 			array_pop($ptoken);
 			$dpath = implode("/", $ptoken);
@@ -122,9 +131,9 @@
 			$f_wc = $this->funcEnc($this->wildcard);
 
 			if(isset($cd[$f_cur]) && is_callable($cd[$f_cur])) {
-				return call_user_func($cd[$f_cur]);
+				return call_user_func($cd[$f_cur], $trace);
 			} else if(isset($cd[$f_wc]) && is_callable($cd[$f_wc])) {
-				return call_user_func($cd[$f_wc], $fname);
+				return call_user_func($cd[$f_wc], $trace);
 			} else {
 				throw new Exception("Path Error!");
 			}

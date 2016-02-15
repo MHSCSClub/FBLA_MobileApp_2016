@@ -48,27 +48,27 @@
 
 	// user/register
 	$RH->F("user", "register", function() {
-		$username = $_POST["username"];
-		$password = $_POST["password"];
+		$username = @$_POST["username"];
+		$password = @$_POST["password"];
 		return DataAccess::register($username, $password);
 	});
 	// user/login
 	$RH->F("user", "login", function() {
-		$username = $_POST["username"];
-		$password = $_POST["password"];
+		$username = @$_POST["username"];
+		$password = @$_POST["password"];
 		return DataAccess::login($username, $password);
 	});
 	// user/verify
 	$RH->F("user", "verify", function() {
-		return DataAccess::authGet($_GET['authcode'], "verify");
+		return DataAccess::authGet(@$_GET['authcode'], "verify");
 	});
 	// user/info
 	$RH->F("user", "info", function() {
-		return DataAccess::authGet($_GET['authcode'], "info");
+		return DataAccess::authGet(@$_GET['authcode'], "info");
 	});
 	// user/logout
 	$RH->F("user", "logout", function() {
-		return DataAccess::authGet($_GET['authcode'], "logout");
+		return DataAccess::authGet(@$_GET['authcode'], "logout");
 	});
 
 	$RH->D("", "picture");
@@ -76,30 +76,30 @@
 	// picture/upload
 	$RH->F("picture", "upload", function() {
 		$params = array();
-		$params['title'] = $_POST['title'];
-		$params['geolat']= $_POST['geolat'];
-		$params['geolong'] = $_POST['geolong'];
+		$params['title'] = @$_POST['title'];
+		$params['geolat']= @$_POST['geolat'];
+		$params['geolong'] = @$_POST['geolong'];
 		if(!isset($_FILES['picture'])) {
 			return Signal::error()->setMessage("File not uploaded");
 		}
 		$params['picdata'] = file_get_contents($_FILES['picture']['tmp_name']);
 
-		return DataAccess::authPost($_GET['authcode'], "picupload", $params);
+		return DataAccess::authPost(@$_GET['authcode'], "picupload", $params);
 	});
 	// picture/fetch
 	$RH->F("picture", "fetch", function() {
 		$params = array();
 
-		$params['geolat']= $_GET['geolat'];
-		$params['geolong'] = $_GET['geolong'];
-		$params['amount'] = $_GET['amount'];
+		$params['geolat']= @$_GET['geolat'];
+		$params['geolong'] = @$_GET['geolong'];
+		$params['amount'] = @$_GET['amount'];
 
-		$params['distance'] = $_GET['ft_dist'];
-		$params['time'] = $_GET['ft_time'];
-		$params['name'] = $_GET['ft_name'];
-		$params['views']= $_GET['ft_views'];
+		$params['distance'] = @$_GET['ft_dist'];
+		$params['time'] = @$_GET['ft_time'];
+		$params['name'] = @$_GET['ft_name'];
+		$params['views']= @$_GET['ft_views'];
 
-		return DataAccess::authPost($_GET['authcode'], "picfetch", $params);
+		return DataAccess::authPost(@$_GET['authcode'], "picfetch", $params);
 	});
 	// picture/* GET/DELETE
 	$RH->F("picture", $WC, function($trace) {
@@ -116,6 +116,13 @@
 		}
 		
 		return Signal::error()->setMessage("Invalid request type");
+	});
+
+	$RH->D("picture", $WC);
+
+	// picture/*/comment
+	$RH->F("picture/$WC", "comment", function($trace) {
+
 	});
 
 	try {

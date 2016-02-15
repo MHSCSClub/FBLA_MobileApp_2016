@@ -238,7 +238,7 @@
 			if(is_null($params['geolat']) || is_null($params['geolong']) ||  is_null($params['picdata']))
 				throw new Exception("Invalid POST data");
 
-			$stmt = $db->prepare("INSERT INTO pictures VALUES (null, $userid, ?, ?, NOW(), ?)");
+			$stmt = $db->prepare("INSERT INTO pictures VALUES (null, $userid, ?, ?, NOW(), 0, 0, ?)");
 			$stmt->bind_param('dds', $params['geolat'], $params['geolong'], $params['picdata']);
 			$stmt->execute();
 			$stmt->close();
@@ -292,9 +292,8 @@
 				$namequery = 'username = ?';
 			}
 
-			$query = "SELECT pid, geolat, geolong, created, $dist_func AS dist, username FROM pictures INNER JOIN users ON pictures.userid = users.userid ".
+			$query = "SELECT pid, geolat, geolong, created, $dist_func AS dist, username, (likes + dislikes) AS views FROM pictures INNER JOIN users ON pictures.userid = users.userid".
 						 "HAVING $distquery AND $timequery AND $namequery ORDER BY dist LIMIT 0, ?";
-			//return Signal::error()->setMessage($query);
 
 			$stmt = $db->prepare($query);
 			$stmt->bind_param('ddddssi', $userlat, $userlong, $userlat, $userdist, $usertime, $username, $amount);

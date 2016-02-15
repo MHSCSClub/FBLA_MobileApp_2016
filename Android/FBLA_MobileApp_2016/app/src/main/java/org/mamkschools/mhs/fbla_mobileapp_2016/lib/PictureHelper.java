@@ -1,10 +1,10 @@
-package org.mamkschools.mhs.fbla_mobileapp_2016;
+package org.mamkschools.mhs.fbla_mobileapp_2016.lib;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import org.mamkschools.mhs.fbla_mobileapp_2016.PictureContract.PictureEntry;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureContract.PictureEntry;
 
 /**
  * Created by jackphillips on 2/13/16.

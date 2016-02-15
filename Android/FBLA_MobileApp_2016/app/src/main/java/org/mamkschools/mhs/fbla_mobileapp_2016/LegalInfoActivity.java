@@ -22,7 +22,7 @@ public class LegalInfoActivity extends AppCompatActivity {
                 text += s.nextLine();
             } while(s.hasNextLine());
         }catch(Exception e){
-            Constants.log(e.getMessage());
+            util.log(e.getMessage());
         }
         LegalText.setText(text);
     }

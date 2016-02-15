@@ -1,6 +1,5 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
-import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -8,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Camera;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -36,18 +34,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import android.content.Context;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.*;
 
 import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mamkschools.mhs.fbla_mobileapp_2016.PictureContract.*;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.*;
 
 public class MainActivitySwipes extends AppCompatActivity implements View.OnClickListener{
 
@@ -70,11 +65,25 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main_activity_swipes);
+
+        //TODO: Load preference data
+
+        if(Constants.AUTHCODE == null || System.currentTimeMillis() >= Constants.AUTHCODE_EXP){
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        }
+
+
+        SecureAPI mySecureAPI = SecureAPI.getInstance(this.getApplicationContext());
+
         GetPicture picupload = new GetPicture();
         picupload.execute((Void) null);
         location = getFilesDir();
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_activity_swipes);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -196,6 +205,8 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
+        private int pictureID;
+        private double geolat;
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -206,9 +217,16 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
          * Returns a new instance of this fragment for the given section
          * number.
          */
+
         private static SQLiteDatabase db;
         public static PlaceholderFragment newInstance(int sectionNumber, SQLiteDatabase db1) {
             PlaceholderFragment fragment = new PlaceholderFragment();
+=======
+        public static PlaceholderFragment newInstance(int sectionNumber, int pictureID, double geolat) {
+            PlaceholderFragment fragment = new PlaceholderFragment();
+            fragment.pictureID = pictureID;
+            fragment.geolat = geolat;
+>>>>>>> Work on settings activity
             Bundle args = new Bundle();
             db = db1;
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
@@ -216,8 +234,11 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
             fragment.setArguments(args);
             return fragment;
         }
+<<<<<<< c520582b616c91fbddf893b5375a06c60e6e732a
 
         public PlaceholderFragment() {}
+=======
+>>>>>>> Work on settings activity
 
 
         @Override
@@ -371,10 +392,18 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                 }
             }catch (Exception e){
                 if(Constants.DEBUG_MODE){
-                    Constants.log(e.getMessage());
+                    util.log(e.getMessage());
                 }
             }
 
+<<<<<<< c520582b616c91fbddf893b5375a06c60e6e732a
+=======
+            }catch (Exception e){
+                if(Constants.DEBUG_MODE){
+                    util.log(e.getMessage());
+                }
+            }
+>>>>>>> Work on settings activity
 
             return null;
         }

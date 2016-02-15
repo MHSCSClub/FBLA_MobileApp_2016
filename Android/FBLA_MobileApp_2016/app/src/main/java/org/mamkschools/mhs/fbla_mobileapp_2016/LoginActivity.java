@@ -21,6 +21,7 @@ import android.widget.Toast;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.*;
 
@@ -178,14 +179,33 @@ public class LoginActivity extends AppCompatActivity {
 
                 String status = returnedJSON.getString("status");
                 String message = returnedJSON.getString("message");
+                if(status.equals("error")) {
+                    if(isLogin) {
+                        return false;
+                    } else {
 
-                if(status.equals("success"))
+                        return false;
+                    }
+                } else if(status.equals("success")) {
+                    if(isLogin) {
+                        Constants.AUTHCODE = returnedJSON.getJSONObject("data").getString("authcode");
+                    }
                     return true;
-                else
-                    return false;
-
+                } else{
+                    throw new IllegalStateException(status + ": " + message);
+                }
+            } catch (JSONException jse){
+                if(Constants.DEBUG_MODE){
+                    util.log(jse.getMessage());
+                }
+                return false;
+            } catch (IllegalStateException ise){
+                if(Constants.DEBUG_MODE){
+                    util.log("Invalid message: " + ise.getMessage());
+                }
+                return false;
             } catch (Exception ex){
-                Constants.log(ex.getMessage());
+                util.log(ex.getMessage());
                 return false;
             }
         }
@@ -197,13 +217,6 @@ public class LoginActivity extends AppCompatActivity {
 
             if(success) {
                 if(isLogin) {
-                    //Save authcode
-                    try {
-                        Constants.AUTHCODE = returnedJSON.getJSONObject("data").getString("authcode");
-                    } catch (Exception ex){
-                        Constants.log(ex.getMessage());
-                    }
-
                     finish();
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.registration_complete, Toast.LENGTH_LONG).show();

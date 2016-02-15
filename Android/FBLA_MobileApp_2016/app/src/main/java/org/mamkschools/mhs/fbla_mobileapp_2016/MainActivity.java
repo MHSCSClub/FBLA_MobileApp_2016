@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         settingsActivityButton.setOnClickListener(this);
 
 
-        Constants.HTTPS = SecureAPI.getInstance(getApplicationContext());
+        SecureAPI.getInstance(getApplicationContext());
     }
 
     @Override
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 try{
                     ret.add(SecureAPI.getInstance().HTTPSGET(url));
                 } catch (Exception ex) {
-                    Constants.log(ex.getMessage());
+                    util.log(ex.getMessage());
                 }
             }
             return null;
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         protected void onPostExecute(Void v) {
             for(JSONObject jsonObject : ret) {
                 String retStr = jsonObject == null ? "(null)" : jsonObject.toString();
-                Constants.log(retStr);
+                util.log(retStr);
                 Toast.makeText(getApplicationContext(), retStr, Toast.LENGTH_SHORT).show();
                 //TODO Any UI updates, save pic objs, db stuff.....
             }

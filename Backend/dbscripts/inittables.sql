@@ -25,5 +25,16 @@ CREATE TABLE pictures
 	geolat DECIMAL(4,2) not null,
 	geolong DECIMAL(4,2) not null,
 	created DATETIME not null,
+	likes int unsigned not null,
+	dislikes int unsigned not null,
 	data MEDIUMBLOB not null
-)
+);
+
+CREATE TABLE comments
+(
+	cid int unsigned not null auto_increment primary key,
+	pid int unsigned not null,
+	userid int unsigned not null,
+	comment varchar(800),
+	style int unsigned not null
+);

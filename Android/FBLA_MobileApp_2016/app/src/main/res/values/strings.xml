@@ -4,18 +4,18 @@
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
+    <string name="prompt_username">Username</string>
     <string name="action_register">Register</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">Username is too short</string>
+    <string name="error_invalid_username">Username is too short</string>
     <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">The email or password is incorrect. If you do not have an account, please register</string>
+    <string name="error_incorrect_password">The username or password is incorrect. If you do not have an account, please register</string>
     <string name="error_user_exists">User already exists, please try logging in or choose another username.</string>
     <string name="registration_complete">Account registered, you may now log in</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
+    <string name="permission_rationale">"Contacts permissions are needed for providing username
         completions."
     </string>
 

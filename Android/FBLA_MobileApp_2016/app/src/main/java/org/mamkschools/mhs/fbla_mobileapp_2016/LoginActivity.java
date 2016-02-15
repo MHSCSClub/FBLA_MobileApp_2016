@@ -26,7 +26,7 @@ import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.*;
 
 /**
- * A login screen that offers login via email/password.
+ * A login screen that offers login via username/password.
  */
 public class LoginActivity extends AppCompatActivity {
 
@@ -61,16 +61,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        Button mUsernameSignInButton = (Button) findViewById(R.id.username_sign_in_button);
+        mUsernameSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptAuth(true);
             }
         });
 
-        Button mEmailRegisterButton = (Button) findViewById(R.id.email_register_button);
-        mEmailRegisterButton.setOnClickListener(new OnClickListener() {
+        Button mUsernameRegisterButton = (Button) findViewById(R.id.username_register_button);
+        mUsernameRegisterButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptAuth(false);
@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
+     * If there are form errors (invalid username, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
     private void attemptAuth(boolean login) {
@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Check for a valid username.
         if (username.length() < 5) {
-            mUserView.setError(getString(R.string.error_invalid_email));
+            mUserView.setError(getString(R.string.error_invalid_username));
             mUserView.requestFocus();
             return;
         }

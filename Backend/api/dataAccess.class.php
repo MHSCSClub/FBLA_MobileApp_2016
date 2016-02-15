@@ -79,7 +79,7 @@
 			} catch(AuthException $e) {
 				return Signal::authError();
 			} catch(IMGException $e) {
-				return Signal::imgError()->setMessage($e->getMessage);
+				return Signal::imgError()->setMessage($e->getMessage());
 			} catch(Exception $e) {
 				return Signal::error()->setMessage($e->getMessage());
 			}
@@ -296,7 +296,7 @@
 			$userviews = 0;
 			$viewquery = ' views >= ? ';
 			if(isset($params['views'])) {
-				$userview = $params['views'];
+				$userviews = $params['views'];
 				$viewquery = ' views <= ? ';
 			}
 

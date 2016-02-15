@@ -235,11 +235,11 @@
 		//Picture
 
 		private static function POST_picupload($db, $userid, $params) {
-			if(is_null($params['geolat']) || is_null($params['geolong']) ||  is_null($params['picdata']))
+			if(is_null($params['title']) || is_null($params['geolat']) || is_null($params['geolong']) || is_null($params['picdata']))
 				throw new Exception("Invalid POST data");
 
-			$stmt = $db->prepare("INSERT INTO pictures VALUES (null, $userid, ?, ?, NOW(), 0, 0, ?)");
-			$stmt->bind_param('dds', $params['geolat'], $params['geolong'], $params['picdata']);
+			$stmt = $db->prepare("INSERT INTO pictures VALUES (null, $userid, ?, ?, ?, NOW(), 0, 0, ?)");
+			$stmt->bind_param('dds', $params['title'], $params['geolat'], $params['geolong'], $params['picdata']);
 			$stmt->execute();
 			$stmt->close();
 
@@ -271,32 +271,40 @@
 
 			//Distance filter
 			$userdist = 0;
-			$distquery = ' dist > ? ';
+			$distquery = ' dist >= ? ';
 			if(isset($params['distance'])) {
 				$userdist = $params['distance'];
-				$distquery = 'dist < ?';
+				$distquery = ' dist <= ? ';
 			}
 
 			//Time filter
 			$usertime = '1970-01-01 00:00:00';
-			$timequery = ' created > ? ';
+			$timequery = ' created >= ? ';
 			if(isset($params['time'])) {
 				$usertime = $params['time'];
 			}
 
-			//Name filter
+			//Username filter
 			$username = ' ';
 			$namequery = ' username <> ? ';
 			if(isset($params['name'])) {
 				$username = $params['name'];
-				$namequery = 'username = ?';
+				$namequery = ' username = ? ';
 			}
 
-			$query = "SELECT pid, geolat, geolong, created, $dist_func AS dist, username, (likes + dislikes) AS views FROM pictures INNER JOIN users ON pictures.userid = users.userid".
-						 "HAVING $distquery AND $timequery AND $namequery ORDER BY dist LIMIT 0, ?";
+			//Views filter
+			$userview = -1;
+			$viewquery = ' views > ? ';
+			if(isset($params['views'])) {
+				$userview = $params['views'];
+				$viewquery = ' views <= ? ';
+			}
+
+			$query = "SELECT pid, title, geolat, geolong, created, $dist_func AS dist, username, (likes + dislikes) AS views FROM pictures INNER JOIN users ON pictures.userid = users.userid".
+						 "HAVING $distquery AND $timequery AND $namequery AND $viewquery ORDER BY dist LIMIT 0, ?";
 
 			$stmt = $db->prepare($query);
-			$stmt->bind_param('ddddssi', $userlat, $userlong, $userlat, $userdist, $usertime, $username, $amount);
+			$stmt->bind_param('ddddssii', $userlat, $userlong, $userlat, $userdist, $usertime, $username, $userviews, $amount);
 			$stmt->execute();
 
 			$res = $stmt->get_result();

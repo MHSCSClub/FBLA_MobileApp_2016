@@ -22,6 +22,7 @@ CREATE TABLE pictures
 (
 	pid int unsigned not null auto_increment primary key,
 	userid int unsigned not null,
+	title varchar(80) not null,
 	geolat DECIMAL(4,2) not null,
 	geolong DECIMAL(4,2) not null,
 	created DATETIME not null,

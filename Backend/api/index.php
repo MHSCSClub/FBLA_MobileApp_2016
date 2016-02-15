@@ -76,6 +76,7 @@
 	// picture/upload
 	$RH->F("picture", "upload", function() {
 		$params = array();
+		$params['title'] = $_POST['title'];
 		$params['geolat']= $_POST['geolat'];
 		$params['geolong'] = $_POST['geolong'];
 		if(!isset($_FILES['picture'])) {

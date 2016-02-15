@@ -271,7 +271,16 @@
 
 			//Distance filter
 			$userdist = 0;
+<<<<<<< 0bd99e250add48f5df92e82be852ddb8469eceef
 			$distquery = ' dist > ? ';
+
+			$usertime = '1970-01-01 00:00:00';
+			$timequery = ' created > ? ';
+
+			//Distance filter
+=======
+			$distquery = 'dist > ?';
+>>>>>>> Implemented username filter
 			if(isset($params['distance'])) {
 				$userdist = $params['distance'];
 				$distquery = 'dist < ?';
@@ -279,14 +288,14 @@
 
 			//Time filter
 			$usertime = '1970-01-01 00:00:00';
-			$timequery = ' created > ? ';
+			$timequery = 'created > ?';
 			if(isset($params['time'])) {
 				$usertime = $params['time'];
 			}
 
 			//Name filter
 			$username = ' ';
-			$namequery = ' username <> ? ';
+			$namequery = 'username <> ?';
 			if(isset($params['name'])) {
 				$username = $params['name'];
 				$namequery = 'username = ?';
@@ -296,8 +305,12 @@
 						 "HAVING $distquery AND $timequery AND $namequery ORDER BY dist LIMIT 0, ?";
 
 			$stmt = $db->prepare($query);
-			$stmt->bind_param('ddddssi', $userlat, $userlong, $userlat, $userdist, $usertime, $amount);
+<<<<<<< 0bd99e250add48f5df92e82be852ddb8469eceef
+			$stmt->bind_param('ddddsi', $userlat, $userlong, $userlat, $userdist, $usertime, $amount);
 			$stmt->execute();
+=======
+			$stmt->bind_param('ddddssi', $userlat, $userlong, $userlat, $params['distance'], $params['time'], $amount);
+>>>>>>> Implemented username filter
 
 			$res = $stmt->get_result();
 			//Format results

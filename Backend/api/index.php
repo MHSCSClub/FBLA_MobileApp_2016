@@ -95,6 +95,7 @@
 
 		$params['distance'] = $_GET['ft_dist'];
 		$params['time'] = $_GET['ft_time'];
+		$params['name'] = $_GET['ft_name'];
 
 		return DataAccess::authPost($_GET['authcode'], "picfetch", $params);
 	});

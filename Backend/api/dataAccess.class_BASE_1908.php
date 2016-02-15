@@ -269,37 +269,27 @@
 			$userlong = $params["geolong"];
 			$amount = $params["amount"];
 
-			//Distance filter
 			$userdist = 0;
-			$distquery = ' dist > ? ';
+			$distquery = 'dist > ?';
+
+			$usertime = '1970-01-01 00:00:00';
+			$timequery = 'created > ?';
+
+			//Distance filter
 			if(isset($params['distance'])) {
 				$userdist = $params['distance'];
 				$distquery = 'dist < ?';
 			}
 
 			//Time filter
-			$usertime = '1970-01-01 00:00:00';
-			$timequery = ' created > ? ';
 			if(isset($params['time'])) {
 				$usertime = $params['time'];
 			}
 
-			//Name filter
-			$username = ' ';
-			$namequery = ' username <> ? ';
-			if(isset($params['name'])) {
-				$username = $params['name'];
-				$namequery = 'username = ?';
-			}
-
-			$query = "SELECT pid, geolat, geolong, created, $dist_func AS dist, username FROM pictures INNER JOIN users ON pictures.userid = users.userid".
-						 "HAVING $distquery AND $timequery AND $namequery ORDER BY dist LIMIT 0, ?";
-
+			$query = "SELECT pid, geolat, geolong, created, $dist_func AS dist FROM pictures HAVING $distquery AND $timequery ORDER BY dist LIMIT 0, ?";
 			$stmt = $db->prepare($query);
-			$stmt->bind_param('ddddssi', $userlat, $userlong, $userlat, $userdist, $usertime, $amount);
-			$stmt->execute();
+			$stmt->bind_param('ddddsi', $userlat, $userlong, $userlat, $params['distance'], $params['time'], $amount);
 
-			$res = $stmt->get_result();
 			//Format results
 			$rows = array();
 			while($r = $res->fetch_assoc()) {

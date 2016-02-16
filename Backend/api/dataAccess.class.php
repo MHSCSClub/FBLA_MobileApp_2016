@@ -128,6 +128,16 @@
 			$db->query("UPDATE auth SET expire=DATE_ADD(NOW(), INTERVAL 1 MONTH) WHERE userid=$userid");
 		}
 
+		//Creates a JSON array out of multiple results
+		private static function formatArrayResults($res) {
+			//Format results
+			$rows = array();
+			while($r = $res->fetch_assoc()) {
+				$rows[] = $r;
+			}
+			return Signal::success()->setData($rows);
+		}
+
 		/*
 			All actions
 		*/
@@ -306,13 +316,18 @@
 			$stmt->execute();
 
 			$res = $stmt->get_result();
+
 			//Format results
 			$rows = array();
 			while($r = $res->fetch_assoc()) {
 				$rows[] = $r;
 			}
 			return Signal::success()->setData($rows);
+		}
 
+		private static function GET_picfetchme($db, $userid) {
+			$res = $stmt->query("SELECT pid, title, geolat, geolong, created, likes, dislikes, (likes + dislikes) AS views FROM pictures WHERE userid=$userid");
+			return self::formatArrayResults($res);
 		}
 
 		private static function POST_picfetchraw($db, $userid, $params) {

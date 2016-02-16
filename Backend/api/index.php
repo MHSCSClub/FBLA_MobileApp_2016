@@ -117,6 +117,11 @@
 		
 		return Signal::error()->setMessage("Invalid request type");
 	});
+	//picture/fetch/me
+	$RH->D("picture", "fetch");
+	$Rh->F("picture/fetch", "me", function($trace) {
+		return DataAccess::authGet(@$_GET['authcode'], "logout");
+	});
 
 	$RH->D("picture", $WC);
 

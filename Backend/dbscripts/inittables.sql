@@ -37,5 +37,5 @@ CREATE TABLE comments
 	pid int unsigned not null,
 	userid int unsigned not null,
 	comment varchar(800),
-	style int unsigned not null
+	style int unsigned
 );

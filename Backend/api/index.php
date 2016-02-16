@@ -107,7 +107,7 @@
 
 		switch ($_SERVER['REQUEST_METHOD']) {
 			case 'GET':
-				return DataAccess::authPost($_GET['authcode'], "picfetchraw", $params);
+				return DataAccess::authPost(@$_GET['authcode'], "picfetchraw", $params);
 				break;
 			
 			case 'DELETE':
@@ -122,7 +122,24 @@
 
 	// picture/*/comment
 	$RH->F("picture/$WC", "comment", function($trace) {
+		$params = array("pid" => $trace[1]);
 
+		switch ($_SERVER['REQUEST_METHOD']) {
+			case 'GET':
+				//todo
+				break;
+
+			case 'POST':
+				$params['like'] = @$_POST['like'];
+				$params['comment'] = @$_POST['comment'];
+				$params['style'] = @$_POST['style'];
+				return DataAccess::authPost(@$_GET['authcode'], "commentcreate", $params);
+				break;
+			
+			case 'DELETE':
+				//todo
+				break;
+		}
 	});
 
 	try {

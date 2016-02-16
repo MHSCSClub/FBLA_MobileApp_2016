@@ -37,7 +37,7 @@
 			});
 		}
 
-		public static function login($username, $password) {
+		public static function login($username, $password) { 
 			return self::run(function() use ($username, $password) {
 				return DataAccess::REAL_login($username, $password);
 			});
@@ -251,8 +251,6 @@
 		}
 
 		private static function POST_picfetch($db, $userid, $params) {
-			$res = NULL;
-
 			//Distance function between two lats and long (Haversine function)
 			//IN MILES
 			$mylat = '?';
@@ -329,6 +327,37 @@
 
 			$imgdata = $res->fetch_assoc()['data'];
 			return Signal::success()->setType("IMG")->setData($imgdata);
+		}
+
+		//Comments
+
+		private static function POST_commentcreate($db, $userid, $params) {
+			if(is_null($params['like']))
+				throw new Exception("Invalid POST data");
+
+			$stmt = $db->prepare("SELECT pid FROM pictures WHERE pid=?");
+			$stmt->bind_param('i', $params["pid"]);
+			$stmt->execute();
+
+			$res = $stmt->get_result();
+			if($res->num_rows != 1)
+				throw new Exception("Invalid picture id");
+
+			$pid = $res->fetch_assoc()['pid'];
+
+			//Updates views (likes/dislikes) in pictures
+			$lquery = 'likes=likes+1';
+			if(!$params['like']) {
+				$lquery = 'dislikes=dislikes+1';
+			}
+			$db->query("UPDATE pictures SET $lquery WHERE pid=$pid");
+
+			//Create comment
+			$stmt = $db->prepare("INSERT INTO comments VALUES (null, $pid, $userid, ?, ?)");
+			$stmt->bind_param('si', $params["comments"], $params["style"]);
+			$stmt->execute();
+
+			return Signal::success();
 		}
 
 	}

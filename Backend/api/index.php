@@ -126,7 +126,7 @@
 
 		switch ($_SERVER['REQUEST_METHOD']) {
 			case 'GET':
-				//todo
+				return DataAccess::authPost(@$_GET['authcode'], "commentfetch", $params);
 				break;
 
 			case 'POST':

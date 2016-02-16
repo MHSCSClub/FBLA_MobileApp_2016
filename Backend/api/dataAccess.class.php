@@ -331,6 +331,23 @@
 
 		//Comments
 
+		private static function POST_commentfetch($db, $userid, $params) {
+			$stmt = $db->prepare("SELECT username, comment, style FROM pictures INNER JOIN users ON pictures.userid = users.userid WHERE pid=? AND userid=pictures.userid");
+			$stmt->bind_param('i', $params["pid"]);
+			$stmt->execute();
+
+			$res = $stmt->get_result();
+			if($res->num_rows != 1)
+				throw new Exception("Invalid picture id or not your picture");
+
+			//Format results
+			$rows = array();
+			while($r = $res->fetch_assoc()) {
+				$rows[] = $r;
+			}
+			return Signal::success()->setData($rows);
+		}
+
 		private static function POST_commentcreate($db, $userid, $params) {
 			if(is_null($params['like']))
 				throw new Exception("Invalid POST data");
@@ -354,7 +371,7 @@
 
 			//Create comment
 			$stmt = $db->prepare("INSERT INTO comments VALUES (null, $pid, $userid, ?, ?)");
-			$stmt->bind_param('si', $params["comments"], $params["style"]);
+			$stmt->bind_param('si', $params["comment"], $params["style"]);
 			$stmt->execute();
 
 			return Signal::success();

@@ -145,3 +145,35 @@ Fetches actual image data of image id
 Recieve:
 
 Raw picture data, `404 not found` on case of incorrect id
+
+## Commenting
+Are able to comment on pictures. Destination: `/api/picture/{pid}/action`, where `{pid}` is the id of the picture you wish to comment on
+
+#### comment (GET)
+
+You are only able to retrieve the comments on the pictures YOU upload.
+
+Recieve:
+
+A list of comments:
+```
+[
+    {
+        "username": //username of commentor
+        "comment": //comment of user
+        "style": //style rating, can be null
+    },
+    {
+        //...
+    }
+]
+```
+
+#### comment (POST, ND)
+
+Comment and evaluate the picture.
+
+Send:
++ like: boolean value (true/false) indicating if you like the picture
++ comment: 800 char max comment about the picture
++ style: integer style evaluation

@@ -21,6 +21,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.AppCompatPreferenceActivity;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 
 import java.util.List;
 
@@ -40,6 +41,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActionBar();
+        if(!Constants.PREFS_RESTORED){
+            Constants.restorePrefs(getApplicationContext());
+        }
+    }
+
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        Constants.PREFS_RESTORED = false;
+        Constants.savePrefs(getApplicationContext());
     }
 
     /**

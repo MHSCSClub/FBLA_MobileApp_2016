@@ -34,6 +34,10 @@
     <string name="pref_title_debug_mode">Enable debug mode (console logging)</string>
     <string name="pref_description_debug_mode">Enables debug mode, which prints messages to console</string>
 
+    <string name="pref_title_demo_mode">Enable debug mode (example data)</string>
+    <string name="pref_description_demo_mode">Enables demo mode, which uses example data internal to app and requires no internet connection (BETA)</string>
+
+
     <string name="pref_title_display_name">Display name</string>
     <string name="pref_default_display_name">John Smith</string>
 

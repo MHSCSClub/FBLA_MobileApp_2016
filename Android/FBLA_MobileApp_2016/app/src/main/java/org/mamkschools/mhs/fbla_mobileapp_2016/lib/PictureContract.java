@@ -15,6 +15,9 @@ public class PictureContract {
         public static final String COLUMN_NAME_GEOLONG = "geolong";
         public static final String COLUMN_NAME_DIST = "dist";
         public static final String COLUMN_NAME_CREATED = "created";
+        public static final String COLUMN_NAME_TITLE = "title";
+        public static final String COLUMN_NAME_USERNAME = "username";
+        public static final String COLUMN_NAME_VIEWS = "views";
 
     }
 }

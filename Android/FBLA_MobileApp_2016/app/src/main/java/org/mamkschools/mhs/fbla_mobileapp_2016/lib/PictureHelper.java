@@ -18,7 +18,11 @@ public class PictureHelper extends SQLiteOpenHelper {
                     PictureEntry.COLUMN_NAME_PICTURE_ID + " INTEGER" + COMMA_SEP +
                     PictureEntry.COLUMN_NAME_GEOLAT + " DECIMAL(4,2)" + COMMA_SEP +
                     PictureEntry.COLUMN_NAME_GEOLONG + " DECIMAL(4,2)" + COMMA_SEP +
-                    PictureEntry.COLUMN_NAME_DIST  + " DECIMAL(7,12)" +  ")";
+                    PictureEntry.COLUMN_NAME_DIST  + " DECIMAL(7,12)" +  COMMA_SEP +
+                    PictureEntry.COLUMN_NAME_TITLE  + " TEXT" +  COMMA_SEP +
+                    PictureEntry.COLUMN_NAME_USERNAME  + " TEXT" +  COMMA_SEP +
+                    PictureEntry.COLUMN_NAME_VIEWS + " INTERGER" +
+                    ")";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + PictureEntry.TABLE_NAME;

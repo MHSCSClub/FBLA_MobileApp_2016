@@ -1,5 +1,6 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -7,6 +8,10 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Camera;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -34,15 +39,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import android.content.Context;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.*;
 
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.*;
+import static org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureContract.*;
 
 public class MainActivitySwipes extends AppCompatActivity implements View.OnClickListener{
 
@@ -62,23 +70,23 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
     private ViewPager mViewPager;
     private static File location;
     private static int picture = 0;
+    private double geoLong;
+    private double geoLat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
-
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main_activity_swipes);
 
-        //TODO: Load preference data
 
-        if(Constants.AUTHCODE == null || System.currentTimeMillis() >= Constants.AUTHCODE_EXP){
+       /* if(Constants.AUTHCODE == null || System.currentTimeMillis() >= Constants.AUTHCODE_EXP){
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-        }
+        }*/
 
 
-        SecureAPI mySecureAPI = SecureAPI.getInstance(this.getApplicationContext());
+
 
         GetPicture picupload = new GetPicture();
         picupload.execute((Void) null);
@@ -185,7 +193,9 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
             // Return a PlaceholderFragment (defined as a static inner class below).
             //System.out.println(position);
             PictureHelper mDbHelper = new PictureHelper(getApplicationContext());
+
             SQLiteDatabase db = mDbHelper.getWritableDatabase();
+            //mDbHelper.onUpgrade(db, 1, 2);
             return PlaceholderFragment.newInstance(position, db);
 
         }
@@ -197,7 +207,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
         @Override
         public CharSequence getPageTitle(int position) {
-           return "Section_" + position;
+            return "Section_" + position;
         }
     }
 
@@ -205,8 +215,6 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
-        private int pictureID;
-        private double geolat;
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -217,16 +225,9 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
          * Returns a new instance of this fragment for the given section
          * number.
          */
-
         private static SQLiteDatabase db;
         public static PlaceholderFragment newInstance(int sectionNumber, SQLiteDatabase db1) {
             PlaceholderFragment fragment = new PlaceholderFragment();
-=======
-        public static PlaceholderFragment newInstance(int sectionNumber, int pictureID, double geolat) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            fragment.pictureID = pictureID;
-            fragment.geolat = geolat;
->>>>>>> Work on settings activity
             Bundle args = new Bundle();
             db = db1;
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
@@ -234,11 +235,8 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
             fragment.setArguments(args);
             return fragment;
         }
-<<<<<<< c520582b616c91fbddf893b5375a06c60e6e732a
 
         public PlaceholderFragment() {}
-=======
->>>>>>> Work on settings activity
 
 
         @Override
@@ -250,7 +248,10 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                         PictureEntry._ID,
                         PictureEntry.COLUMN_NAME_PICTURE_ID,
                         PictureEntry.COLUMN_NAME_GEOLONG,
-                        PictureEntry.COLUMN_NAME_GEOLAT
+                        PictureEntry.COLUMN_NAME_GEOLAT,
+                        PictureEntry.COLUMN_NAME_USERNAME,
+                        PictureEntry.COLUMN_NAME_VIEWS,
+                        PictureEntry.COLUMN_NAME_TITLE
                 };
 
                 String sortOrder =
@@ -267,13 +268,16 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                 );
                 View rootView = inflater.inflate(R.layout.fragment_main_activity_swipes, container, false);
                 TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-                textView.setText("NA");
+                textView.setText("No More Pictures");
                 ImageView image = (ImageView) rootView.findViewById(R.id.imageView);
 
-                if(c.getCount() > 0){
-                    c.moveToPosition(picture % c.getCount());
+                if(c.getCount() > 0 && picture < c.getCount()){
+                    c.moveToPosition(picture);
                     int itemId = c.getInt(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_PICTURE_ID));
-                    textView.setText("This is Picture: " + itemId);
+                    String title = c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_TITLE));
+                    String user = c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_USERNAME));
+                    int views = c.getInt(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_VIEWS));
+                    textView.setText(title + "\n" + user + "\n" + "Views: " + views);
                     image.setImageURI(Uri.fromFile(new File(location, "picture" + itemId + ".jpg")));
                 }
 
@@ -352,7 +356,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         }
     }
     private class GetPicture extends AsyncTask<Void, Void, Void> {
-        Uri uri;
+
         private ArrayList<JSONObject> ret = new ArrayList<>();
         SecureAPI picture = SecureAPI.getInstance(MainActivitySwipes.this);
 
@@ -380,6 +384,9 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                     values.put(PictureEntry.COLUMN_NAME_GEOLAT, array.getJSONObject(i).getDouble("geolat"));
                     values.put(PictureEntry.COLUMN_NAME_GEOLONG, array.getJSONObject(i).getDouble("geolong"));
                     values.put(PictureEntry.COLUMN_NAME_DIST, array.getJSONObject(i).getDouble("dist"));
+                    values.put(PictureEntry.COLUMN_NAME_TITLE, array.getJSONObject(i).getString("title"));
+                    values.put(PictureEntry.COLUMN_NAME_USERNAME, array.getJSONObject(i).getString("username"));
+                    values.put(PictureEntry.COLUMN_NAME_VIEWS, array.getJSONObject(i).getInt("views"));
                     long newRowId;
                     newRowId = db.insert(
                             PictureEntry.TABLE_NAME,
@@ -396,21 +403,13 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                 }
             }
 
-<<<<<<< c520582b616c91fbddf893b5375a06c60e6e732a
-=======
-            }catch (Exception e){
-                if(Constants.DEBUG_MODE){
-                    util.log(e.getMessage());
-                }
-            }
->>>>>>> Work on settings activity
 
             return null;
         }
 
         @Override
         protected void onPostExecute(Void v) {
-            Constants.log("Done With Picture Download");
+            util.log("Done With Picture Download");
             mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
             mViewPager.setAdapter(mSectionsPagerAdapter);
 

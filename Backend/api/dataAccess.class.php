@@ -332,13 +332,16 @@
 		//Comments
 
 		private static function POST_commentfetch($db, $userid, $params) {
-			$stmt = $db->prepare("SELECT username, comment, style FROM pictures INNER JOIN users ON pictures.userid = users.userid WHERE pid=? AND userid=pictures.userid");
+			$stmt = $db->prepare("SELECT pid FROM pictures WHERE pid=? AND userid=$userid");
 			$stmt->bind_param('i', $params["pid"]);
 			$stmt->execute();
 
 			$res = $stmt->get_result();
 			if($res->num_rows != 1)
 				throw new Exception("Invalid picture id or not your picture");
+			$pid = $res->fetch_assoc()['pid'];
+
+			$res = $db->query("SELECT username, comment, style FROM comments INNER JOIN users ON comments.userid = users.userid WHERE pid=$pid");
 
 			//Format results
 			$rows = array();

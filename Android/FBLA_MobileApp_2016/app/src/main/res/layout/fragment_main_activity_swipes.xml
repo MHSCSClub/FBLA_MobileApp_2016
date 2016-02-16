@@ -9,24 +9,48 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:weightSum="1">
 
         <TextView android:id="@+id/section_label" android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <ScrollView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/scrollView3" >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="290dp">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:id="@+id/imageView"
                 android:src="@drawable/cslogo"
                 android:adjustViewBounds="true" />
+        </FrameLayout>
 
-        </ScrollView>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="317dp"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No"
+                android:id="@+id/noButton"
+                android:layout_weight="0.40"
+                android:layout_gravity="bottom" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
+                android:id="@+id/yesButton"
+                android:layout_weight="0.40"
+                android:layout_gravity="bottom" />
+        </LinearLayout>
 
 
 

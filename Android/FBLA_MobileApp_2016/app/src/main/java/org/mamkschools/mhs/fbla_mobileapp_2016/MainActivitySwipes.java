@@ -70,6 +70,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
     private ViewPager mViewPager;
     private static File location;
     private static int picture = 0;
+    private EvaluationScreen evaluationScreen;
     private double geoLong;
     private double geoLat;
 
@@ -107,11 +108,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
 
-        Button yes = (Button) findViewById(R.id.yesButton);
-        yes.setOnClickListener(this);
 
-        Button no = (Button) findViewById(R.id.noButton);
-        no.setOnClickListener(this);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -162,16 +159,6 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                     openImageIntent();
                 }
                 break;
-            case R.id.yesButton:
-                picture += 1;
-                mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-                mViewPager.setAdapter(mSectionsPagerAdapter);
-                break;
-            case R.id.noButton:
-                picture += 1;
-                mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-                mViewPager.setAdapter(mSectionsPagerAdapter);
-                break;
             default:
                 Toast.makeText(this, "No Assigned Action", Toast.LENGTH_SHORT).show();
 
@@ -196,16 +183,17 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
             // Return a PlaceholderFragment (defined as a static inner class below).
             //System.out.println(position);
             PictureHelper mDbHelper = new PictureHelper(getApplicationContext());
-
             SQLiteDatabase db = mDbHelper.getWritableDatabase();
-            //mDbHelper.onUpgrade(db, 1, 2);
-            return PlaceholderFragment.newInstance(position, db);
+            evaluationScreen = EvaluationScreen.newInstance(db, picture, location);
+            return evaluationScreen;
+
+
 
         }
 
         @Override
         public int getCount() {
-            return 3;
+            return 1;
         }
 
         @Override
@@ -217,82 +205,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        private static SQLiteDatabase db;
-        public static PlaceholderFragment newInstance(int sectionNumber, SQLiteDatabase db1) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            db = db1;
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {}
-
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-
-            if(getArguments().getInt(ARG_SECTION_NUMBER) == 0) {
-                String[] projection = {
-                        PictureEntry._ID,
-                        PictureEntry.COLUMN_NAME_PICTURE_ID,
-                        PictureEntry.COLUMN_NAME_GEOLONG,
-                        PictureEntry.COLUMN_NAME_GEOLAT,
-                        PictureEntry.COLUMN_NAME_USERNAME,
-                        PictureEntry.COLUMN_NAME_VIEWS,
-                        PictureEntry.COLUMN_NAME_TITLE
-                };
-
-                String sortOrder =
-                        PictureEntry.COLUMN_NAME_PICTURE_ID + " ASC";
-
-                Cursor c = db.query(
-                        PictureEntry.TABLE_NAME,  // The table to query
-                        projection,                               // The columns to return
-                        null,                                // The columns for the WHERE clause
-                        null,                            // The values for the WHERE clause
-                        null,                                     // don't group the rows
-                        null,                                     // don't filter by row groups
-                        sortOrder                                 // The sort order
-                );
-                View rootView = inflater.inflate(R.layout.fragment_main_activity_swipes, container, false);
-                TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-                textView.setText("No More Pictures");
-                ImageView image = (ImageView) rootView.findViewById(R.id.imageView);
-
-                if(c.getCount() > 0 && picture < c.getCount()){
-                    c.moveToPosition(picture);
-                    int itemId = c.getInt(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_PICTURE_ID));
-                    String title = c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_TITLE));
-                    String user = c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_USERNAME));
-                    int views = c.getInt(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_VIEWS));
-                    textView.setText(title + "\n" + user + "\n" + "Views: " + views);
-                    image.setImageURI(Uri.fromFile(new File(location, "picture" + itemId + ".jpg")));
-                }
-
-                return rootView;
-            }
-
-            View rootView = inflater.inflate(R.layout.fragment_main_activity_swipes, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
     private Uri outputFileUri;
     private static final int YOUR_SELECT_PICTURE_REQUEST_CODE = 1;
 

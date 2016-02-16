@@ -37,28 +37,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:weightSum="1">
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="221dp"
-            android:weightSum="1"
-            android:layout_weight="0.76">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="No"
-                android:id="@+id/noButton"
-                android:layout_weight="0.40"
-                android:layout_gravity="bottom" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes"
-                android:id="@+id/yesButton"
-                android:layout_weight="0.40"
-                android:layout_gravity="bottom" />
-        </LinearLayout>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

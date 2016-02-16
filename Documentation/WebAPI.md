@@ -174,6 +174,6 @@ A list of comments:
 Comment and evaluate the picture.
 
 Send:
-+ like: boolean value (true/false) indicating if you like the picture
++ like: boolean value **(0/1)** indicating if you like the picture
 + comment: 800 char max comment about the picture
 + style: integer style evaluation

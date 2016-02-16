@@ -316,17 +316,11 @@
 			$stmt->execute();
 
 			$res = $stmt->get_result();
-
-			//Format results
-			$rows = array();
-			while($r = $res->fetch_assoc()) {
-				$rows[] = $r;
-			}
-			return Signal::success()->setData($rows);
+			return self::formatArrayResults($res);
 		}
 
 		private static function GET_picfetchme($db, $userid) {
-			$res = $stmt->query("SELECT pid, title, geolat, geolong, created, likes, dislikes, (likes + dislikes) AS views FROM pictures WHERE userid=$userid");
+			$res = $db->query("SELECT pid, title, geolat, geolong, created, likes, dislikes, (likes + dislikes) AS views FROM pictures WHERE userid=$userid");
 			return self::formatArrayResults($res);
 		}
 
@@ -357,13 +351,7 @@
 			$pid = $res->fetch_assoc()['pid'];
 
 			$res = $db->query("SELECT username, comment, style FROM comments INNER JOIN users ON comments.userid = users.userid WHERE pid=$pid");
-
-			//Format results
-			$rows = array();
-			while($r = $res->fetch_assoc()) {
-				$rows[] = $r;
-			}
-			return Signal::success()->setData($rows);
+			return self::formatArrayResults($res);
 		}
 
 		private static function POST_commentcreate($db, $userid, $params) {

@@ -76,14 +76,17 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        //Must be first
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main_activity_swipes);
 
+        if(!Constants.PREFS_RESTORED){
+            Constants.restorePrefs(getApplicationContext());
+        }
 
-       /* if(Constants.AUTHCODE == null || System.currentTimeMillis() >= Constants.AUTHCODE_EXP){
-            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-        }*/
+       if(Constants.AUTHCODE == null || System.currentTimeMillis() >= Constants.AUTHCODE_EXP) {
+           startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+       }
 
 
 
@@ -113,13 +116,13 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this);
+    }
 
-
-
-
-
-
-
+    @Override
+    protected void onStop(){
+        super.onStop();
+        Constants.PREFS_RESTORED = false;
+        Constants.savePrefs(getApplicationContext());
     }
 
 

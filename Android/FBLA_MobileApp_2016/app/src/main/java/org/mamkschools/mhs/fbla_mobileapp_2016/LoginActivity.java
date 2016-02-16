@@ -46,6 +46,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        if(!Constants.PREFS_RESTORED){
+            Constants.restorePrefs(getApplicationContext());
+        }
+
         // Set up the login form.
         mUserView = (AutoCompleteTextView) findViewById(R.id.username);
 
@@ -79,6 +84,13 @@ public class LoginActivity extends AppCompatActivity {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        Constants.PREFS_RESTORED = false;
+        Constants.savePrefs(getApplicationContext());
     }
 
     /**
@@ -189,6 +201,8 @@ public class LoginActivity extends AppCompatActivity {
                 } else if(status.equals("success")) {
                     if(isLogin) {
                         Constants.AUTHCODE = returnedJSON.getJSONObject("data").getString("authcode");
+                        Constants.AUTHCODE_EXP = System.currentTimeMillis() +
+                                (30L * 24L * 60L * 60L * 1000L);
                     }
                     return true;
                 } else{

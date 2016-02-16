@@ -115,6 +115,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         fab.setOnClickListener(this);
     }
 
+
     @Override
     protected void onStop(){
         super.onStop();

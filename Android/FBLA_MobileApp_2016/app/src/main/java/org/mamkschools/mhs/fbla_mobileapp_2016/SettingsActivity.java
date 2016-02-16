@@ -37,13 +37,18 @@ import java.util.List;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
+    public static Context ctx;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActionBar();
-        if(!Constants.PREFS_RESTORED){
-            Constants.restorePrefs(getApplicationContext());
-        }
+        ctx = getApplicationContext();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Constants.restorePrefs(getApplicationContext());
     }
 
 
@@ -140,6 +145,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 // simple string representation.
                 preference.setSummary(stringValue);
             }
+            Constants.restorePrefs(SettingsActivity.ctx);
             return true;
         }
     };

@@ -138,6 +138,31 @@ An array of image ids containing the following info:
 ]
 ```
 
+#### fetch/me (GET)
+
+Returns a list of your own pictures with some more detailed info.
+
+Recieve:
+
+An array of image ids containing the following info:
+```
+[
+    {
+        "pid": xxx, //picture id
+        "title": //Title of the image
+        "geolat": //pic taken location latitude (STRING)
+        "geolong": //pic taken location longitude (STRING)
+        "created": //created by time
+        "likes": //picture likes
+        "dislikes": //picture dislikes
+        "views": //number of views (likes + dislikes)
+    },
+    {
+        //...
+    }
+]
+```
+
 #### {id} (GET)
 
 Fetches actual image data of image id

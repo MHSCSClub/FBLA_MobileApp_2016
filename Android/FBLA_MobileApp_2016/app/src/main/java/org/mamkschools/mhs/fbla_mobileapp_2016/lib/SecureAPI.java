@@ -12,6 +12,8 @@ import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -159,7 +161,7 @@ public class SecureAPI {
         return new JSONObject(response);
     }
 
-    public JSONObject HTTPSPOSTMULTI(String action, Map<String, String> params, Map<String, byte[]> files) throws Exception {
+    public JSONObject HTTPSPOSTMULTI(String action, Map<String, String> params, Map<String, File> files) throws Exception {
         URL url = new URL(Constants.API_BASE_URL + action);
         HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
 
@@ -197,8 +199,10 @@ public class SecureAPI {
 
         //Process files
         int it = 0;
-        for (Map.Entry<String, byte[]> entry : files.entrySet())
+        for (Map.Entry<String, File> entry : files.entrySet())
         {
+            InputStream pictureInputStream = new FileInputStream(entry.getValue());
+
             //File wrapping
             request.writeBytes(twoHyphens + boundary + crlf);
             request.writeBytes("Content-Disposition: form-data; name=\"" +
@@ -206,8 +210,14 @@ public class SecureAPI {
                     it + "\"" + crlf);
             request.writeBytes(crlf);
 
-            //Write file
-            request.write(entry.getValue());
+            int nRead;
+            byte[] data = new byte[16384];
+
+            while ((nRead = pictureInputStream.read(data, 0, data.length)) != -1) {
+                request.write(data, 0, nRead);
+            }
+
+
 
             //End file wrapping
             request.writeBytes(crlf);

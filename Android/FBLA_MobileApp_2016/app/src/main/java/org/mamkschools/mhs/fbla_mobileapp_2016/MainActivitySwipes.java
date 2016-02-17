@@ -32,6 +32,9 @@ import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.*;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -251,7 +254,8 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                     selectedImageUri = data == null ? null : data.getData();
                 }
 
-
+                File picture = new File(selectedImageUri.getPath());
+                //TODO: Call secureAPI's picture upload
             }
         }
     }

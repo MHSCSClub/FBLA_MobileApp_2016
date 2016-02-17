@@ -19,9 +19,7 @@ import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
 import android.view.MenuItem;
-
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.AppCompatPreferenceActivity;
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
+import android.support.v4.app.NavUtils;
 
 import java.util.List;
 
@@ -37,67 +35,6 @@ import java.util.List;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
-    public static Context ctx;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setupActionBar();
-        ctx = getApplicationContext();
-    }
-
-    @Override
-    protected void onResume(){
-        super.onResume();
-        Constants.restorePrefs(getApplicationContext());
-    }
-
-
-    @Override
-    protected void onStop(){
-        super.onStop();
-        Constants.PREFS_RESTORED = false;
-        Constants.savePrefs(getApplicationContext());
-    }
-
-    /**
-     * Set up the {@link android.app.ActionBar}, if the API is available.
-     */
-    private void setupActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            // Show the Up button in the action bar.
-            actionBar.setDisplayHomeAsUpEnabled(true);
-
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean onIsMultiPane() {
-        return isXLargeTablet(this);
-    }
-
-    /**
-     * Helper method to determine if the device has an extra-large screen. For
-     * example, 10" tablets are extra-large.
-     */
-    private static boolean isXLargeTablet(Context context) {
-        return (context.getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public void onBuildHeaders(List<Header> target) {
-        loadHeadersFromResource(R.xml.pref_headers, target);
-    }
-
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
@@ -106,6 +43,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
             String stringValue = value.toString();
+
             if (preference instanceof ListPreference) {
                 // For list preferences, look up the correct display value in
                 // the preference's 'entries' list.
@@ -145,10 +83,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 // simple string representation.
                 preference.setSummary(stringValue);
             }
-            Constants.restorePrefs(SettingsActivity.ctx);
             return true;
         }
     };
+
+    /**
+     * Helper method to determine if the device has an extra-large screen. For
+     * example, 10" tablets are extra-large.
+     */
+    private static boolean isXLargeTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
+    }
 
     /**
      * Binds a preference's summary to its value. More specifically, when the
@@ -169,6 +115,52 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 PreferenceManager
                         .getDefaultSharedPreferences(preference.getContext())
                         .getString(preference.getKey(), ""));
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setupActionBar();
+    }
+
+    /**
+     * Set up the {@link android.app.ActionBar}, if the API is available.
+     */
+    private void setupActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            // Show the Up button in the action bar.
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            if (!super.onMenuItemSelected(featureId, item)) {
+                NavUtils.navigateUpFromSameTask(this);
+            }
+            return true;
+        }
+        return super.onMenuItemSelected(featureId, item);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean onIsMultiPane() {
+        return isXLargeTablet(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public void onBuildHeaders(List<Header> target) {
+        loadHeadersFromResource(R.xml.pref_headers, target);
     }
 
     /**

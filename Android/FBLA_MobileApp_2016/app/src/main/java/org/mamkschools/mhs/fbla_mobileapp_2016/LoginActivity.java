@@ -2,6 +2,7 @@ package org.mamkschools.mhs.fbla_mobileapp_2016;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.AsyncTask;
@@ -50,6 +51,13 @@ public class LoginActivity extends AppCompatActivity {
         if(!Constants.PREFS_RESTORED){
             Constants.restorePrefs(getApplicationContext());
         }
+
+        if(Constants.AUTHCODE != null &&
+                (Constants.AUTHCODE_EXP <= System.currentTimeMillis()
+                        || Constants.AUTHCODE_EXP == -1)){
+            startActivity(new Intent(getApplicationContext(), MainActivitySwipes.class));
+        }
+
 
         // Set up the login form.
         mUserView = (AutoCompleteTextView) findViewById(R.id.username);
@@ -231,7 +239,7 @@ public class LoginActivity extends AppCompatActivity {
 
             if(success) {
                 if(isLogin) {
-                    finish();
+                    startActivity(new Intent(getApplicationContext(), MainActivitySwipes.class));
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.registration_complete, Toast.LENGTH_LONG).show();
                 }

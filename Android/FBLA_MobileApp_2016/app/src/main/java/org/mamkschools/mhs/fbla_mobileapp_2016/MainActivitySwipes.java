@@ -2,10 +2,12 @@ package org.mamkschools.mhs.fbla_mobileapp_2016;
 
 import android.content.ComponentName;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -36,7 +38,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureContract.*;
 
@@ -82,8 +86,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
 
 
-        GetPicture picupload = new GetPicture();
-        picupload.execute((Void) null);
+        new GetPicture().execute((Void) null);
         location = getFilesDir();
 
 
@@ -131,7 +134,8 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                 return true;
             case R.id.action_logout:
-
+                new Logout().execute((Void) null);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -166,14 +170,12 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
+            // Return a PlaceholderFragment (defined as a static inner class below).
             //System.out.println(position);
             PictureHelper mDbHelper = new PictureHelper(getApplicationContext());
             SQLiteDatabase db = mDbHelper.getWritableDatabase();
             evaluationScreen = EvaluationScreen.newInstance(db, picture, location);
             return evaluationScreen;
-
-
-
         }
 
         @Override
@@ -195,8 +197,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
     private static final int YOUR_SELECT_PICTURE_REQUEST_CODE = 1;
 
     private void openImageIntent() {
-
-// Determine Uri of camera image to save.
+        // Determine Uri of camera image to save.
         final File root = new File(Environment.getExternalStorageDirectory() + File.separator + "MyDir" + File.separator);
         root.mkdirs();
         final String fname = "img_"+ System.currentTimeMillis() + ".jpg";
@@ -254,8 +255,16 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                     selectedImageUri = data == null ? null : data.getData();
                 }
 
-                File picture = new File(selectedImageUri.getPath());
-                //TODO: Call secureAPI's picture upload
+                PicUploadParams uploadPic = new PicUploadParams();
+                uploadPic.pics.put(selectedImageUri.toString(),
+                        new File(selectedImageUri.getPath()));
+                uploadPic.paramMap.put("title", selectedImageUri.toString());
+
+                //TODO Get lat and long...
+                uploadPic.paramMap.put("longitude", ""+-73.748687);
+                uploadPic.paramMap.put("latitude", ""+40.934710);
+
+                new PicUpload().execute();
             }
         }
     }
@@ -314,8 +323,42 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
             mViewPager.setAdapter(mSectionsPagerAdapter);
         }
     }
+    private class PicUpload extends AsyncTask<PicUploadParams, Void, Boolean> {
 
-    private class LOGOUT extends AsyncTask<Void, Void, Void>{
+        private ArrayList<JSONObject> ret = new ArrayList<>();
+        SecureAPI picture = SecureAPI.getInstance(MainActivitySwipes.this);
+
+        @Override
+        protected Boolean doInBackground(PicUploadParams... params) {
+            int amount = 3;
+            int dist = 1000;
+            try {
+                JSONObject response = picture.HTTPSPOSTMULTI(Commands.Post.POSTPIC +
+                        Commands.AUTHCODE_BASE + Constants.AUTHCODE,
+                        params[0].paramMap, params[0].pics);
+                if(response.getString("status").equals("success")){
+                    return true;
+                } else if(response.getString("status").equals("error")){
+                    return false;
+                }
+            }catch (Exception e){
+                if(Constants.DEBUG_MODE){
+                    util.log(e.getMessage());
+                }
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            if(success){
+                util.log("Upload worked");
+            } else {
+                util.log("Upload failed");
+            }
+        }
+    }
+    private class Logout extends AsyncTask<Void, Void, Void>{
         @Override
         protected Void doInBackground(Void ... v) {
             SecureAPI HTTPS = SecureAPI.getInstance(getApplicationContext());
@@ -333,5 +376,10 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         protected void onPostExecute(Void v) {
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
+    }
+
+    private static class PicUploadParams{
+        public Map<String, String> paramMap = new HashMap<String, String>();
+        public Map<String, File> pics = new HashMap<String, File>();
     }
 }

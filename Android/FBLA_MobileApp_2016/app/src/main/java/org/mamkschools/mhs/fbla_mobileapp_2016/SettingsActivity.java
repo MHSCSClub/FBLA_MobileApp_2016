@@ -21,6 +21,8 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.AppCompatPreferenceActivity;
+
 import java.util.List;
 
 /**

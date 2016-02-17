@@ -1,24 +1,17 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
-import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Camera;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -27,26 +20,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-
-import android.content.Context;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.*;
 
 import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,6 +66,8 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity_swipes);
 
+
+
         if(!Constants.PREFS_RESTORED){
             Constants.restorePrefs(getApplicationContext());
         }
@@ -106,9 +93,6 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
-
-
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -139,9 +123,12 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-            return true;
+        switch (id){
+            case R.id.action_settings:
+                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                return true;
+            case R.id.action_logout:
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -151,14 +138,8 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.fab:
-                if(false) {
-                    //Temporary code to prevent crash
-                    Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                } else {
-                    //TODO Photo chooser (include default, cam, file (see Google Inbox on Android))
+                //Photo chooser (include default, cam, file (see Google Inbox on Android))
                     openImageIntent();
-                }
                 break;
             default:
                 Toast.makeText(this, "No Assigned Action", Toast.LENGTH_SHORT).show();
@@ -269,6 +250,8 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                 } else {
                     selectedImageUri = data == null ? null : data.getData();
                 }
+
+
             }
         }
     }
@@ -310,17 +293,13 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                             "null",
                             values);
                     int pid = array.getJSONObject(i).getInt("pid");
-                    File file = picture.HTTPSPIC("picture/" + pid  + "?authcode=" + authCode, new File(getFilesDir(), "picture" + pid + ".jpg"));
-
-
+                    File file = picture.HTTPSGetPic("picture/" + pid + "?authcode=" + authCode, new File(getFilesDir(), "picture" + pid + ".jpg"));
                 }
             }catch (Exception e){
                 if(Constants.DEBUG_MODE){
                     util.log(e.getMessage());
                 }
             }
-
-
             return null;
         }
 
@@ -329,9 +308,26 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
             util.log("Done With Picture Download");
             mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
             mViewPager.setAdapter(mSectionsPagerAdapter);
+        }
+    }
 
+    private class LOGOUT extends AsyncTask<Void, Void, Void>{
+        @Override
+        protected Void doInBackground(Void ... v) {
+            SecureAPI HTTPS = SecureAPI.getInstance(getApplicationContext());
 
+            try {
+                HTTPS.HTTPSGET(Commands.Get.LOGOUT + Constants.AUTHCODE);
+                Constants.AUTHCODE_EXP = -1;
+            } catch (Exception ex) {
+                util.log(ex.getMessage());
+            }
+            return null;
+        }
 
+        @Override
+        protected void onPostExecute(Void v) {
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
     }
 }

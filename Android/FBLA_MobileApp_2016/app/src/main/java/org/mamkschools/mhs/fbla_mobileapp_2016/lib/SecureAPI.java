@@ -22,6 +22,7 @@ import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -112,7 +113,7 @@ public class SecureAPI {
         return new JSONObject(response);
     }
 
-    public File HTTPSPIC(String action, File file) throws Exception {
+    public File HTTPSGetPic(String action, File file) throws Exception {
         URL url = new URL(Constants.API_BASE_URL + action);
         HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
         //httpsURLConnection.setReadTimeout(10000);
@@ -127,7 +128,6 @@ public class SecureAPI {
         byte data[] = new byte[1024];
 
         while ((count = input.read(data)) != -1) {
-
             output.write(data, 0, count);
         }
         output.flush();
@@ -135,7 +135,6 @@ public class SecureAPI {
         input.close();
         //File file = new File(name);
         return file;
-
     }
 
     public JSONObject HTTPSPOST(String action, Map<String, String> params) throws Exception{
@@ -160,5 +159,30 @@ public class SecureAPI {
 
         String response = getResponseFromStream(httpsURLConnection.getInputStream());
         return new JSONObject(response);
+    }
+
+
+    //TODO::
+    public JSONObject HTTPPostPic(String picTitle, int latitude, int longitude, URI picture) throws Exception{
+        Map<String, String> picProps = new HashMap<String, String>();
+
+        picProps.put(Commands.AUTHCODE_BASE, Constants.AUTHCODE);
+        picProps.put("latitude", latitude+"");
+        picProps.put("longitude", longitude+"");
+        picProps.put("picTitle", picTitle+"");
+
+
+        URL url = new URL(Constants.API_BASE_URL + Commands.Post.POSTPIC + getPostString(picProps));
+        HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+
+        httpsURLConnection.setSSLSocketFactory(mySocketFactory);
+        httpsURLConnection.setReadTimeout(10000);
+        httpsURLConnection.setConnectTimeout(15000);
+        httpsURLConnection.setRequestMethod("POST");
+        httpsURLConnection.setRequestProperty("Connection", "Keep-Alive");
+        httpsURLConnection.setDoInput(true);
+        httpsURLConnection.setDoOutput(true);
+
+        return null
     }
 }

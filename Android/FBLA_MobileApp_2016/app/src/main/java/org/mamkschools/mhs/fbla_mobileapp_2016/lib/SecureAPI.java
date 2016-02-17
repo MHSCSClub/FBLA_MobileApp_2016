@@ -10,6 +10,7 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.R;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -113,11 +114,9 @@ public class SecureAPI {
         return new JSONObject(response);
     }
 
-    public File HTTPSGetPic(String action, File file) throws Exception {
+    public File HTTPSFETCHPIC(String action, File file) throws Exception {
         URL url = new URL(Constants.API_BASE_URL + action);
         HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
-        //httpsURLConnection.setReadTimeout(10000);
-        //httpsURLConnection.setConnectTimeout(15000);
         httpsURLConnection.setSSLSocketFactory(mySocketFactory);
 
         InputStream input = new BufferedInputStream(httpsURLConnection.getInputStream(), 8192);
@@ -133,11 +132,10 @@ public class SecureAPI {
         output.flush();
         output.close();
         input.close();
-        //File file = new File(name);
         return file;
     }
 
-    public JSONObject HTTPSPOST(String action, Map<String, String> params) throws Exception{
+    public JSONObject HTTPSPOST(String action, Map<String, String> params) throws Exception {
         URL url = new URL(Constants.API_BASE_URL + action);
         HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
 
@@ -161,28 +159,68 @@ public class SecureAPI {
         return new JSONObject(response);
     }
 
-
-    //TODO::
-    public JSONObject HTTPPostPic(String picTitle, int latitude, int longitude, URI picture) throws Exception{
-        Map<String, String> picProps = new HashMap<String, String>();
-
-        picProps.put(Commands.AUTHCODE_BASE, Constants.AUTHCODE);
-        picProps.put("latitude", latitude+"");
-        picProps.put("longitude", longitude+"");
-        picProps.put("picTitle", picTitle+"");
-
-
-        URL url = new URL(Constants.API_BASE_URL + Commands.Post.POSTPIC + getPostString(picProps));
+    public JSONObject HTTPSPOSTMULTI(String action, Map<String, String> params, Map<String, byte[]> files) throws Exception {
+        URL url = new URL(Constants.API_BASE_URL + action);
         HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+
+        //Constants
+        String crlf = "\r\n";
+        String twoHyphens = "--";
+        String boundary =  "*****";
 
         httpsURLConnection.setSSLSocketFactory(mySocketFactory);
         httpsURLConnection.setReadTimeout(10000);
         httpsURLConnection.setConnectTimeout(15000);
         httpsURLConnection.setRequestMethod("POST");
-        httpsURLConnection.setRequestProperty("Connection", "Keep-Alive");
         httpsURLConnection.setDoInput(true);
         httpsURLConnection.setDoOutput(true);
+        httpsURLConnection.setRequestProperty("Connection", "Keep-Alive");
+        httpsURLConnection.setRequestProperty("Cache-Control", "no-cache");
+        httpsURLConnection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
 
-        return null
+        DataOutputStream request = new DataOutputStream(
+                httpsURLConnection.getOutputStream());
+
+        //Process params
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            //Start wrapping
+            request.writeBytes(twoHyphens + boundary + crlf);
+            request.writeBytes("Content-Disposition: form-data; name=\"" + entry.getKey() + "\"" + crlf);
+            request.writeBytes(crlf);
+
+            request.writeBytes(entry.getValue());
+
+            //End wrap
+            request.writeBytes(crlf);
+            request.writeBytes(twoHyphens + boundary + twoHyphens + crlf);
+        }
+
+        //Process files
+        int it = 0;
+        for (Map.Entry<String, byte[]> entry : files.entrySet())
+        {
+            //File wrapping
+            request.writeBytes(twoHyphens + boundary + crlf);
+            request.writeBytes("Content-Disposition: form-data; name=\"" +
+                    entry.getKey() + "\";filename=\"" +
+                    it + "\"" + crlf);
+            request.writeBytes(crlf);
+
+            //Write file
+            request.write(entry.getValue());
+
+            //End file wrapping
+            request.writeBytes(crlf);
+            request.writeBytes(twoHyphens + boundary + twoHyphens + crlf);
+            ++it;
+        }
+
+        //Write and connect
+        request.flush();
+        request.close();
+        httpsURLConnection.connect();
+
+        String response = getResponseFromStream(httpsURLConnection.getInputStream());
+        return new JSONObject(response);
     }
 }

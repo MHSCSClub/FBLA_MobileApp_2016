@@ -293,7 +293,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                             "null",
                             values);
                     int pid = array.getJSONObject(i).getInt("pid");
-                    File file = picture.HTTPSGetPic("picture/" + pid + "?authcode=" + authCode, new File(getFilesDir(), "picture" + pid + ".jpg"));
+                    File file = picture.HTTPSFETCHPIC("picture/" + pid + "?authcode=" + authCode, new File(getFilesDir(), "picture" + pid + ".jpg"));
                 }
             }catch (Exception e){
                 if(Constants.DEBUG_MODE){

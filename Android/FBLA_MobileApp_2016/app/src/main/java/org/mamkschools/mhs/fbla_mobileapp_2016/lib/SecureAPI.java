@@ -201,7 +201,7 @@ public class SecureAPI {
         int it = 0;
         for (Map.Entry<String, File> entry : files.entrySet())
         {
-            InputStream pictureInputStream = new FileInputStream(entry.getValue());
+            InputStream inputStream = new FileInputStream(entry.getValue());
 
             //File wrapping
             request.writeBytes(twoHyphens + boundary + crlf);
@@ -213,11 +213,9 @@ public class SecureAPI {
             int nRead;
             byte[] data = new byte[16384];
 
-            while ((nRead = pictureInputStream.read(data, 0, data.length)) != -1) {
+            while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
                 request.write(data, 0, nRead);
             }
-
-
 
             //End file wrapping
             request.writeBytes(crlf);

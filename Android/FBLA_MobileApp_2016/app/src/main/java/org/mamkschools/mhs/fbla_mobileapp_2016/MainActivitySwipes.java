@@ -256,15 +256,14 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                 }
 
                 PicUploadParams uploadPic = new PicUploadParams();
-                uploadPic.pics.put(selectedImageUri.toString(),
-                        new File(selectedImageUri.getPath()));
+                uploadPic.pics.put(selectedImageUri.toString(),selectedImageUri);
                 uploadPic.paramMap.put("title", selectedImageUri.toString());
 
                 //TODO Get lat and long...
                 uploadPic.paramMap.put("longitude", ""+-73.748687);
                 uploadPic.paramMap.put("latitude", ""+40.934710);
 
-                new PicUpload().execute();
+                new PicUpload().execute(uploadPic);
             }
         }
     }
@@ -330,23 +329,27 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
         @Override
         protected Boolean doInBackground(PicUploadParams... params) {
-            int amount = 3;
-            int dist = 1000;
+
             try {
                 JSONObject response = picture.HTTPSPOSTMULTI(Commands.Post.POSTPIC +
                         Commands.AUTHCODE_BASE + Constants.AUTHCODE,
-                        params[0].paramMap, params[0].pics);
+                        params[0].paramMap, params[0].pics, getApplicationContext());
                 if(response.getString("status").equals("success")){
                     return true;
                 } else if(response.getString("status").equals("error")){
                     return false;
+                } else {
+                    util.log("WTF??");
+                    return false;
                 }
             }catch (Exception e){
+                e.printStackTrace();
                 if(Constants.DEBUG_MODE){
                     util.log(e.getMessage());
+
                 }
+                return false;
             }
-            return true;
         }
 
         @Override
@@ -380,6 +383,6 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
     private static class PicUploadParams{
         public Map<String, String> paramMap = new HashMap<String, String>();
-        public Map<String, File> pics = new HashMap<String, File>();
+        public Map<String, Uri> pics = new HashMap<String, Uri>();
     }
 }

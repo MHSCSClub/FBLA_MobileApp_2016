@@ -1,6 +1,7 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016.lib;
 
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -161,7 +162,7 @@ public class SecureAPI {
         return new JSONObject(response);
     }
 
-    public JSONObject HTTPSPOSTMULTI(String action, Map<String, String> params, Map<String, File> files) throws Exception {
+    public JSONObject HTTPSPOSTMULTI(String action, Map<String, String> params, Map<String, Uri> files, Context ctx) throws Exception {
         URL url = new URL(Constants.API_BASE_URL + action);
         HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
 
@@ -199,9 +200,10 @@ public class SecureAPI {
 
         //Process files
         int it = 0;
-        for (Map.Entry<String, File> entry : files.entrySet())
+        for (Map.Entry<String, Uri> entry : files.entrySet())
         {
-            InputStream inputStream = new FileInputStream(entry.getValue());
+            ContentResolver cr = ctx.getContentResolver();
+            InputStream inputStream = cr.openInputStream(entry.getValue());
 
             //File wrapping
             request.writeBytes(twoHyphens + boundary + crlf);
@@ -213,6 +215,7 @@ public class SecureAPI {
             int nRead;
             byte[] data = new byte[16384];
 
+            assert inputStream != null;
             while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
                 request.write(data, 0, nRead);
             }

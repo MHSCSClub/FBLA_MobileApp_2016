@@ -1,5 +1,6 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
+import android.Manifest;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -7,12 +8,15 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -28,6 +32,8 @@ import android.view.View;
 import android.widget.Toast;
 
 
+//import com.google.android.gms.common.api.GoogleApiClient;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.*;
@@ -38,9 +44,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import im.delight.android.location.SimpleLocation;
+
 import static org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureContract.*;
 
-public class MainActivitySwipes extends AppCompatActivity implements View.OnClickListener{
+public class MainActivitySwipes extends AppCompatActivity implements View.OnClickListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -57,11 +65,10 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
      */
     private ViewPager mViewPager;
     private static File location;
-    private double geoLong = -73.748687;
-    private double geoLat = 40.934710;
+    private static double geoLong = -73.748687;
+    private static double geoLat = 40.934710;
 
-
-
+    private SimpleLocation Simplocation;
 
 
 
@@ -71,6 +78,15 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         //Must be first
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity_swipes);
+
+
+        Simplocation = new SimpleLocation(this);
+
+        // if we can't access the location yet
+        if (!Simplocation.hasLocationEnabled()) {
+            // ask the user to enable location access
+            SimpleLocation.openSettings(this);
+        }
 
 
 
@@ -100,8 +116,8 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
 
-        //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        //fab.setOnClickListener(this);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(this);
     }
 
     @Override
@@ -148,10 +164,10 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         switch(v.getId()){
-            //case R.id.fab:
+            case R.id.fab:
                 //Photo chooser (include default, cam, file (see Google Inbox on Android))
-             //       openImageIntent();
-              //  break;
+                openImageIntent();
+                break;
             default:
                 Toast.makeText(this, "No Assigned Action", Toast.LENGTH_SHORT).show();
 
@@ -261,8 +277,10 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                 uploadPic.pics.put("picture",selectedImageUri);
                 uploadPic.paramMap.put("title", selectedImageUri.toString());
 
+                geoLat = Simplocation.getLatitude();
+                geoLong = Simplocation.getLongitude();
 
-
+                util.log("lat"+geoLat+"lon"+geoLong);
                 //TODO Get lat and long...
                 uploadPic.paramMap.put("geolong", ""+geoLong);
                 uploadPic.paramMap.put("geolat", ""+geoLat);

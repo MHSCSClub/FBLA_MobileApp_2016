@@ -4,6 +4,7 @@ package org.mamkschools.mhs.fbla_mobileapp_2016;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -22,6 +23,8 @@ import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.AppCompatPreferenceActivity;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.util;
 
 import java.util.List;
 
@@ -36,7 +39,19 @@ import java.util.List;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
  * API Guide</a> for more information on developing a Settings UI.
  */
-public class SettingsActivity extends AppCompatPreferenceActivity {
+public class SettingsActivity extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+    @Override
+    protected void onPause(){
+        super.onPause();
+        Constants.restorePrefs(getApplicationContext());
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        Constants.restorePrefs(getApplicationContext());
+    }
+
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
@@ -113,6 +128,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         // Trigger the listener immediately with the preference's
         // current value.
+
+
+        util.log("PrefChange");
+
         sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
                 PreferenceManager
                         .getDefaultSharedPreferences(preference.getContext())
@@ -174,6 +193,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 || GeneralPreferenceFragment.class.getName().equals(fragmentName)
                 || DataSyncPreferenceFragment.class.getName().equals(fragmentName)
                 || NotificationPreferenceFragment.class.getName().equals(fragmentName);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        util.log(sharedPreferences.getAll().get(key).toString());
+        //Constants.restorePrefs(getApplicationContext());
     }
 
     /**

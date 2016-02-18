@@ -84,4 +84,5 @@
     <string name="pref_description_social_recommendations">Recommendations for people to contact
         based on your message history
     </string>
+    <string name="title_activity_prefs">PrefsActivity</string>
 </resources>

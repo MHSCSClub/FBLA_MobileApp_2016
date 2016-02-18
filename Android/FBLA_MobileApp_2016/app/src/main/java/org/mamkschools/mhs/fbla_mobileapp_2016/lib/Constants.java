@@ -13,7 +13,7 @@ public final class Constants {
     //API URL
     public static final String API_BASE_URL = "https://aakatz3.aakportfolio.com:9084/fbla2016/api/";
 
-    private static final String PREFS_FILENAME = "fbla_mobileapp_2016-prefs";
+    public static final String PREFS_FILENAME = "fbla_mobileapp_2016-prefs";
 
     //Output debug info
     public static boolean DEBUG_MODE = true;

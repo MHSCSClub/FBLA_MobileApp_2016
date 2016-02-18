@@ -1,13 +1,13 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <SwitchPreference
-        android:key="debug_mode"
+        android:key="DEBUG_MODE"
         android:title="@string/pref_title_debug_mode"
         android:summary="@string/pref_description_debug_mode"
         android:defaultValue="true" />
 
     <SwitchPreference
-        android:key="demo_mode"
+        android:key="DEMO_MODE"
         android:title="@string/pref_title_demo_mode"
         android:summary="@string/pref_description_demo_mode"
         android:defaultValue="false" />

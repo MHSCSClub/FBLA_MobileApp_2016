@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -105,6 +106,11 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         fab.setOnClickListener(this);
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Constants.restorePrefs(getApplicationContext());
+    }
 
     @Override
     protected void onStop(){
@@ -259,6 +265,8 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                 uploadPic.pics.put("picture",selectedImageUri);
                 uploadPic.paramMap.put("title", selectedImageUri.toString());
 
+
+
                 //TODO Get lat and long...
                 uploadPic.paramMap.put("geolong", ""+-73.748687);
                 uploadPic.paramMap.put("geolat", ""+40.934710);
@@ -274,11 +282,13 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
         @Override
         protected Void doInBackground(Void... params) {
-            String authCode = "fd60f0349432ef094b75f864495ee25922d87094dd335610dbdb54f4f88ea48b";
+
             double geolong = -73.748687;
             double geolat = 40.934710;
-            int amount = 3;
-            int dist = 1000;
+            int amount = 25;
+            int dist = 10;
+
+
 
             PictureHelper mDbHelper = new PictureHelper(getApplicationContext());
             SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -288,7 +298,9 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
 
             try {
-                JSONObject response = picture.HTTPSGET("picture/fetch?authcode=" + authCode + "&geolong=" + geolong + "&geolat=" + geolat + "&amount=" + amount + "&ft_dist=" + dist);
+                JSONObject response = picture.HTTPSGET("picture/fetch?authcode=" + Constants.AUTHCODE
+                        + "&geolong=" + geolong + "&geolat=" + geolat + "&amount="
+                        + amount + "&ft_dist=" + dist);
 
                 JSONArray array = response.getJSONArray("data");
                 for(int i = 0; i < array.length(); i++ ){
@@ -305,7 +317,8 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                             "null",
                             values);
                     int pid = array.getJSONObject(i).getInt("pid");
-                    File file = picture.HTTPSFETCHPIC("picture/" + pid + "?authcode=" + authCode, new File(getFilesDir(), "picture" + pid + ".jpg"));
+                    File file = picture.HTTPSFETCHPIC("picture/" + pid + "?authcode="
+                            + Constants.AUTHCODE, new File(getFilesDir(), "picture" + pid + ".jpg"));
                 }
             }catch (Exception e){
                 if(Constants.DEBUG_MODE){
@@ -339,8 +352,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                 } else if(response.getString("status").equals("error")){
                     return false;
                 } else {
-                    util.log("WTF??");
-                    return false;
+                    throw new Exception("Impossible status");
                 }
             }catch (Exception e){
                 e.printStackTrace();
@@ -378,6 +390,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         @Override
         protected void onPostExecute(Void v) {
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            finish();
         }
     }
 

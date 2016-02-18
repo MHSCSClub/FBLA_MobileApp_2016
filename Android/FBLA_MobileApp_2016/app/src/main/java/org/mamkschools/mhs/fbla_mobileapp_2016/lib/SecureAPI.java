@@ -43,6 +43,8 @@ public class SecureAPI {
     private static SecureAPI mySecureAPI = null;
     private SSLSocketFactory mySocketFactory = null;
 
+
+
     public static SecureAPI getInstance(Context c){
         if( mySecureAPI == null){
             try {

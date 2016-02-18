@@ -239,6 +239,7 @@ public class LoginActivity extends AppCompatActivity {
 
             if(success) {
                 if(isLogin) {
+                    Constants.savePrefs(getApplicationContext());
                     startActivity(new Intent(getApplicationContext(), MainActivitySwipes.class));
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.registration_complete, Toast.LENGTH_LONG).show();

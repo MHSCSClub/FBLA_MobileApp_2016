@@ -108,8 +108,8 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(this);
+        //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        //fab.setOnClickListener(this);
     }
 
     @Override
@@ -156,10 +156,10 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         switch(v.getId()){
-            case R.id.fab:
+            //case R.id.fab:
                 //Photo chooser (include default, cam, file (see Google Inbox on Android))
-                    openImageIntent();
-                break;
+             //       openImageIntent();
+              //  break;
             default:
                 Toast.makeText(this, "No Assigned Action", Toast.LENGTH_SHORT).show();
 

@@ -291,10 +291,9 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         @Override
         protected Void doInBackground(Void... params) {
 
-            myLocation.getLocation(getApplicationContext(), locationResult);
+            //myLocation.getLocation(getApplicationContext(), locationResult);
 
-            boolean r = myLocation.getLocation(getApplicationContext(),
-                    locationResult);
+            //boolean r = myLocation.getLocation(getApplicationContext(),locationResult);
 
             int amount = 25;
             int dist = 10;
@@ -327,9 +326,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                             PictureEntry.TABLE_NAME,
                             "null",
                             values);
-                    int pid = array.getJSONObject(i).getInt("pid");
-                    File file = picture.HTTPSFETCHPIC("picture/" + pid + "?authcode="
-                            + Constants.AUTHCODE, new File(getFilesDir(), "picture" + pid + ".jpg"));
+
                 }
             }catch (Exception e){
                 if(Constants.DEBUG_MODE){
@@ -341,7 +338,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
         @Override
         protected void onPostExecute(Void v) {
-            util.log("Done With Picture Download");
+            util.log("Finished getting Picture Infomation");
             mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
             mViewPager.setAdapter(mSectionsPagerAdapter);
         }

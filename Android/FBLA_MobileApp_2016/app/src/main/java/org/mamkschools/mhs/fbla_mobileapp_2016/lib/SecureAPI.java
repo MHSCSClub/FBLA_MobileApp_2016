@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.R;
 
@@ -119,7 +120,7 @@ public class SecureAPI {
         return new JSONObject(response);
     }
 
-    public File HTTPSFETCHPIC(String action, File file) throws Exception {
+    public void HTTPSFETCHPIC(String action, File file) throws Exception {
         URL url = new URL(Constants.API_BASE_URL + action);
         HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
         httpsURLConnection.setSSLSocketFactory(mySocketFactory);
@@ -137,7 +138,6 @@ public class SecureAPI {
         output.flush();
         output.close();
         input.close();
-        return file;
     }
 
     public JSONObject HTTPSPOST(String action, Map<String, String> params) throws Exception {

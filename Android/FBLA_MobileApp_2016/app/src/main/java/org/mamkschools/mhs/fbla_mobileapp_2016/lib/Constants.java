@@ -30,6 +30,8 @@ public final class Constants {
     //Variable to see if prefs restored yet
     public static boolean PREFS_RESTORED = false;
 
+
+
     private Constants(){
         //Do nothing constructor, exists to defeat instantiation.
     }

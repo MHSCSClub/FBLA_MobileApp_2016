@@ -2,13 +2,11 @@ package org.mamkschools.mhs.fbla_mobileapp_2016;
 
 import android.content.ComponentName;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.sqlite.SQLiteDatabase;
-import android.location.LocationManager;
-import android.location.LocationProvider;
+import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -35,9 +33,6 @@ import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.*;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,10 +57,21 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
      */
     private ViewPager mViewPager;
     private static File location;
-    private static int picture = 0;
-    private EvaluationScreen evaluationScreen;
-    private double geoLong;
-    private double geoLat;
+    private double geoLong = -73.748687;
+    private double geoLat = 40.934710;
+    private MyLocation myLocation = new MyLocation();
+
+    public MyLocation.LocationResult locationResult = new MyLocation.LocationResult() {
+
+        @Override
+        public void gotLocation(Location location) {
+            // TODO Auto-generated method stub
+            geoLat = location.getLongitude();
+            geoLong = location.getLatitude();
+        }
+    };
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,8 +186,8 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
             //System.out.println(position);
             PictureHelper mDbHelper = new PictureHelper(getApplicationContext());
             SQLiteDatabase db = mDbHelper.getWritableDatabase();
-            evaluationScreen = EvaluationScreen.newInstance(db, picture, location);
-            return evaluationScreen;
+            int picture = 0;
+            return EvaluationFragment.newInstance(db, picture, location);
         }
 
         @Override
@@ -205,13 +211,15 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
     private void openImageIntent() {
         // Determine Uri of camera image to save.
         final File root = new File(Environment.getExternalStorageDirectory() + File.separator + "MyDir" + File.separator);
-        root.mkdirs();
+        boolean suc = root.mkdirs();
+
+        util.log("makeDirs"+suc);
         final String fname = "img_"+ System.currentTimeMillis() + ".jpg";
         final File sdImageMainDirectory = new File(root, fname);
         outputFileUri = Uri.fromFile(sdImageMainDirectory);
 
         // Camera.
-        final List<Intent> cameraIntents = new ArrayList<Intent>();
+        final List<Intent> cameraIntents = new ArrayList<>();
         final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         final PackageManager packageManager = getPackageManager();
         final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
@@ -247,18 +255,14 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                     isCamera = true;
                 } else {
                     final String action = data.getAction();
-                    if (action == null) {
-                        isCamera = false;
-                    } else {
-                        isCamera = action.equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    }
+                    isCamera = action != null && action.equals(MediaStore.ACTION_IMAGE_CAPTURE);
                 }
 
                 Uri selectedImageUri;
                 if (isCamera) {
                     selectedImageUri = outputFileUri;
                 } else {
-                    selectedImageUri = data == null ? null : data.getData();
+                    selectedImageUri = data.getData();
                 }
 
                 PicUploadParams uploadPic = new PicUploadParams();
@@ -266,10 +270,14 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                 uploadPic.paramMap.put("title", selectedImageUri.toString());
 
 
+                myLocation.getLocation(getApplicationContext(), locationResult);
+
+                boolean r = myLocation.getLocation(getApplicationContext(),
+                        locationResult);
 
                 //TODO Get lat and long...
-                uploadPic.paramMap.put("geolong", ""+-73.748687);
-                uploadPic.paramMap.put("geolat", ""+40.934710);
+                uploadPic.paramMap.put("geolong", ""+geoLong);
+                uploadPic.paramMap.put("geolat", ""+geoLat);
 
                 new PicUpload().execute(uploadPic);
             }
@@ -283,8 +291,11 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         @Override
         protected Void doInBackground(Void... params) {
 
-            double geolong = -73.748687;
-            double geolat = 40.934710;
+            myLocation.getLocation(getApplicationContext(), locationResult);
+
+            boolean r = myLocation.getLocation(getApplicationContext(),
+                    locationResult);
+
             int amount = 25;
             int dist = 10;
 
@@ -299,7 +310,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
             try {
                 JSONObject response = picture.HTTPSGET("picture/fetch?authcode=" + Constants.AUTHCODE
-                        + "&geolong=" + geolong + "&geolat=" + geolat + "&amount="
+                        + "&geolong=" + geoLong + "&geolat=" + geoLat + "&amount="
                         + amount + "&ft_dist=" + dist);
 
                 JSONArray array = response.getJSONArray("data");

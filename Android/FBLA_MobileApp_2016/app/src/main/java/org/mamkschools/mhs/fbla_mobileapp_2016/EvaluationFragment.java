@@ -13,7 +13,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureContract;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.util;
 
@@ -22,7 +21,7 @@ import java.io.File;
 /**
  * Created by jackphillips on 2/16/16.
  */
-public class EvaluationScreen extends Fragment implements View.OnClickListener {
+public class EvaluationFragment extends Fragment implements View.OnClickListener {
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -39,15 +38,15 @@ public class EvaluationScreen extends Fragment implements View.OnClickListener {
     LayoutInflater inflater;
     ViewGroup container;
     Bundle savedInstanceState;
-    public static EvaluationScreen newInstance(SQLiteDatabase db, int picNumber, File location) {
-        EvaluationScreen fragment = new EvaluationScreen();
+    public static EvaluationFragment newInstance(SQLiteDatabase db, int picNumber, File location) {
+        EvaluationFragment fragment = new EvaluationFragment();
         fragment.db = db;
         fragment.picNumber = picNumber;
         fragment.location = location;
         return fragment;
     }
 
-    public EvaluationScreen() {}
+    public EvaluationFragment() {}
 
 
     @Override

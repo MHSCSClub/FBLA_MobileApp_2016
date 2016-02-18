@@ -256,12 +256,12 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                 }
 
                 PicUploadParams uploadPic = new PicUploadParams();
-                uploadPic.pics.put(selectedImageUri.toString(),selectedImageUri);
+                uploadPic.pics.put("picture",selectedImageUri);
                 uploadPic.paramMap.put("title", selectedImageUri.toString());
 
                 //TODO Get lat and long...
-                uploadPic.paramMap.put("longitude", ""+-73.748687);
-                uploadPic.paramMap.put("latitude", ""+40.934710);
+                uploadPic.paramMap.put("geolong", ""+-73.748687);
+                uploadPic.paramMap.put("geolat", ""+40.934710);
 
                 new PicUpload().execute(uploadPic);
             }

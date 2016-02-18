@@ -9,7 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.support.design.widget.FloatingActionButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -83,11 +83,18 @@ public class EvaluationScreen extends Fragment implements View.OnClickListener {
         View rootView = inflater.inflate(R.layout.fragment_main_activity_swipes, container, false);
         TextView textView = (TextView) rootView.findViewById(R.id.section_label);
         textView.setText("No More Pictures");
+
+        View imageFrame = rootView.findViewById(R.id.imageFrame);
+       // imageFrame.getLayoutParams().height = imageFrame.getLayoutParams().width;
+        //util.log(""+ imageFrame.getLayoutParams().width);
+
         ImageView image = (ImageView) rootView.findViewById(R.id.imageView);
-        Button yes = (Button) rootView.findViewById(R.id.yesButton);
+
+
+        FloatingActionButton yes = (FloatingActionButton) rootView.findViewById(R.id.yesButton);
         yes.setOnClickListener(this);
 
-        Button no = (Button) rootView.findViewById(R.id.noButton);
+        FloatingActionButton no = (FloatingActionButton) rootView.findViewById(R.id.noButton);
         no.setOnClickListener(this);
 
         if(c.getCount() > 0 && picNumber < c.getCount()){

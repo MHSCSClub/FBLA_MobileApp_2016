@@ -1,6 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -12,11 +15,15 @@
         android:layout_height="match_parent"
         android:weightSum="1">
 
-        <TextView android:id="@+id/section_label" android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <TextView android:id="@+id/section_label" android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No images left"
+            android:textSize="35dp"
+            android:gravity="center" />
 
 
         <FrameLayout
+            android:id="@+id/imageFrame"
             android:layout_width="match_parent"
             android:layout_height="290dp">
 
@@ -26,33 +33,54 @@
                 android:id="@+id/imageView"
                 android:src="@drawable/cslogo"
                 android:adjustViewBounds="true" />
+            <TextView android:id="@+id/description_label" android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Username/date"
+                android:textSize="25dp"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="10dp" />
         </FrameLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Appropiate or not?"
+            android:textSize="20dp"
+            android:gravity="center" />
 
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="317dp"
-            android:layout_height="wrap_content"
-            android:weightSum="1">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="No"
-                android:id="@+id/noButton"
-                android:layout_weight="0.40"
-                android:layout_gravity="bottom" />
+            <android.support.design.widget.FloatingActionButton android:id="@+id/noButton"
+                android:layout_width="80dp" android:layout_height="80dp"
+                android:layout_gravity="end|bottom"
+                app:backgroundTint="#F44336"
+                app:elevation="1dp"
+                app:borderWidth="0dp"
+                android:src="@drawable/ic_close_white_128dp_1x"
+                android:layout_marginLeft="80dp" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes"
-                android:id="@+id/yesButton"
-                android:layout_weight="0.40"
-                android:layout_gravity="bottom" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+
+            <android.support.design.widget.FloatingActionButton android:id="@+id/yesButton"
+                android:layout_width="80dp" android:layout_height="80dp"
+                android:layout_gravity="bottom|end"
+                app:backgroundTint="#4CAF50"
+                app:elevation="1dp"
+                app:borderWidth="0dp"
+                app:fabSize="normal"
+                android:gravity="right"
+                android:src="@drawable/ic_done_white_128dp_1x"
+                android:layout_marginRight="80dp" />
+
+
         </LinearLayout>
-
-
 
     </LinearLayout>
 

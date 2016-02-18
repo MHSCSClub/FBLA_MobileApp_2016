@@ -59,17 +59,9 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
     private static File location;
     private double geoLong = -73.748687;
     private double geoLat = 40.934710;
-    private MyLocation myLocation = new MyLocation();
 
-    public MyLocation.LocationResult locationResult = new MyLocation.LocationResult() {
 
-        @Override
-        public void gotLocation(Location location) {
-            // TODO Auto-generated method stub
-            geoLat = location.getLongitude();
-            geoLong = location.getLatitude();
-        }
-    };
+
 
 
 
@@ -210,7 +202,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
     private void openImageIntent() {
         // Determine Uri of camera image to save.
-        final File root = new File(Environment.getExternalStorageDirectory() + File.separator + "MyDir" + File.separator);
+        final File root = new File(Environment.getExternalStorageDirectory() + File.separator + "Pictures" + File.separator);
         boolean suc = root.mkdirs();
 
         util.log("makeDirs"+suc);
@@ -270,10 +262,6 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                 uploadPic.paramMap.put("title", selectedImageUri.toString());
 
 
-                myLocation.getLocation(getApplicationContext(), locationResult);
-
-                boolean r = myLocation.getLocation(getApplicationContext(),
-                        locationResult);
 
                 //TODO Get lat and long...
                 uploadPic.paramMap.put("geolong", ""+geoLong);
@@ -290,10 +278,6 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
         @Override
         protected Void doInBackground(Void... params) {
-
-            //myLocation.getLocation(getApplicationContext(), locationResult);
-
-            //boolean r = myLocation.getLocation(getApplicationContext(),locationResult);
 
             int amount = 25;
             int dist = 10;

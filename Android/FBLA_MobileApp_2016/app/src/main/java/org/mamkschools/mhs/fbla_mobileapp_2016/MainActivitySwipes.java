@@ -94,9 +94,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
             Constants.restorePrefs(getApplicationContext());
         }
 
-       if(Constants.AUTHCODE == null || System.currentTimeMillis() >= Constants.AUTHCODE_EXP) {
-           startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-       }
+
 
 
 
@@ -123,6 +121,9 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
     @Override
     protected void onResume(){
         super.onResume();
+        if(Constants.AUTHCODE == null || System.currentTimeMillis() >= Constants.AUTHCODE_EXP) {
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        }
         Constants.restorePrefs(getApplicationContext());
     }
 

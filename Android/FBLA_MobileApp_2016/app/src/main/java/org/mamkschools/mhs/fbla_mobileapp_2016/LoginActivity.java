@@ -3,6 +3,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.AsyncTask;
@@ -48,12 +50,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        if(!Constants.PREFS_RESTORED){
-            Constants.restorePrefs(getApplicationContext());
-        }
+        setTitle(R.string.title_activity_login);
+
+        Constants.restorePrefs(getApplicationContext());
 
         if(Constants.AUTHCODE != null &&
-                (Constants.AUTHCODE_EXP <= System.currentTimeMillis()
+                (Constants.AUTHCODE_EXP >= System.currentTimeMillis()
                         || Constants.AUTHCODE_EXP == -1)){
             startActivity(new Intent(getApplicationContext(), MainActivitySwipes.class));
         }
@@ -210,7 +212,7 @@ public class LoginActivity extends AppCompatActivity {
                     if(isLogin) {
                         Constants.AUTHCODE = returnedJSON.getJSONObject("data").getString("authcode");
                         Constants.AUTHCODE_EXP = System.currentTimeMillis() +
-                                (30L * 24L * 60L * 60L * 1000L);
+                                ((long)30 * (long)24 * (long)60 * (long)60 * (long)1000);
                     }
                     return true;
                 } else{
@@ -239,7 +241,11 @@ public class LoginActivity extends AppCompatActivity {
 
             if(success) {
                 if(isLogin) {
-                    Constants.savePrefs(getApplicationContext());
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString("AUTHCODE", Constants.AUTHCODE);
+                    editor.putLong("AUTHCODE_EXP", Constants.AUTHCODE_EXP);
+                    editor.apply();
                     startActivity(new Intent(getApplicationContext(), MainActivitySwipes.class));
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.registration_complete, Toast.LENGTH_LONG).show();

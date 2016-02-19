@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+
+import java.util.Map;
+
 /**
  * Constants for APP
  * Created by Andrew on 10/16/2015.
@@ -29,7 +32,8 @@ public final class Constants {
     //Variable to see if prefs restored yet
     public static boolean PREFS_RESTORED = false;
 
-
+    public static double LATITUDE;
+    public static double LONGITUDE;
 
     private Constants(){
         //Do nothing constructor, exists to defeat instantiation.
@@ -38,6 +42,8 @@ public final class Constants {
     public static void restorePrefs(Context ctx){
         PREFS_RESTORED = true;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        LATITUDE = Double.parseDouble(prefs.getString("LATITUDE", "37.42200"));
+        LONGITUDE = Double.parseDouble(prefs.getString("LONGITUDE", "-122.084095"));
         DEBUG_MODE = prefs.getBoolean("DEBUG_MODE", true);
         DEMO_MODE = prefs.getBoolean("DEMO_MODE", false);
         AUTHCODE = prefs.getString("AUTHCODE", null);
@@ -55,6 +61,8 @@ public final class Constants {
         editor.putBoolean("DEMO_MODE", DEMO_MODE);
         editor.putString("AUTHCODE", AUTHCODE);
         editor.putLong("AUTHCODE_EXP", AUTHCODE_EXP);
+        editor.putString("LATITUDE", Double.toString(LATITUDE));
+        editor.putString("LONGITUDE", Double.toString(LONGITUDE));
 
 
         // Commit the edits! Do not change to "apply" or will not be done because app will close!

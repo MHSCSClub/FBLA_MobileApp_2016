@@ -69,7 +69,7 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_activity_swipes, container, false);
         titleLabel = (TextView) rootView.findViewById(R.id.title_label);
-        titleLabel.setText("No More Pictures");
+        titleLabel.setText("No More Pictures"); //TODO use Strings xml
 
 
         ratingLayout = rootView.findViewById(R.id.ratingLayout);
@@ -121,8 +121,7 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
     public Bitmap getPictureBitmap(File file){
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-        return bitmap;
+        return BitmapFactory.decodeFile(file.getAbsolutePath(), options);
 
     }
     public int getPictureId(int picture){

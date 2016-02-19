@@ -1,22 +1,18 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
-import android.Manifest;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.sqlite.SQLiteDatabase;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
+
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -31,8 +27,6 @@ import android.view.View;
 
 import android.widget.Toast;
 
-
-//import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -65,8 +59,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
      */
     private ViewPager mViewPager;
     private static File location;
-    private static double geoLong = -73.748687;
-    private static double geoLat = 40.934710;
+
 
     private SimpleLocation Simplocation;
 
@@ -278,13 +271,13 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                 uploadPic.pics.put("picture",selectedImageUri);
                 uploadPic.paramMap.put("title", selectedImageUri.toString());
 
-                geoLat = Simplocation.getLatitude();
-                geoLong = Simplocation.getLongitude();
+                Constants.LATITUDE = Simplocation.getLatitude();
+                Constants.LONGITUDE = Simplocation.getLongitude();
 
-                util.log("lat"+geoLat+"lon"+geoLong);
+                util.log("lat"+Constants.LATITUDE+"lon"+Constants.LONGITUDE);
                 //TODO Get lat and long...
-                uploadPic.paramMap.put("geolong", ""+geoLong);
-                uploadPic.paramMap.put("geolat", ""+geoLat);
+                uploadPic.paramMap.put("Constants.LONGITUDE", ""+Constants.LONGITUDE);
+                uploadPic.paramMap.put("Constants.LATITUDE", ""+Constants.LATITUDE);
 
                 new PicUpload().execute(uploadPic);
             }
@@ -301,8 +294,8 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
             int amount = 25;
             int dist = 10;
 
-            geoLat = Simplocation.getLatitude();
-            geoLong = Simplocation.getLongitude();
+            Constants.LATITUDE = Simplocation.getLatitude();
+            Constants.LONGITUDE = Simplocation.getLongitude();
 
             PictureHelper mDbHelper = new PictureHelper(getApplicationContext());
             SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -313,14 +306,14 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
             try {
                 JSONObject response = picture.HTTPSGET("picture/fetch?authcode=" + Constants.AUTHCODE
-                        + "&geolong=" + geoLong + "&geolat=" + geoLat + "&amount="
+                        + "&Constants.LONGITUDE=" + Constants.LONGITUDE + "&Constants.LATITUDE=" + Constants.LATITUDE + "&amount="
                         + amount + "&ft_dist=" + dist);
 
                 JSONArray array = response.getJSONArray("data");
                 for(int i = 0; i < array.length(); i++ ){
                     values.put(PictureEntry.COLUMN_NAME_PICTURE_ID, array.getJSONObject(i).getInt("pid"));
-                    values.put(PictureEntry.COLUMN_NAME_GEOLAT, array.getJSONObject(i).getDouble("geolat"));
-                    values.put(PictureEntry.COLUMN_NAME_GEOLONG, array.getJSONObject(i).getDouble("geolong"));
+                    values.put(PictureEntry.COLUMN_NAME_GEOLAT, array.getJSONObject(i).getDouble("Constants.LATITUDE"));
+                    values.put(PictureEntry.COLUMN_NAME_GEOLONG, array.getJSONObject(i).getDouble("Constants.LONGITUDE"));
                     values.put(PictureEntry.COLUMN_NAME_DIST, array.getJSONObject(i).getDouble("dist"));
                     values.put(PictureEntry.COLUMN_NAME_TITLE, array.getJSONObject(i).getString("title"));
                     values.put(PictureEntry.COLUMN_NAME_USERNAME, array.getJSONObject(i).getString("username"));

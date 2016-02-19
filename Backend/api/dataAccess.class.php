@@ -275,7 +275,6 @@
     			")"; 
 			$userlat = $params["geolat"];
 			$userlong = $params["geolong"];
-			$amount = $params["amount"];
 
 			//Distance filter
 			$userdist = 0;
@@ -309,20 +308,17 @@
 			}
 
 			//Me filter
-			$userme = -1;
-			$meselect = '';
-			$mequery = ' userid <> ';
+			$mequery = '';
 			if(isset($params['me']) && $params['me']) {
-				$meselect = 'LEFT JOIN comments ON pictures.pid=comments.pid';
-				$mequery = ' comments.userid <> ';
-				$userme = $userid;
+				$mequery = " LEFT JOIN comments ON pictures.pid=comments.pid AND comments.userid=$userid WHERE comments.userid IS NULL ";
 			}
 
-			$query = "SELECT pid, title, geolat, geolong, created, $dist_func AS dist, username, (likes + dislikes) AS views FROM pictures INNER JOIN users ON pictures.userid = users.userid $meselect".
-						 "HAVING $distquery AND $timequery AND $namequery AND $viewquery AND $mequery ORDER BY dist";
+			$query = "SELECT pictures.pid AS pid, title, geolat, geolong, created, $dist_func AS dist, username, (likes + dislikes) AS views FROM pictures INNER JOIN users ON pictures.userid = users.userid ".
+						 "$mequery HAVING $distquery AND $timequery AND $namequery AND $viewquery  ORDER BY dist";
 
 			$stmt = $db->prepare($query);
-			$stmt->bind_param('ddddssii', $userlat, $userlong, $userlat, $userdist, $usertime, $username, $userviews, $userme);
+			//throw new Exception($query);
+			$stmt->bind_param('ddddssi', $userlat, $userlong, $userlat, $userdist, $usertime, $username, $userviews);
 			$stmt->execute();
 
 			$res = $stmt->get_result();

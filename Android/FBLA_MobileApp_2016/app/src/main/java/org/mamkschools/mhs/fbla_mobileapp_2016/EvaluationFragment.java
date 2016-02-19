@@ -13,15 +13,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.design.widget.FloatingActionButton;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureContract;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.util;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by jackphillips on 2/16/16.
@@ -41,6 +47,8 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
     private int picNumber;
     private File location;
 
+    private View rootView;
+
     private ImageView image;
     private TextView descriptionLabel;
     private TextView titleLabel;
@@ -51,6 +59,8 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
     private View instructions;
 
     private Bitmap imageData;
+
+    private int currentRating;
 
     private Cursor c;
 
@@ -68,7 +78,7 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main_activity_swipes, container, false);
+        rootView = inflater.inflate(R.layout.fragment_main_activity_swipes, container, false);
         titleLabel = (TextView) rootView.findViewById(R.id.title_label);
         titleLabel.setText("No More Pictures"); //TODO use Strings xml
 
@@ -156,8 +166,20 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
     }
     @Override
     public void onClick(View v) {
+        Map<String, String> postParams = new HashMap<>();
+        postParams.put("pid", "" + getPictureId(picNumber));
+        postParams.put("like", "" + currentRating);
+
         switch(v.getId()){
+            case R.id.yesButton:
+                currentRating = 1;
+                break;
+            case R.id.noButton:
+                currentRating = 0;
+                break;
+
             case R.id.submit_button:
+                new SubmitRating().execute(getRateParams(postParams));
                 this.picNumber += 1;
                 runFetch(picNumber);
                 break;
@@ -176,12 +198,19 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    private void refreshView(){
-        FragmentTransaction fragTransaction = getFragmentManager().beginTransaction();
-        fragTransaction.detach(this);
-        fragTransaction.attach(this);
-        fragTransaction.commit();
+    private Map<String, String> getRateParams(Map<String, String> params) {
+        SeekBar style = (SeekBar) rootView.findViewById(R.id.styleRating);
+        int srating = (int) Math.round((double) style.getProgress() / (double) style.getMax() * 10.0);
+        params.put("style", "" + srating);
+
+        EditText commentView = (EditText) rootView.findViewById(R.id.commentText);
+        String comment = commentView.getText().toString();
+        util.log(comment);
+        if(comment.length() > 0)
+            params.put("comment", comment);
+        return params;
     }
+
     public Cursor getInfo(){
         String[] projection = {
                 PictureContract.PictureEntry._ID,
@@ -229,6 +258,31 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
                 image.setImageBitmap(imageData);
             }else{
                 util.log("Life will go on");
+            }
+        }
+    }
+
+    private class SubmitRating extends AsyncTask<Map<String, String>, Void, Boolean> {
+        SecureAPI picture = SecureAPI.getInstance(getContext());
+        JSONObject result;
+
+        @Override
+        protected Boolean doInBackground(Map<String, String>... params) {
+            Map<String, String> finalParams = params[0];
+            try {
+                result = picture.HTTPSPOST("picture/" + finalParams.get("pid") + "/comment?authcode=" + Constants.AUTHCODE, finalParams);
+            } catch(Exception e) {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean v) {
+            if(v) {
+                util.log(result.toString());
+            } else {
+                util.log("Rating faiure");
             }
         }
     }

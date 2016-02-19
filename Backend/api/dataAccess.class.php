@@ -308,11 +308,21 @@
 				$viewquery = ' views <= ? ';
 			}
 
-			$query = "SELECT pid, title, geolat, geolong, created, $dist_func AS dist, username, (likes + dislikes) AS views FROM pictures INNER JOIN users ON pictures.userid = users.userid ".
-						 "HAVING $distquery AND $timequery AND $namequery AND $viewquery ORDER BY dist";
+			//Me filter
+			$userme = -1;
+			$meselect = '';
+			$mequery = ' userid <> ';
+			if(isset($params['me']) && $params['me']) {
+				$meselect = 'LEFT JOIN comments ON pictures.pid=comments.pid';
+				$mequery = ' comments.userid <> ';
+				$userme = $userid;
+			}
+
+			$query = "SELECT pid, title, geolat, geolong, created, $dist_func AS dist, username, (likes + dislikes) AS views FROM pictures INNER JOIN users ON pictures.userid = users.userid $meselect".
+						 "HAVING $distquery AND $timequery AND $namequery AND $viewquery AND $mequery ORDER BY dist";
 
 			$stmt = $db->prepare($query);
-			$stmt->bind_param('ddddssi', $userlat, $userlong, $userlat, $userdist, $usertime, $username, $userviews);
+			$stmt->bind_param('ddddssii', $userlat, $userlong, $userlat, $userdist, $usertime, $username, $userviews, $userme);
 			$stmt->execute();
 
 			$res = $stmt->get_result();

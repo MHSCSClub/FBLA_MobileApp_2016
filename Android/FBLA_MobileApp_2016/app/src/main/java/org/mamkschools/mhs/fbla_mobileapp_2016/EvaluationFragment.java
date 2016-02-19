@@ -155,7 +155,7 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
             new GetPicture().execute(picID);
         }else{
             //image.setImageDrawable(Drawable.createFromPath("@drawable/cslogo"));
-            refreshView();
+            //refreshView();
         }
     }
     @Override

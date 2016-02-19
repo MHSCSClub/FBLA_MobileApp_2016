@@ -309,10 +309,10 @@
 			}
 
 			$query = "SELECT pid, title, geolat, geolong, created, $dist_func AS dist, username, (likes + dislikes) AS views FROM pictures INNER JOIN users ON pictures.userid = users.userid ".
-						 "HAVING $distquery AND $timequery AND $namequery AND $viewquery ORDER BY dist LIMIT 0, ?";
+						 "HAVING $distquery AND $timequery AND $namequery AND $viewquery ORDER BY dist";
 
 			$stmt = $db->prepare($query);
-			$stmt->bind_param('ddddssii', $userlat, $userlong, $userlat, $userdist, $usertime, $username, $userviews, $amount);
+			$stmt->bind_param('ddddssi', $userlat, $userlong, $userlat, $userdist, $usertime, $username, $userviews);
 			$stmt->execute();
 
 			$res = $stmt->get_result();

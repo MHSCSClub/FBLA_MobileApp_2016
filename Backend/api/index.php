@@ -92,7 +92,6 @@
 
 		$params['geolat']= @$_GET['geolat'];
 		$params['geolong'] = @$_GET['geolong'];
-		$params['amount'] = @$_GET['amount'];
 
 		$params['distance'] = @$_GET['ft_dist'];
 		$params['time'] = @$_GET['ft_time'];

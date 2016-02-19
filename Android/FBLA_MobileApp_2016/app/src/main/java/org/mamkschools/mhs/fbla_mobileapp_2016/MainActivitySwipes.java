@@ -48,22 +48,7 @@ import static org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureContract.*;
 
 public class MainActivitySwipes extends AppCompatActivity implements View.OnClickListener {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    private ViewPager mViewPager;
     private static File location;
-
 
     private SimpleLocation Simplocation;
 
@@ -112,22 +97,9 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         int picture = 0;
 
-        evaluatePictures = EvaluationFragment.newInstance(db, picture, location);
+        evaluatePictures = EvaluationFragment.newInstance(db, picture, location, Simplocation);
 
-        new GetPicture().execute((Void) null);
         location = getFilesDir();
-
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this);
@@ -304,63 +276,6 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
                 new PicUpload().execute(uploadPic);
             }
-        }
-    }
-    private class GetPicture extends AsyncTask<Void, Void, Void> {
-
-        private ArrayList<JSONObject> ret = new ArrayList<>();
-        SecureAPI picture = SecureAPI.getInstance(MainActivitySwipes.this);
-
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            int amount = 25;
-            int dist = 10000;
-
-            Constants.LATITUDE = Simplocation.getLatitude();
-            Constants.LONGITUDE = Simplocation.getLongitude();
-
-            PictureHelper mDbHelper = new PictureHelper(getApplicationContext());
-            SQLiteDatabase db = mDbHelper.getWritableDatabase();
-            db.execSQL("Delete from " + PictureEntry.TABLE_NAME);
-            ContentValues values = new ContentValues();
-
-            util.log(Constants.LATITUDE + " " + Constants.LONGITUDE);
-
-            try {
-                JSONObject response = picture.HTTPSGET("picture/fetch?authcode=" + Constants.AUTHCODE
-                        + "&geolong=" + Constants.LONGITUDE + "&geolat=" + Constants.LATITUDE + "&amount="
-                        + amount + "&ft_dist=" + dist);
-
-                JSONArray array = response.getJSONArray("data");
-                for(int i = 0; i < array.length(); i++ ){
-                    values.put(PictureEntry.COLUMN_NAME_PICTURE_ID, array.getJSONObject(i).getInt("pid"));
-                    values.put(PictureEntry.COLUMN_NAME_GEOLAT, array.getJSONObject(i).getDouble("geolat"));
-                    values.put(PictureEntry.COLUMN_NAME_GEOLONG, array.getJSONObject(i).getDouble("geolong"));
-                    values.put(PictureEntry.COLUMN_NAME_DIST, array.getJSONObject(i).getDouble("dist"));
-                    values.put(PictureEntry.COLUMN_NAME_TITLE, array.getJSONObject(i).getString("title"));
-                    values.put(PictureEntry.COLUMN_NAME_USERNAME, array.getJSONObject(i).getString("username"));
-                    values.put(PictureEntry.COLUMN_NAME_VIEWS, array.getJSONObject(i).getInt("views"));
-                    long newRowId;
-                    newRowId = db.insert(
-                            PictureEntry.TABLE_NAME,
-                            "null",
-                            values);
-
-                }
-            }catch (Exception e){
-                if(Constants.DEBUG_MODE){
-                    util.log(e.getMessage());
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void v) {
-            util.log("Finished getting Picture Infomation");
-            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-            mViewPager.setAdapter(mSectionsPagerAdapter);
         }
     }
 

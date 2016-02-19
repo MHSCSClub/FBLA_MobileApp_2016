@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -89,8 +91,6 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
         additionalLabel = rootView.findViewById(R.id.additional_label);
 
         View imageFrame = rootView.findViewById(R.id.imageFrame);
-       // imageFrame.getLayoutParams().height = imageFrame.getLayoutParams().width;
-        //util.log(""+ imageFrame.getLayoutParams().width);
 
         image = (ImageView) rootView.findViewById(R.id.imageView);
         descriptionLabel = (TextView) rootView.findViewById(R.id.description_label);
@@ -104,6 +104,9 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
 
         Button submit = (Button) rootView.findViewById(R.id.submit_button);
         submit.setOnClickListener(this);
+
+        Button cancel = (Button) rootView.findViewById(R.id.cancel_button);
+        cancel.setOnClickListener(this);
         
         c = getInfo();
         runFetch(picNumber);
@@ -125,10 +128,18 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         options.inMutable = true;
-        if(imageData != null) {
+        if (imageData != null) {
             options.inBitmap = imageData;
         }
-        return BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+        try {
+            Bitmap b = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+            util.log("" + b.getByteCount()); //do not remove line throws exception if decoding problem
+            return b;
+        } catch(Exception e) {
+            //Problem decoding into existing bitmap, allocate new memory
+            options.inBitmap = null;
+            return BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+        }
 
     }
     public int getPictureId(int picture){
@@ -139,6 +150,7 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
         return -1;
 
     }
+
     public String[] getData(int picture){
         String[] data = new String[2];
         if(c.getCount() > 0 && picture < c.getCount()) {
@@ -160,8 +172,7 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
         if(picID > 0) {
             new GetPicture().execute(picID);
         }else{
-            //image.setImageDrawable(Drawable.createFromPath("@drawable/cslogo"));
-            //refreshView();
+            image.setImageDrawable(getResources().getDrawable(R.drawable.finish));
         }
     }
     @Override
@@ -176,6 +187,12 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
                 break;
             case R.id.noButton:
                 currentRating = 0;
+                break;
+
+            case R.id.cancel_button:
+                new SubmitRating().execute(postParams);
+                this.picNumber += 1;
+                runFetch(picNumber);
                 break;
 
             case R.id.submit_button:
@@ -237,13 +254,13 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
     }
     private class GetPicture extends AsyncTask<Integer, Void, Boolean> {
         SecureAPI picture = SecureAPI.getInstance(getContext());
-        File pfile = new File(location, "picture.jpg");
 
         @Override
         protected Boolean doInBackground(Integer... params) {
             try{
                 int pid = params[0];
-                picture.HTTPSFETCHPIC("picture/" + pid + "?authcode=" + Constants.AUTHCODE, pfile);
+                picture.HTTPSFETCHPIC("picture/" + pid + "?authcode=" + Constants.AUTHCODE, new File(location, "picture.jpg"));
+                imageData = getPictureBitmap(new File(location, "picture.jpg"));
             }catch(Exception e){
                 return false;
             }
@@ -253,8 +270,6 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
         @Override
         protected void onPostExecute(Boolean v) {
             if(v){
-                imageData = getPictureBitmap(pfile);
-                pfile.delete();
                 image.setImageBitmap(imageData);
             }else{
                 util.log("Life will go on");
@@ -268,6 +283,7 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
 
         @Override
         protected Boolean doInBackground(Map<String, String>... params) {
+
             Map<String, String> finalParams = params[0];
             try {
                 result = picture.HTTPSPOST("picture/" + finalParams.get("pid") + "/comment?authcode=" + Constants.AUTHCODE, finalParams);
@@ -280,9 +296,9 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
         @Override
         protected void onPostExecute(Boolean v) {
             if(v) {
-                util.log(result.toString());
+
             } else {
-                util.log("Rating faiure");
+                Toast.makeText(rootView.getContext(), "Rating failed", Toast.LENGTH_SHORT).show();
             }
         }
     }

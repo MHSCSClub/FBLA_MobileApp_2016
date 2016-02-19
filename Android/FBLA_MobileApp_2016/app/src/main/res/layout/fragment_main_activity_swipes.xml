@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingBottom="5dp"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
@@ -25,30 +25,31 @@
         android:id="@+id/imageFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/description_label"
-        android:layout_above="@+id/section_label">
+        android:layout_above="@+id/title_label"
+        android:layout_below="@+id/description_label">
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:src="@drawable/tony"
-            android:background="#000000" />
+            android:background="#000000"
+            android:src="@drawable/tony" />
     </FrameLayout>
 
     <TextView
-        android:id="@+id/section_label"
+        android:id="@+id/title_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/instructions"
         android:layout_gravity="bottom"
         android:layout_marginBottom="5dp"
         android:text="Any of yalls under 13?"
-        android:layout_above="@+id/instructions"
-        android:textSize="30dp"
-        android:textColor="#020202" />
+        android:textColor="#020202"
+        android:textSize="30dp" />
 
     <TextView
+        android:id="@+id/instructions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonLayout"
@@ -56,10 +57,8 @@
         android:layout_alignStart="@+id/imageFrame"
         android:gravity="center"
         android:padding="5dp"
-        android:id="@+id/instructions"
         android:text="Appropiate or not?"
         android:textSize="20dp" />
-
 
     <RelativeLayout
         android:id="@+id/buttonLayout"
@@ -67,6 +66,7 @@
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
         android:orientation="horizontal">
 
         <android.support.design.widget.FloatingActionButton
@@ -111,5 +111,59 @@
             app:fabSize="normal" />
 
     </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/ratingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignTop="@+id/title_label"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/instructions2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:text="Dick Size"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <SeekBar
+            android:id="@+id/styleRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/instructions2" />
+
+
+        <EditText
+            android:id="@+id/commentText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/submit_button"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/styleRating"
+            android:ems="10"
+            android:gravity="top"
+            android:hint="Comment on the picture"
+            android:inputType="textMultiLine" />
+
+
+        <Button
+            android:id="@+id/submit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="Submit" />
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

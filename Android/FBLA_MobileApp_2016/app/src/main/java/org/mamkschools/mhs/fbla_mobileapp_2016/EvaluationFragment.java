@@ -4,8 +4,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.design.widget.FloatingActionButton;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,10 +41,13 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
     private int picNumber;
     private File location;
 
-
     private ImageView image;
     private TextView descriptionLabel;
-    private TextView textView;
+    private TextView titleLabel;
+
+    private View ratingLayout;
+    private View buttonLayout;
+    private View instructions;
 
     private Bitmap imageData;
     private Cursor c;
@@ -66,8 +68,13 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_activity_swipes, container, false);
-        textView = (TextView) rootView.findViewById(R.id.section_label);
-        textView.setText("No More Pictures");
+        titleLabel = (TextView) rootView.findViewById(R.id.title_label);
+        titleLabel.setText("No More Pictures");
+
+
+        ratingLayout = rootView.findViewById(R.id.ratingLayout);
+        buttonLayout = rootView.findViewById(R.id.buttonLayout);
+        instructions = rootView.findViewById(R.id.instructions);
 
         View imageFrame = rootView.findViewById(R.id.imageFrame);
        // imageFrame.getLayoutParams().height = imageFrame.getLayoutParams().width;
@@ -82,6 +89,10 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
 
         FloatingActionButton no = (FloatingActionButton) rootView.findViewById(R.id.noButton);
         no.setOnClickListener(this);
+
+        Button submit = (Button) rootView.findViewById(R.id.submit_button);
+        submit.setOnClickListener(this);
+        
         c = getInfo();
         runFetch(picNumber);
 
@@ -92,7 +103,7 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
             String title = c.getString(c.getColumnIndexOrThrow(PictureContract.PictureEntry.COLUMN_NAME_TITLE));
             String user = c.getString(c.getColumnIndexOrThrow(PictureContract.PictureEntry.COLUMN_NAME_USERNAME));
             int views = c.getInt(c.getColumnIndexOrThrow(PictureContract.PictureEntry.COLUMN_NAME_VIEWS));
-            textView.setText(title.length() > 20? title.substring(0, 20) : title);
+            titleLabel.setText(title.length() > 20 ? title.substring(0, 20) : title);
             descriptionLabel.setText(user);
             /*try {
                 if (imageData != null && !imageData.isRecycled()){
@@ -138,7 +149,7 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
     public void runFetch(int itemId) {
         int picID = getPictureId(itemId);
         String[] data = getData(itemId);
-        textView.setText(data[0].length() > 20? data[0].substring(0,20): data[0]);
+        titleLabel.setText(data[0].length() > 20 ? data[0].substring(0, 20) : data[0]);
         descriptionLabel.setText(data[1]);
         if(picID > 0) {
             new GetPicture().execute(picID);
@@ -150,14 +161,22 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch(v.getId()){
-            case R.id.noButton:
+            case R.id.submit_button:
                 this.picNumber += 1;
                 runFetch(picNumber);
                 break;
-            case R.id.yesButton:
-                this.picNumber += 1;
-                runFetch(picNumber);
-                break;
+        }
+
+        if(ratingLayout.getVisibility() == View.INVISIBLE) {
+            ratingLayout.setVisibility(View.VISIBLE);
+            titleLabel.setVisibility(View.INVISIBLE);
+            buttonLayout.setVisibility(View.INVISIBLE);
+            instructions.setVisibility(View.INVISIBLE);
+        } else {
+            ratingLayout.setVisibility(View.INVISIBLE);
+            titleLabel.setVisibility(View.VISIBLE);
+            buttonLayout.setVisibility(View.VISIBLE);
+            instructions.setVisibility(View.VISIBLE);
         }
     }
 

@@ -274,10 +274,10 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                 Constants.LATITUDE = Simplocation.getLatitude();
                 Constants.LONGITUDE = Simplocation.getLongitude();
 
-                util.log("lat"+Constants.LATITUDE+"lon"+Constants.LONGITUDE);
+                util.log("lat" + Constants.LATITUDE + "lon" + Constants.LONGITUDE);
                 //TODO Get lat and long...
-                uploadPic.paramMap.put("Constants.LONGITUDE", ""+Constants.LONGITUDE);
-                uploadPic.paramMap.put("Constants.LATITUDE", ""+Constants.LATITUDE);
+                uploadPic.paramMap.put("geolong", ""+Constants.LONGITUDE);
+                uploadPic.paramMap.put("geolat", ""+Constants.LATITUDE);
 
                 new PicUpload().execute(uploadPic);
             }
@@ -302,18 +302,18 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
             db.execSQL("Delete from " + PictureEntry.TABLE_NAME);
             ContentValues values = new ContentValues();
 
-
+            util.log(Constants.LATITUDE + " " + Constants.LONGITUDE);
 
             try {
                 JSONObject response = picture.HTTPSGET("picture/fetch?authcode=" + Constants.AUTHCODE
-                        + "&Constants.LONGITUDE=" + Constants.LONGITUDE + "&Constants.LATITUDE=" + Constants.LATITUDE + "&amount="
+                        + "&geolong=" + Constants.LONGITUDE + "&geolat=" + Constants.LATITUDE + "&amount="
                         + amount + "&ft_dist=" + dist);
 
                 JSONArray array = response.getJSONArray("data");
                 for(int i = 0; i < array.length(); i++ ){
                     values.put(PictureEntry.COLUMN_NAME_PICTURE_ID, array.getJSONObject(i).getInt("pid"));
-                    values.put(PictureEntry.COLUMN_NAME_GEOLAT, array.getJSONObject(i).getDouble("Constants.LATITUDE"));
-                    values.put(PictureEntry.COLUMN_NAME_GEOLONG, array.getJSONObject(i).getDouble("Constants.LONGITUDE"));
+                    values.put(PictureEntry.COLUMN_NAME_GEOLAT, array.getJSONObject(i).getDouble("geolat"));
+                    values.put(PictureEntry.COLUMN_NAME_GEOLONG, array.getJSONObject(i).getDouble("geolong"));
                     values.put(PictureEntry.COLUMN_NAME_DIST, array.getJSONObject(i).getDouble("dist"));
                     values.put(PictureEntry.COLUMN_NAME_TITLE, array.getJSONObject(i).getString("title"));
                     values.put(PictureEntry.COLUMN_NAME_USERNAME, array.getJSONObject(i).getString("username"));

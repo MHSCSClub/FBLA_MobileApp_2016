@@ -301,7 +301,8 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
             int amount = 25;
             int dist = 10;
 
-
+            geoLat = Simplocation.getLatitude();
+            geoLong = Simplocation.getLongitude();
 
             PictureHelper mDbHelper = new PictureHelper(getApplicationContext());
             SQLiteDatabase db = mDbHelper.getWritableDatabase();

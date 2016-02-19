@@ -44,6 +44,7 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
     private ImageView image;
     private TextView descriptionLabel;
     private TextView titleLabel;
+    private View additionalLabel;
 
     private View ratingLayout;
     private View buttonLayout;
@@ -64,7 +65,6 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
     public EvaluationFragment() {}
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_activity_swipes, container, false);
@@ -75,6 +75,7 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
         ratingLayout = rootView.findViewById(R.id.ratingLayout);
         buttonLayout = rootView.findViewById(R.id.buttonLayout);
         instructions = rootView.findViewById(R.id.instructions);
+        additionalLabel = rootView.findViewById(R.id.additional_label);
 
         View imageFrame = rootView.findViewById(R.id.imageFrame);
        // imageFrame.getLayoutParams().height = imageFrame.getLayoutParams().width;
@@ -168,12 +169,12 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
 
         if(ratingLayout.getVisibility() == View.INVISIBLE) {
             ratingLayout.setVisibility(View.VISIBLE);
-            titleLabel.setVisibility(View.INVISIBLE);
+            additionalLabel.setVisibility(View.INVISIBLE);
             buttonLayout.setVisibility(View.INVISIBLE);
             instructions.setVisibility(View.INVISIBLE);
         } else {
             ratingLayout.setVisibility(View.INVISIBLE);
-            titleLabel.setVisibility(View.VISIBLE);
+            additionalLabel.setVisibility(View.VISIBLE);
             buttonLayout.setVisibility(View.VISIBLE);
             instructions.setVisibility(View.VISIBLE);
         }
@@ -235,7 +236,6 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
                 util.log("YAY");
                 image.setImageBitmap(imageData);
 
-                //refreshView();
             }else{
                 util.log("Life will go on");
             }

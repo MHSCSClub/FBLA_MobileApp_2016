@@ -56,6 +56,7 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
     private int picNumber;
     private File location;
     private SimpleLocation simpleLocation;
+    private boolean runOnce = true;
 
     private View rootView;
 
@@ -185,8 +186,11 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
         if(picID > 0) {
             new GetPicture().execute(picID);
         }else{
-            image.setImageDrawable(getResources().getDrawable(R.drawable.finish));
-            new GetPictureInfo().execute((Void) null);
+            if(runOnce) {
+                image.setImageDrawable(getResources().getDrawable(R.drawable.finish));
+                new GetPictureInfo().execute((Void) null);
+                runOnce = false;
+            }
         }
     }
     @Override
@@ -352,6 +356,9 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
                         + "&geolong=" + Constants.LONGITUDE + "&geolat=" + Constants.LATITUDE + "&ft_dist=" + dist);
 
                 JSONArray array = response.getJSONArray("data");
+                if(array.length() > 0){
+                    runOnce = true;
+                }
                 for(int i = 0; i < array.length(); i++ ){
                     int views = array.getJSONObject(i).getInt("views");
                     values.put(PictureContract.PictureEntry.COLUMN_NAME_PICTURE_ID, array.getJSONObject(i).getInt("pid"));

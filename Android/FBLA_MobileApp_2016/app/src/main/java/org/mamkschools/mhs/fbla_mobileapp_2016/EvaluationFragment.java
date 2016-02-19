@@ -1,5 +1,6 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -28,8 +29,13 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.util;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import im.delight.android.location.SimpleLocation;
 
 /**
  * Created by jackphillips on 2/16/16.
@@ -48,6 +54,7 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
     private SQLiteDatabase db;
     private int picNumber;
     private File location;
+    private SimpleLocation simpleLocation;
 
     private View rootView;
 
@@ -67,11 +74,12 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
     private Cursor c;
 
 
-    public static EvaluationFragment newInstance(SQLiteDatabase db, int picNumber, File location) {
+    public static EvaluationFragment newInstance(SQLiteDatabase db, int picNumber, File location, SimpleLocation simpleLocation) {
         EvaluationFragment fragment = new EvaluationFragment();
         fragment.db = db;
         fragment.picNumber = picNumber;
         fragment.location = location;
+        fragment.simpleLocation = simpleLocation;
         return fragment;
     }
 
@@ -173,6 +181,7 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
             new GetPicture().execute(picID);
         }else{
             image.setImageDrawable(getResources().getDrawable(R.drawable.finish));
+            new GetPictureInfo().execute((Void) null);
         }
     }
     @Override
@@ -300,6 +309,93 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
             } else {
                 Toast.makeText(rootView.getContext(), "Rating failed", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+    private class GetPictureInfo extends AsyncTask<Void, Void, Void> {
+
+        private ArrayList<JSONObject> ret = new ArrayList<>();
+        SecureAPI picture = SecureAPI.getInstance(getContext());
+
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            long secondsInMilli = 1000;
+            long minutesInMilli = secondsInMilli * 60;
+            long hoursInMilli = minutesInMilli * 60;
+            long daysInMilli = hoursInMilli * 24;
+
+
+            int amount = 25;
+            int dist = 10000;
+
+            //debug added actual locations
+            Constants.LATITUDE = simpleLocation.getLatitude();
+            Constants.LONGITUDE = simpleLocation.getLongitude();
+
+            db.execSQL("Delete from " + PictureContract.PictureEntry.TABLE_NAME);
+            ContentValues values = new ContentValues();
+
+            util.log(Constants.LATITUDE + " " + Constants.LONGITUDE);
+
+            try {
+                JSONObject response = picture.HTTPSGET("picture/fetch?authcode=" + Constants.AUTHCODE
+                        + "&geolong=" + Constants.LONGITUDE + "&geolat=" + Constants.LATITUDE + "&amount="
+                        + amount + "&ft_dist=" + dist);
+
+                JSONArray array = response.getJSONArray("data");
+                for(int i = 0; i < array.length(); i++ ){
+                    int views = array.getJSONObject(i).getInt("views");
+                    values.put(PictureContract.PictureEntry.COLUMN_NAME_PICTURE_ID, array.getJSONObject(i).getInt("pid"));
+                    values.put(PictureContract.PictureEntry.COLUMN_NAME_GEOLAT, array.getJSONObject(i).getDouble("geolat"));
+                    values.put(PictureContract.PictureEntry.COLUMN_NAME_GEOLONG, array.getJSONObject(i).getDouble("geolong"));
+                    values.put(PictureContract.PictureEntry.COLUMN_NAME_DIST, Math.round(array.getJSONObject(i).getDouble("dist")));
+                    values.put(PictureContract.PictureEntry.COLUMN_NAME_TITLE, array.getJSONObject(i).getString("title"));
+                    values.put(PictureContract.PictureEntry.COLUMN_NAME_USERNAME, array.getJSONObject(i).getString("username"));
+                    values.put(PictureContract.PictureEntry.COLUMN_NAME_VIEWS, views);
+                    values.put(PictureContract.PictureEntry.COLUMN_NAME_CREATED, array.getJSONObject(i).getString("created"));
+                    //Calculates priority
+                    int p;
+                    if(views <10)
+                        p = (int) ((30 * Math.log(11 - views))/(Math.log(11)) + 40);
+                    else
+                        p = 30/(views - 10);
+
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                    long different = new Date().getTime() - simpleDateFormat.parse(array.getJSONObject(i).getString("created")).getTime();
+                    long elapsedHours = different / hoursInMilli;
+                    if(elapsedHours < 10)
+                        p += 3*elapsedHours;
+                    else
+                        p+= 30;
+                    values.put(PictureContract.PictureEntry.COLUMN_NAME_HOURS, elapsedHours);
+                    values.put(PictureContract.PictureEntry.COLUMN_NAME_PRIORITY, p);
+
+                    //adds only pictures we want to server
+                    if(views < 15 && elapsedHours < 120) {
+                        long newRowId;
+                        newRowId = db.insert(
+                                PictureContract.PictureEntry.TABLE_NAME,
+                                "null",
+                                values);
+                    }
+
+                }
+            }catch (Exception e){
+                if(Constants.DEBUG_MODE){
+                    util.log(e.getMessage());
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void v) {
+            util.log("Finished getting Picture Infomation");
+            c = getInfo();
+            picNumber = 0;
+            runFetch(picNumber);
+
         }
     }
 

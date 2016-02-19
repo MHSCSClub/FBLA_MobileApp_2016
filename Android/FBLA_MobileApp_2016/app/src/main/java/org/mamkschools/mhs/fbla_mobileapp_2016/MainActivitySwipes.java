@@ -33,7 +33,9 @@ import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.*;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,6 +75,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_main_activity_swipes);
 
 
+
         Simplocation = new SimpleLocation(this);
 
         // if we can't access the location yet
@@ -80,7 +83,6 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
             // ask the user to enable location access
             SimpleLocation.openSettings(this);
         }
-
 
 
         if(!Constants.PREFS_RESTORED){
@@ -92,7 +94,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
 
 
-        new GetPicture().execute((Void) null);
+        //new GetPictureInfo().execute((Void) null);
         location = getFilesDir();
 
 
@@ -110,6 +112,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this);
     }
+
 
     @Override
     protected void onResume(){
@@ -188,8 +191,9 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
             //System.out.println(position);
             PictureHelper mDbHelper = new PictureHelper(getApplicationContext());
             SQLiteDatabase db = mDbHelper.getWritableDatabase();
+            mDbHelper.onUpgrade(db, 1 , 2);
             int picture = 0;
-            return EvaluationFragment.newInstance(db, picture, location);
+            return EvaluationFragment.newInstance(db, picture, location, Simplocation);
         }
 
         @Override
@@ -202,6 +206,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
             return "Section_" + position;
         }
     }
+
 
     /**
      * A placeholder fragment containing a simple view.
@@ -283,63 +288,8 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
             }
         }
     }
-    private class GetPicture extends AsyncTask<Void, Void, Void> {
 
-        private ArrayList<JSONObject> ret = new ArrayList<>();
-        SecureAPI picture = SecureAPI.getInstance(MainActivitySwipes.this);
 
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            int amount = 25;
-            int dist = 10000;
-
-            Constants.LATITUDE = Simplocation.getLatitude();
-            Constants.LONGITUDE = Simplocation.getLongitude();
-
-            PictureHelper mDbHelper = new PictureHelper(getApplicationContext());
-            SQLiteDatabase db = mDbHelper.getWritableDatabase();
-            db.execSQL("Delete from " + PictureEntry.TABLE_NAME);
-            ContentValues values = new ContentValues();
-
-            util.log(Constants.LATITUDE + " " + Constants.LONGITUDE);
-
-            try {
-                JSONObject response = picture.HTTPSGET("picture/fetch?authcode=" + Constants.AUTHCODE
-                        + "&geolong=" + Constants.LONGITUDE + "&geolat=" + Constants.LATITUDE + "&amount="
-                        + amount + "&ft_dist=" + dist);
-
-                JSONArray array = response.getJSONArray("data");
-                for(int i = 0; i < array.length(); i++ ){
-                    values.put(PictureEntry.COLUMN_NAME_PICTURE_ID, array.getJSONObject(i).getInt("pid"));
-                    values.put(PictureEntry.COLUMN_NAME_GEOLAT, array.getJSONObject(i).getDouble("geolat"));
-                    values.put(PictureEntry.COLUMN_NAME_GEOLONG, array.getJSONObject(i).getDouble("geolong"));
-                    values.put(PictureEntry.COLUMN_NAME_DIST, array.getJSONObject(i).getDouble("dist"));
-                    values.put(PictureEntry.COLUMN_NAME_TITLE, array.getJSONObject(i).getString("title"));
-                    values.put(PictureEntry.COLUMN_NAME_USERNAME, array.getJSONObject(i).getString("username"));
-                    values.put(PictureEntry.COLUMN_NAME_VIEWS, array.getJSONObject(i).getInt("views"));
-                    long newRowId;
-                    newRowId = db.insert(
-                            PictureEntry.TABLE_NAME,
-                            "null",
-                            values);
-
-                }
-            }catch (Exception e){
-                if(Constants.DEBUG_MODE){
-                    util.log(e.getMessage());
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void v) {
-            util.log("Finished getting Picture Infomation");
-            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-            mViewPager.setAdapter(mSectionsPagerAdapter);
-        }
-    }
     private class PicUpload extends AsyncTask<PicUploadParams, Void, Boolean> {
 
         private ArrayList<JSONObject> ret = new ArrayList<>();

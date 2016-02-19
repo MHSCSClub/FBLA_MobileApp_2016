@@ -21,7 +21,10 @@ public class PictureHelper extends SQLiteOpenHelper {
                     PictureEntry.COLUMN_NAME_DIST  + " DECIMAL(7,12)" +  COMMA_SEP +
                     PictureEntry.COLUMN_NAME_TITLE  + " TEXT" +  COMMA_SEP +
                     PictureEntry.COLUMN_NAME_USERNAME  + " TEXT" +  COMMA_SEP +
-                    PictureEntry.COLUMN_NAME_VIEWS + " INTERGER" +
+                    PictureEntry.COLUMN_NAME_VIEWS + " INTERGER" + COMMA_SEP +
+                    PictureEntry.COLUMN_NAME_CREATED + " DATETIME" + COMMA_SEP +
+                    PictureEntry.COLUMN_NAME_PRIORITY + " INTEGER" + COMMA_SEP +
+                    PictureEntry.COLUMN_NAME_HOURS + " INTEGER" +
                     ")";
 
     private static final String SQL_DELETE_ENTRIES =

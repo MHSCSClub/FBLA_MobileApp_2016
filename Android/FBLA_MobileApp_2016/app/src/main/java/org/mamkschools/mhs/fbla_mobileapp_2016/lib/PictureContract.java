@@ -18,6 +18,9 @@ public class PictureContract {
         public static final String COLUMN_NAME_TITLE = "title";
         public static final String COLUMN_NAME_USERNAME = "username";
         public static final String COLUMN_NAME_VIEWS = "views";
+        public static final String COLUMN_NAME_PRIORITY = "priority";
+        public static final String COLUMN_NAME_HOURS = "hours";
+
 
     }
 }

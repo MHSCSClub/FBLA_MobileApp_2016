@@ -292,7 +292,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         protected Void doInBackground(Void... params) {
 
             int amount = 25;
-            int dist = 10;
+            int dist = 10000;
 
             Constants.LATITUDE = Simplocation.getLatitude();
             Constants.LONGITUDE = Simplocation.getLongitude();

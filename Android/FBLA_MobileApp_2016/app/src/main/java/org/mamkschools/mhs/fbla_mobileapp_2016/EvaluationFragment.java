@@ -51,6 +51,7 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
     private View instructions;
 
     private Bitmap imageData;
+
     private Cursor c;
 
 
@@ -106,22 +107,17 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
             int views = c.getInt(c.getColumnIndexOrThrow(PictureContract.PictureEntry.COLUMN_NAME_VIEWS));
             titleLabel.setText(title.length() > 20 ? title.substring(0, 20) : title);
             descriptionLabel.setText(user);
-            /*try {
-                if (imageData != null && !imageData.isRecycled()){
-                    imageData.recycle();
-                }
-                imageData = getPictureBitmap(new File(location, "picture.jpg"));
-                image.setImageBitmap(imageData);
-            }catch(Exception e){
-                image.setImageDrawable(Drawable.createFromPath("@drawable/cslogo"));
-            }*/
         }
 
         return rootView;
     }
     public Bitmap getPictureBitmap(File file){
-        BitmapFactory.Options options = new BitmapFactory.Options();
+        final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        options.inMutable = true;
+        if(imageData != null) {
+            options.inBitmap = imageData;
+        }
         return BitmapFactory.decodeFile(file.getAbsolutePath(), options);
 
     }
@@ -212,18 +208,13 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
     }
     private class GetPicture extends AsyncTask<Integer, Void, Boolean> {
         SecureAPI picture = SecureAPI.getInstance(getContext());
+        File pfile = new File(location, "picture.jpg");
 
         @Override
         protected Boolean doInBackground(Integer... params) {
             try{
                 int pid = params[0];
-                picture.HTTPSFETCHPIC("picture/" + pid + "?authcode=" + Constants.AUTHCODE, new File(location, "picture.jpg"));
-                if (imageData != null){
-                    imageData.recycle();
-                }
-                imageData = null;
-                imageData = getPictureBitmap(new File(location, "picture.jpg"));
-
+                picture.HTTPSFETCHPIC("picture/" + pid + "?authcode=" + Constants.AUTHCODE, pfile);
             }catch(Exception e){
                 return false;
             }
@@ -233,9 +224,9 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
         @Override
         protected void onPostExecute(Boolean v) {
             if(v){
-                util.log("YAY");
+                imageData = getPictureBitmap(pfile);
+                pfile.delete();
                 image.setImageBitmap(imageData);
-
             }else{
                 util.log("Life will go on");
             }
@@ -243,7 +234,3 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
     }
 
 }
-/*
-int pid = array.getJSONObject(i).getInt("pid");
-File file = picture.HTTPSFETCHPIC("picture/" + pid + "?authcode=" + Constants.AUTHCODE, new File(getFilesDir(), "picture" + pid + ".jpg"));
- */

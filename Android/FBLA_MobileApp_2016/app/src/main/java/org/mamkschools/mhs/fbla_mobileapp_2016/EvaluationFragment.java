@@ -348,8 +348,8 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
             util.log(Constants.LATITUDE + " " + Constants.LONGITUDE);
 
             try {
-                JSONObject response = picture.HTTPSGET("picture/fetch?authcode=" + Constants.AUTHCODE
-                        + "&geolong=" + Constants.LONGITUDE + "&geolat=" + Constants.LATITUDE + "&ft_dist=" + dist + "&ft_me=1");
+                JSONObject response = picture.HTTPSGET("picture/fetch?authcode=" + Constants.AUTHCODE + "&ft_me=1"
+                        + "&geolong=" + Constants.LONGITUDE + "&geolat=" + Constants.LATITUDE + "&ft_dist=" + dist);
 
                 JSONArray array = response.getJSONArray("data");
                 for(int i = 0; i < array.length(); i++ ){

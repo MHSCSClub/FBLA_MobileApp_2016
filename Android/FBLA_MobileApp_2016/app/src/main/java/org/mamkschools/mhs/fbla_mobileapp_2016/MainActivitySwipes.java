@@ -13,6 +13,8 @@ import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -65,7 +67,12 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
     private SimpleLocation Simplocation;
 
+    private MyPagerAdapter pagerAdapter;
+    private ViewPager viewPager;
 
+    //Fragments
+    private Fragment evaluatePictures;
+    private Fragment myPictures = MeFragment.newInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +80,6 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         //Must be first
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity_swipes);
-
 
 
         Simplocation = new SimpleLocation(this);
@@ -85,16 +91,30 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         }
 
 
+
         if(!Constants.PREFS_RESTORED){
             Constants.restorePrefs(getApplicationContext());
         }
 
+        //PagerAdapter
+        pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
 
+        //ViewPager
+        viewPager = (ViewPager) findViewById(R.id.view_pager);
+        viewPager.setAdapter(pagerAdapter);
 
+        //Tabs
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.setTabsFromPagerAdapter(pagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
 
+        PictureHelper mDbHelper = new PictureHelper(getApplicationContext());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        int picture = 0;
 
+        evaluatePictures = EvaluationFragment.newInstance(db, picture, location);
 
-        //new GetPictureInfo().execute((Void) null);
+        new GetPicture().execute((Void) null);
         location = getFilesDir();
 
 
@@ -112,7 +132,6 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this);
     }
-
 
     @Override
     protected void onResume(){
@@ -207,7 +226,6 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         }
     }
 
-
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -288,7 +306,91 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
             }
         }
     }
+    private class GetPicture extends AsyncTask<Void, Void, Void> {
 
+        private ArrayList<JSONObject> ret = new ArrayList<>();
+        SecureAPI picture = SecureAPI.getInstance(MainActivitySwipes.this);
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            int amount = 25;
+            int dist = 10000;
+
+            Constants.LATITUDE = Simplocation.getLatitude();
+            Constants.LONGITUDE = Simplocation.getLongitude();
+
+            PictureHelper mDbHelper = new PictureHelper(getApplicationContext());
+            SQLiteDatabase db = mDbHelper.getWritableDatabase();
+            db.execSQL("Delete from " + PictureEntry.TABLE_NAME);
+            ContentValues values = new ContentValues();
+
+            util.log(Constants.LATITUDE + " " + Constants.LONGITUDE);
+
+            try {
+                JSONObject response = picture.HTTPSGET("picture/fetch?authcode=" + Constants.AUTHCODE
+                        + "&geolong=" + Constants.LONGITUDE + "&geolat=" + Constants.LATITUDE + "&amount="
+                        + amount + "&ft_dist=" + dist);
+
+                JSONArray array = response.getJSONArray("data");
+                for(int i = 0; i < array.length(); i++ ){
+                    values.put(PictureEntry.COLUMN_NAME_PICTURE_ID, array.getJSONObject(i).getInt("pid"));
+                    values.put(PictureEntry.COLUMN_NAME_GEOLAT, array.getJSONObject(i).getDouble("geolat"));
+                    values.put(PictureEntry.COLUMN_NAME_GEOLONG, array.getJSONObject(i).getDouble("geolong"));
+                    values.put(PictureEntry.COLUMN_NAME_DIST, array.getJSONObject(i).getDouble("dist"));
+                    values.put(PictureEntry.COLUMN_NAME_TITLE, array.getJSONObject(i).getString("title"));
+                    values.put(PictureEntry.COLUMN_NAME_USERNAME, array.getJSONObject(i).getString("username"));
+                    values.put(PictureEntry.COLUMN_NAME_VIEWS, array.getJSONObject(i).getInt("views"));
+                    long newRowId;
+                    newRowId = db.insert(
+                            PictureEntry.TABLE_NAME,
+                            "null",
+                            values);
+
+                }
+            }catch (Exception e){
+                if(Constants.DEBUG_MODE){
+                    util.log(e.getMessage());
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void v) {
+            util.log("Finished getting Picture Infomation");
+            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+            mViewPager.setAdapter(mSectionsPagerAdapter);
+        }
+    }
+
+    private class MyPagerAdapter extends FragmentStatePagerAdapter {
+
+        private String[] titles = {"Evaluate", "Me"};
+
+        public MyPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int pos) {
+            switch(pos) {
+                case 0: return evaluatePictures;
+                case 1: return myPictures;
+                default: return evaluatePictures;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return titles[position];
+        }
+    }
 
     private class PicUpload extends AsyncTask<PicUploadParams, Void, Boolean> {
 

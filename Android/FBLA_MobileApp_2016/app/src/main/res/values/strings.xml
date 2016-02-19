@@ -29,13 +29,13 @@
 
     <!-- Strings related to Settings -->
 
-        <!-- Example General settings -->
-            <string name="pref_header_general">General</string>
-            <string name="pref_title_debug_mode">Enable debug mode (console logging)</string>
-            <string name="pref_description_debug_mode">Enables debug mode, which prints messages to console</string>
-            <string name="pref_title_demo_mode">Enable demo mode (example data)</string>
-            <string name="pref_description_demo_mode">Enables demo mode, which uses example data internal to app and requires no internet connection (BETA)</string>
-        <string name="title_activity_prefs">PrefsActivity</string>
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+    <string name="pref_title_debug_mode">Enable debug mode (console logging)</string>
+    <string name="pref_description_debug_mode">Enables debug mode, which prints messages to console</string>
+    <string name="pref_title_demo_mode">Enable demo mode (example data)</string>
+    <string name="pref_description_demo_mode">Enables demo mode, which uses example data internal to app and requires no internet connection (BETA)</string>
+    <string name="title_activity_prefs">PrefsActivity</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
@@ -126,4 +126,7 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

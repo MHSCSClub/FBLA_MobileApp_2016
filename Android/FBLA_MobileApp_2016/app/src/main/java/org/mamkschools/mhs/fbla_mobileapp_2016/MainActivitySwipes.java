@@ -66,7 +66,6 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity_swipes);
 
-
         Simplocation = new SimpleLocation(this);
 
         // if we can't access the location yet
@@ -74,8 +73,6 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
             // ask the user to enable location access
             SimpleLocation.openSettings(this);
         }
-
-
 
         if(!Constants.PREFS_RESTORED){
             Constants.restorePrefs(getApplicationContext());
@@ -97,9 +94,8 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         int picture = 0;
 
-        evaluatePictures = EvaluationFragment.newInstance(db, picture, location, Simplocation);
-
         location = getFilesDir();
+        evaluatePictures = EvaluationFragment.newInstance(db, picture, location, Simplocation);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this);

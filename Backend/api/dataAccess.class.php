@@ -310,11 +310,11 @@
 			//Me filter
 			$mequery = '';
 			if(isset($params['me']) && $params['me']) {
-				$mequery = " LEFT JOIN comments ON pictures.pid=comments.pid AND comments.userid=$userid WHERE comments.userid IS NULL ";
+				$mequery = " LEFT JOIN comments ON pictures.pid=comments.pid AND comments.userid=$userid WHERE comments.userid IS NULL AND pictures.userid<>$userid";
 			}
 
 			$query = "SELECT pictures.pid AS pid, title, geolat, geolong, created, $dist_func AS dist, username, (likes + dislikes) AS views FROM pictures INNER JOIN users ON pictures.userid = users.userid ".
-						 "$mequery HAVING $distquery AND $timequery AND $namequery AND $viewquery  ORDER BY dist";
+						 "$mequery HAVING $distquery AND $timequery AND $namequery AND $viewquery ORDER BY dist";
 
 			$stmt = $db->prepare($query);
 			//throw new Exception($query);

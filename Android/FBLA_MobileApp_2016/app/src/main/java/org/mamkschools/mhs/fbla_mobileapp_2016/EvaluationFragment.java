@@ -275,9 +275,11 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
         protected Boolean doInBackground(Integer... params) {
             try{
                 int pid = params[0];
+                util.log("picture/" + pid + "?authcode=" + Constants.AUTHCODE);
                 picture.HTTPSFETCHPIC("picture/" + pid + "?authcode=" + Constants.AUTHCODE, new File(location, "picture.jpg"));
                 imageData = getPictureBitmap(new File(location, "picture.jpg"));
             }catch(Exception e){
+                util.log(e.getMessage());
                 return false;
             }
             return true;
@@ -347,8 +349,7 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
 
             try {
                 JSONObject response = picture.HTTPSGET("picture/fetch?authcode=" + Constants.AUTHCODE
-                        + "&geolong=" + Constants.LONGITUDE + "&geolat=" + Constants.LATITUDE + "&amount="
-                        + amount + "&ft_dist=" + dist);
+                        + "&geolong=" + Constants.LONGITUDE + "&geolat=" + Constants.LATITUDE + "&ft_dist=" + dist + "&ft_me=1");
 
                 JSONArray array = response.getJSONArray("data");
                 for(int i = 0; i < array.length(); i++ ){

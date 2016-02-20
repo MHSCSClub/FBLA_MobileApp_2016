@@ -341,6 +341,7 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
 
             int amount = 25;
             int dist = 10000;
+            int view = 15;
 
             //debug added actual locations
             Constants.LATITUDE = simpleLocation.getLatitude();
@@ -352,13 +353,11 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
             util.log(Constants.LATITUDE + " " + Constants.LONGITUDE);
 
             try {
-                JSONObject response = picture.HTTPSGET("picture/fetch?authcode=" + Constants.AUTHCODE + "&ft_me=1"
+                JSONObject response = picture.HTTPSGET("picture/fetch?authcode=" + Constants.AUTHCODE + "&ft_me=1" + "&ft_views=" + view
                         + "&geolong=" + Constants.LONGITUDE + "&geolat=" + Constants.LATITUDE + "&ft_dist=" + dist);
 
                 JSONArray array = response.getJSONArray("data");
-                if(array.length() > 0){
-                    runOnce = true;
-                }
+
                 for(int i = 0; i < array.length(); i++ ){
                     int views = array.getJSONObject(i).getInt("views");
                     values.put(PictureContract.PictureEntry.COLUMN_NAME_PICTURE_ID, array.getJSONObject(i).getInt("pid"));
@@ -408,6 +407,11 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
         protected void onPostExecute(Void v) {
             util.log("Finished getting Picture Infomation");
             c = getInfo();
+            if(c.getCount() > 0){
+                runOnce = true;
+            }else{
+                runOnce = false;
+            }
             picNumber = 0;
             runFetch(picNumber);
 

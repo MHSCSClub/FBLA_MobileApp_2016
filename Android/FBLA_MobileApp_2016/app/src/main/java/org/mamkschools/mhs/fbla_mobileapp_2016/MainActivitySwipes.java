@@ -57,7 +57,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
     //Fragments
     private Fragment evaluatePictures;
-    private Fragment myPictures = MeFragment.newInstance();
+    private Fragment myPictures;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +96,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
         location = getFilesDir();
         evaluatePictures = EvaluationFragment.newInstance(db, picture, location, Simplocation);
+        myPictures = MeFragmentBetter.newInstance(location);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this);

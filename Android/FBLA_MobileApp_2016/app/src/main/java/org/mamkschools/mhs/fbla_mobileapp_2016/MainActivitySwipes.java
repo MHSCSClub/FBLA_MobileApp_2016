@@ -221,6 +221,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         @Override
         protected void onPostExecute(Void v) {
             Constants.AUTHCODE = null;
+            Constants.savePrefs(getApplicationContext());
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
             finish();
         }

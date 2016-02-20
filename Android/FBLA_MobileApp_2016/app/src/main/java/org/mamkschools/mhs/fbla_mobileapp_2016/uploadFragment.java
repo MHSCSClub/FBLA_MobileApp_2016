@@ -16,7 +16,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -34,7 +33,7 @@ import java.util.Map;
 
 import im.delight.android.location.SimpleLocation;
 
-public class MeFragment extends Fragment implements View.OnClickListener {
+public class uploadFragment extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static Context parentContext;
@@ -47,8 +46,8 @@ public class MeFragment extends Fragment implements View.OnClickListener {
     private String mParam1;
     private String mParam2;
 
-    public static MeFragment newInstance() {
-        return new MeFragment();
+    public static uploadFragment newInstance() {
+        return new uploadFragment();
     }
 
 
@@ -63,7 +62,7 @@ public class MeFragment extends Fragment implements View.OnClickListener {
         view.findViewById(R.id.uploadNow).setOnClickListener(this);
     }
 
-    public MeFragment() {
+    public uploadFragment() {
         // Required empty public constructor
     }
 
@@ -80,7 +79,7 @@ public class MeFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_me, container, false);
+        return inflater.inflate(R.layout.fragment_upload, container, false);
     }
 
     @Override

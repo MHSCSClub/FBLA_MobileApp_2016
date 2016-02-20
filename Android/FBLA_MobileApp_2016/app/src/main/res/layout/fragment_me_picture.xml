@@ -12,10 +12,15 @@
         android:layout_height="match_parent"
         android:id="@+id/TitleText"
         android:text="title"
-        android:gravity="center"
+        android:gravity="center|left"
+        android:layout_toLeftOf="@+id/ucount"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="15dp"
-        android:textSize="35dp" />
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="15dp"
+        android:singleLine="true"
+        android:textColor="#424242"
+        android:textSize="24dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -26,7 +31,7 @@
         android:gravity="bottom|center"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="3dp"
-        android:textSize="18dp" />
+        android:textSize="15dp" />
 
 
     <ImageView

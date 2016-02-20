@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,6 +29,7 @@ public class MeFragmentBetter extends Fragment implements View.OnClickListener {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private LinearLayout commentLayout;
     private File location;
 
     public static MeFragmentBetter newInstance(File location) {
@@ -40,6 +42,7 @@ public class MeFragmentBetter extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        commentLayout = (LinearLayout) view.findViewById(R.id.commentLayout);
         new GetMyPictureInfo().execute((Void) null);
 
     }
@@ -85,6 +88,7 @@ public class MeFragmentBetter extends Fragment implements View.OnClickListener {
 
             try {
                 JSONObject response = picture.HTTPSGET("picture/fetch/me?authcode=" + Constants.AUTHCODE);
+                util.log("picture/fetch/me?authcode=" + Constants.AUTHCODE);
 
                 JSONArray array = response.getJSONArray("data");
 
@@ -99,7 +103,7 @@ public class MeFragmentBetter extends Fragment implements View.OnClickListener {
                 }
             }catch (Exception e){
                 if(Constants.DEBUG_MODE){
-                    util.log(e.getMessage());
+                    util.log("mypics error " + e.getMessage());
                 }
                 return false;
             }
@@ -112,14 +116,12 @@ public class MeFragmentBetter extends Fragment implements View.OnClickListener {
                 util.log("Finished getting my pics");
                 FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                 for(int i = 0; i < ret.size(); i++){
-                    transaction.add(R.id.fragment_holder, ret.get(i), "Fragment_" + i);
-
+                    transaction.add(commentLayout.getId(), ret.get(i), "Fragment_" + i);
                 }
                 transaction.commit();
             }else{
                 util.log("Did not work_111");
             }
-
 
 
         }

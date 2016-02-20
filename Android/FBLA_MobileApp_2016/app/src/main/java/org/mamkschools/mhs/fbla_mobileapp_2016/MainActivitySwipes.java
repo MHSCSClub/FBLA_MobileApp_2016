@@ -101,10 +101,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         evaluatePictures = EvaluationFragment.newInstance(db, picture, location, Simplocation);
         myPictures = MeFragmentBetter.newInstance(location);
 
-        ActionBar ab = getSupportActionBar();
-        ab.setDisplayShowTitleEnabled(false);
 
-        ab.show();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this);

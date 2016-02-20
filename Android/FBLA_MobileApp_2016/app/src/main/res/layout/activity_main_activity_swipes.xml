@@ -49,7 +49,7 @@
         app:borderWidth="0dp"
 
         app:elevation="1dp"
-        android:visibility="invisible">
+        android:visibility="gone">
 
     </android.support.design.widget.FloatingActionButton>
 

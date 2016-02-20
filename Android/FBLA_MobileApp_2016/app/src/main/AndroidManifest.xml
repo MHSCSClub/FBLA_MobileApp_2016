@@ -37,14 +37,6 @@
             android:screenOrientation="portrait"
             android:label="@string/title_activity_main_activity_swipes"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivitySwipes">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.mamkschools.mhs.fbla_mobileapp_2016.MainActivitySwipes" />
-        </activity>
     </application>
 
 </manifest>

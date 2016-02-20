@@ -145,9 +145,6 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         int id = item.getItemId();
 
         switch (id){
-            case R.id.action_settings:
-                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-                return true;
             case R.id.action_logout:
                 new Logout().execute((Void) null);
                 return true;
@@ -164,7 +161,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                 //openImageIntent();
                 break;
             case R.id.more_stuff:
-                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                startActivity(new Intent(getApplicationContext(), null));
                 break;
             default:
                 Toast.makeText(this, "No Assigned Action", Toast.LENGTH_SHORT).show();

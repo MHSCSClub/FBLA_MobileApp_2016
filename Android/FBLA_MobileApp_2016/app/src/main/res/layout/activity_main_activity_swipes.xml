@@ -23,13 +23,22 @@
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways"
             android:layout_weight="1" />
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Button"
-            android:id="@+id/button"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_overflow"
+            android:id="@+id/more_stuff"
             android:gravity="end"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="#004d3333"
+            android:hapticFeedbackEnabled="true"
+            android:adjustViewBounds="false"
+            android:clickable="true"
+            android:contextClickable="true"
+            android:layout_marginRight="3dp"
+            android:cropToPadding="false"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
         </LinearLayout>
     </android.support.design.widget.AppBarLayout>
 
@@ -43,8 +52,6 @@
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 />
-
-
 
 
         </FrameLayout>

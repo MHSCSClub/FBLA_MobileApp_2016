@@ -25,9 +25,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 
@@ -101,7 +103,8 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         evaluatePictures = EvaluationFragment.newInstance(db, picture, location, Simplocation);
         myPictures = MeFragmentBetter.newInstance(location);
 
-
+        ImageButton more = (ImageButton) findViewById(R.id.more_stuff);
+        more.setOnClickListener(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this);
@@ -159,6 +162,9 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
             case R.id.fab:
                 //Photo chooser (include default, cam, file (see Google Inbox on Android))
                 //openImageIntent();
+                break;
+            case R.id.more_stuff:
+                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                 break;
             default:
                 Toast.makeText(this, "No Assigned Action", Toast.LENGTH_SHORT).show();

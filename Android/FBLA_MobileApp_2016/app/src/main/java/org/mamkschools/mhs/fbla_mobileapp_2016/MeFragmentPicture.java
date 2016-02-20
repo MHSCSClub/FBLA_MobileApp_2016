@@ -26,7 +26,8 @@ public class MeFragmentPicture extends Fragment implements View.OnClickListener 
     private String mParam2;
 
     private TextView title;
-    private TextView info;
+    private TextView ucount;
+    private TextView dcount;
 
     private ImageView image;
 
@@ -75,13 +76,12 @@ public class MeFragmentPicture extends Fragment implements View.OnClickListener 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         title = (TextView) view.findViewById(R.id.TitleText);
-        info = (TextView) view.findViewById(R.id.infomation);
-        image = (ImageView) view.findViewById(R.id.imageProfile);
+        ucount = (TextView) view.findViewById(R.id.ucount);
+        dcount = (TextView) view.findViewById(R.id.dcount);
 
         title.setText(titles);
-        info.setText("likes:" + likes + "\n" + "Dislikes:" + dislikes);
-        new GetPicture().execute(pid);
-
+        ucount.setText("" + likes);
+        dcount.setText("" + dislikes);
     }
 
     public MeFragmentPicture() {
@@ -115,30 +115,4 @@ public class MeFragmentPicture extends Fragment implements View.OnClickListener 
 
     }
 
-    private class GetPicture extends AsyncTask<Integer, Void, Boolean> {
-        SecureAPI picture = SecureAPI.getInstance(getContext());
-
-        @Override
-        protected Boolean doInBackground(Integer... params) {
-            try{
-                int pid = params[0];
-                util.log("picture/" + pid + "?authcode=" + Constants.AUTHCODE);
-                picture.HTTPSFETCHPIC("picture/" + pid + "?authcode=" + Constants.AUTHCODE, new File(location, "picture.jpg"));
-                imageData = getPictureBitmap(new File(location, "picture.jpg"));
-            }catch(Exception e){
-                util.log(e.getMessage());
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean v) {
-            if(v){
-                image.setImageBitmap(imageData);
-            }else{
-                util.log("Life will go on");
-            }
-        }
-    }
 }

@@ -26,9 +26,6 @@ public final class Constants {
     //Authcode needs to be saved and loaded
     public static String AUTHCODE = null;
 
-    //Authcode expiration time, to kick user back to login. We need a "renew" function to extend time
-    public static long AUTHCODE_EXP;
-
     //Variable to see if prefs restored yet
     public static boolean PREFS_RESTORED = false;
 
@@ -47,7 +44,6 @@ public final class Constants {
         DEBUG_MODE = prefs.getBoolean("DEBUG_MODE", true);
         DEMO_MODE = prefs.getBoolean("DEMO_MODE", false);
         AUTHCODE = prefs.getString("AUTHCODE", null);
-        AUTHCODE_EXP = prefs.getLong("AUTHCODE_EXP", -1);
     }
 
     @SuppressLint("CommitPrefEdits")
@@ -60,7 +56,6 @@ public final class Constants {
         editor.putBoolean("DEBUG_MODE", DEBUG_MODE);
         editor.putBoolean("DEMO_MODE", DEMO_MODE);
         editor.putString("AUTHCODE", AUTHCODE);
-        editor.putLong("AUTHCODE_EXP", AUTHCODE_EXP);
         editor.putString("LATITUDE", Double.toString(LATITUDE));
         editor.putString("LONGITUDE", Double.toString(LONGITUDE));
 

@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -35,6 +36,7 @@ import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.*;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -98,14 +100,21 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         evaluatePictures = EvaluationFragment.newInstance(db, picture, location, Simplocation);
         myPictures = MeFragmentBetter.newInstance(location);
 
+        ActionBar ab = getSupportActionBar();
+        
+        ab.show();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this);
     }
 
+
+
+
     @Override
     protected void onResume(){
         super.onResume();
-        if(Constants.AUTHCODE == null || System.currentTimeMillis() >= Constants.AUTHCODE_EXP) {
+        if(Constants.AUTHCODE == null){
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
         Constants.restorePrefs(getApplicationContext());
@@ -203,7 +212,6 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
             try {
                 HTTPS.HTTPSGET(Commands.Get.LOGOUT + Constants.AUTHCODE);
-                Constants.AUTHCODE_EXP = -1;
             } catch (Exception ex) {
                 util.log(ex.getMessage());
             }

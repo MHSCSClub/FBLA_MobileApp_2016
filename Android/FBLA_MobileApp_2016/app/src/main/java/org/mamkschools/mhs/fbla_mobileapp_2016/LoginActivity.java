@@ -54,9 +54,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Constants.restorePrefs(getApplicationContext());
 
-        if(Constants.AUTHCODE != null &&
-                (Constants.AUTHCODE_EXP >= System.currentTimeMillis()
-                        || Constants.AUTHCODE_EXP == -1)){
+        if(Constants.AUTHCODE != null){
             startActivity(new Intent(getApplicationContext(), MainActivitySwipes.class));
         }
 
@@ -211,8 +209,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else if(status.equals("success")) {
                     if(isLogin) {
                         Constants.AUTHCODE = returnedJSON.getJSONObject("data").getString("authcode");
-                        Constants.AUTHCODE_EXP = System.currentTimeMillis() +
-                                ((long)30 * (long)24 * (long)60 * (long)60 * (long)1000);
+
                     }
                     return true;
                 } else{
@@ -244,7 +241,7 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putString("AUTHCODE", Constants.AUTHCODE);
-                    editor.putLong("AUTHCODE_EXP", Constants.AUTHCODE_EXP);
+
                     editor.apply();
                     startActivity(new Intent(getApplicationContext(), MainActivitySwipes.class));
                 } else {

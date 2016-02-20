@@ -87,6 +87,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         viewPager.setAdapter(pagerAdapter);
 
+
         //Tabs
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setTabsFromPagerAdapter(pagerAdapter);
@@ -101,7 +102,8 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         myPictures = MeFragmentBetter.newInstance(location);
 
         ActionBar ab = getSupportActionBar();
-        
+        ab.setDisplayShowTitleEnabled(false);
+
         ab.show();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

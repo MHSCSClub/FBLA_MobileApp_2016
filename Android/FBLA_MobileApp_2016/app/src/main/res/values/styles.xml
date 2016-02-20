@@ -6,8 +6,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:height">@dimen/action_bar_height</item>
-        <item name="height">@dimen/action_bar_height</item>
 
     </style>
 

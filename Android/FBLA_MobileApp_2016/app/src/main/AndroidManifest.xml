@@ -33,9 +33,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.mamkschools.mhs.fbla_mobileapp_2016.MainActivitySwipes"
-            android:screenOrientation="portrait"
+            android:name=".MainActivitySwipes"
             android:label="@string/title_activity_main_activity_swipes"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

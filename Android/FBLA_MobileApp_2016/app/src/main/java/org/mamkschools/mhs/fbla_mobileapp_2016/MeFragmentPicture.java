@@ -50,7 +50,6 @@ public class MeFragmentPicture extends Fragment implements View.OnClickListener 
         frag.views = views;
         frag.location = location;
         return frag;
-
     }
     public Bitmap getPictureBitmap(File file){
         final BitmapFactory.Options options = new BitmapFactory.Options();

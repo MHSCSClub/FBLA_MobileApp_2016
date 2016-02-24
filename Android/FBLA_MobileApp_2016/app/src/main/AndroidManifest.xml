@@ -37,6 +37,15 @@
             android:label="@string/title_activity_main_activity_swipes"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UPLOAD_TST"
+            android:label="@string/title_activity_upload__tst"
+            android:parentActivityName=".MainActivitySwipes"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.mamkschools.mhs.fbla_mobileapp_2016.MainActivitySwipes" />
+        </activity>
     </application>
 
 </manifest>

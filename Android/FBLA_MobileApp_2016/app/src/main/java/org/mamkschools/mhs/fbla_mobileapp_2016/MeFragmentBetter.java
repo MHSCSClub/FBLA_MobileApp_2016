@@ -1,8 +1,10 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -35,6 +37,7 @@ public class MeFragmentBetter extends Fragment implements View.OnClickListener {
     public static MeFragmentBetter newInstance(File location) {
         MeFragmentBetter meFragmentBetter =  new MeFragmentBetter();
         meFragmentBetter.location = location;
+
         return meFragmentBetter;
     }
 
@@ -44,7 +47,8 @@ public class MeFragmentBetter extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
         commentLayout = (LinearLayout) view.findViewById(R.id.commentLayout);
         new GetMyPictureInfo().execute((Void) null);
-
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.cameraButton);
+        fab.setOnClickListener(this);
     }
 
     public MeFragmentBetter() {
@@ -59,12 +63,14 @@ public class MeFragmentBetter extends Fragment implements View.OnClickListener {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_me_better, container, false);
     }
 
@@ -75,7 +81,11 @@ public class MeFragmentBetter extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
+        switch(v.getId()){
+            case R.id.cameraButton:
+                default:
+                startActivity(new Intent(getContext(), UPLOAD_TST.class));
+        }
     }
     private class GetMyPictureInfo extends AsyncTask<Void, Boolean, Boolean> {
 
@@ -122,8 +132,6 @@ public class MeFragmentBetter extends Fragment implements View.OnClickListener {
             }else{
                 util.log("Did not work_111");
             }
-
-
         }
     }
 }

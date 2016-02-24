@@ -6,10 +6,15 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,17 +29,17 @@ public class MeFragmentBetter extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     public static final int PIC_UPLOAD_REQUEST = 20;
+    public FloatingActionButton fab;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private LinearLayout commentLayout;
-    private File location;
+    private File picLoc;
 
-    public static MeFragmentBetter newInstance(File location) {
+    public static MeFragmentBetter newInstance(File picLoc) {
         MeFragmentBetter meFragmentBetter =  new MeFragmentBetter();
-        meFragmentBetter.location = location;
-
+        meFragmentBetter.picLoc = picLoc;
         return meFragmentBetter;
     }
 
@@ -43,11 +48,15 @@ public class MeFragmentBetter extends Fragment implements View.OnClickListener {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         commentLayout = (LinearLayout) view.findViewById(R.id.commentLayout);
-        new GetMyPictureInfo().execute((Void) null);
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.cameraButton);
+        NestedScrollView commentScroll = (NestedScrollView) view.findViewById(R.id.commentScroll);
+        fab = (FloatingActionButton) getActivity().findViewById(R.id.cameraButton);
         fab.setOnClickListener(this);
+
+
+        new GetMyPictureInfo().execute((Void) null);
+
     }
-    
+
 
     public MeFragmentBetter() {
         // Required empty public constructor
@@ -113,7 +122,7 @@ public class MeFragmentBetter extends Fragment implements View.OnClickListener {
                     int views = array.getJSONObject(i).getInt("views");
                     int dislikes = array.getJSONObject(i).getInt("dislikes");
                     int likes = array.getJSONObject(i).getInt("likes");
-                    ret.add(MeFragmentPicture.newInstance(pid, title, dislikes, likes, views, location));
+                    ret.add(MeFragmentPicture.newInstance(pid, title, dislikes, likes, views, picLoc));
 
                 }
             }catch (Exception e){

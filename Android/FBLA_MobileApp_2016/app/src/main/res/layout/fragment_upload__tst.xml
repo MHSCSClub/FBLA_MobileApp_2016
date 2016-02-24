@@ -1,39 +1,88 @@
-
-<LinearLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:orientation="vertical"
-android:layout_width="fill_parent"
-android:layout_height="fill_parent"
-tools:context="org.mamkschools.mhs.fbla_mobileapp_2016.UPLOAD_TSTFragment"
-android:id="@+id/UploadImage">
-<Button
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Get Picture"
-    android:id="@+id/getPic" />
-
-<ImageView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/uploadImage"
-    android:minHeight="50dp"
-    android:minWidth="50dp"
-    android:src="#ff0000"
-    android:maxHeight="100dp"
-    android:maxWidth="100dp" />
-
-<EditText
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:context="org.mamkschools.mhs.fbla_mobileapp_2016.UPLOAD_TSTFragment"
+    android:id="@+id/UploadImage"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<ScrollView
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/editTitleText"
-    android:text="title" />
+    android:layout_height="fill_parent">
 
-<Button
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Upload"
-    android:id="@+id/uploadNow" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
 
-</LinearLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Get Picture"
+                android:id="@+id/getPic" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/uploadImage"
+                android:minHeight="50dp"
+                android:minWidth="50dp"
+                android:src="#ff0000"
+                android:maxHeight="100dp"
+                android:maxWidth="100dp" />
+
+
+            <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <AutoCompleteTextView android:id="@+id/editTitleText" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:hint="Title"
+                    android:inputType="text" android:maxLines="1"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <AutoCompleteTextView android:id="@+id/editRating1" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:hint="Rating 1"
+                    android:inputType="text" android:maxLines="1"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <AutoCompleteTextView android:id="@+id/editRating2" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:hint="Rating 2"
+                    android:inputType="text" android:maxLines="1"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <AutoCompleteTextView android:id="@+id/editRating3" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:hint="Rating 3"
+                    android:inputType="text" android:maxLines="1"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Upload"
+                android:id="@+id/uploadNow" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

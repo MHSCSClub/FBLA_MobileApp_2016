@@ -91,12 +91,9 @@ public class UPLOAD_TSTFragment extends Fragment implements View.OnClickListener
     private static final int PICTURE_REQUEST_CODE = 1;
 
     private void openImageIntent() {
-        // Determine Uri of camera image to save.
-        final File root = new File(Environment.DIRECTORY_DCIM);
-        boolean suc = root.mkdirs();
-        util.log("Make Directories - success: " + suc);
         final String fname = "img_"+ System.currentTimeMillis() + ".jpg";
-        final File sdImageMainDirectory = new File(root, fname);
+        final File sdImageMainDirectory =
+                new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), fname);
         outputFileUri = Uri.fromFile(sdImageMainDirectory);
 
         // Camera.
@@ -144,7 +141,7 @@ public class UPLOAD_TSTFragment extends Fragment implements View.OnClickListener
             } else {
                 picUri = data.getData();
             }
-            picPrev.setImageURI(picUri);
+            //picPrev.setImageURI(picUri);
         }
     }
 
@@ -211,6 +208,7 @@ public class UPLOAD_TSTFragment extends Fragment implements View.OnClickListener
         protected void onPostExecute(Boolean success) {
             if(success){
                 util.log("Upload worked");
+                getActivity().finish();
             } else {
                 util.log("Upload failed");
             }

@@ -1,3 +1,4 @@
+
 <LinearLayout
 xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:tools="http://schemas.android.com/tools"
@@ -18,7 +19,9 @@ android:id="@+id/UploadImage">
     android:id="@+id/uploadImage"
     android:minHeight="50dp"
     android:minWidth="50dp"
-    android:src="#ff0000" />
+    android:src="#ff0000"
+    android:maxHeight="100dp"
+    android:maxWidth="100dp" />
 
 <EditText
     android:layout_width="fill_parent"
@@ -31,4 +34,6 @@ android:id="@+id/UploadImage">
     android:layout_height="wrap_content"
     android:text="Upload"
     android:id="@+id/uploadNow" />
+
+
 </LinearLayout>

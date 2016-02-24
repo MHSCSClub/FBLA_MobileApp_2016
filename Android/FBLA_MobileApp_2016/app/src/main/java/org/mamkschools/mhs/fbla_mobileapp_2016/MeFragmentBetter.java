@@ -1,6 +1,5 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,18 +14,16 @@ import android.widget.LinearLayout;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureContract;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.util;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class MeFragmentBetter extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public static final int PIC_UPLOAD_REQUEST = 20;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -50,6 +47,7 @@ public class MeFragmentBetter extends Fragment implements View.OnClickListener {
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.cameraButton);
         fab.setOnClickListener(this);
     }
+    
 
     public MeFragmentBetter() {
         // Required empty public constructor
@@ -84,7 +82,14 @@ public class MeFragmentBetter extends Fragment implements View.OnClickListener {
         switch(v.getId()){
             case R.id.cameraButton:
                 default:
-                startActivity(new Intent(getContext(), UPLOAD_TST.class));
+                startActivityForResult(new Intent(getContext(), UPLOAD_TST.class), PIC_UPLOAD_REQUEST);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == PIC_UPLOAD_REQUEST){
+            new GetMyPictureInfo().execute((Void) null);
         }
     }
     private class GetMyPictureInfo extends AsyncTask<Void, Boolean, Boolean> {

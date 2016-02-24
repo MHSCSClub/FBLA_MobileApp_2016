@@ -91,9 +91,11 @@ public class UPLOAD_TSTFragment extends Fragment implements View.OnClickListener
     private static final int PICTURE_REQUEST_CODE = 1;
 
     private void openImageIntent() {
-        final String fname = "img_"+ System.currentTimeMillis() + ".jpg";
-        final File sdImageMainDirectory =
-                new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), fname);
+
+        File filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        filePath.mkdirs();
+        String fname = "img_"+ System.currentTimeMillis() + ".jpg";
+        final File sdImageMainDirectory = new File(filePath, fname);
         outputFileUri = Uri.fromFile(sdImageMainDirectory);
 
         // Camera.

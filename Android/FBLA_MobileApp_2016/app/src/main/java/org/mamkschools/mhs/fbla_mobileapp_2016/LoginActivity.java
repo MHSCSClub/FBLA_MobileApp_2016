@@ -2,9 +2,13 @@ package org.mamkschools.mhs.fbla_mobileapp_2016;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.AsyncTask;
@@ -101,6 +105,13 @@ public class LoginActivity extends AppCompatActivity {
         Constants.savePrefs(getApplicationContext());
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid username, missing fields, etc.), the
@@ -118,6 +129,13 @@ public class LoginActivity extends AppCompatActivity {
         // Store values at the time of the login attempt.
         String username = mUserView.getText().toString();
         String password = mPasswordView.getText().toString();
+
+        //Check if internet is accessible
+        if(!isNetworkAvailable()){
+            Toast.makeText(getApplicationContext(),
+                    "Please connect to the internet in order to login", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         // Check for a valid username.
         if (username.length() < 5) {

@@ -52,6 +52,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         // if we can't access the location yet
         if (!Simplocation.hasLocationEnabled()) {
             // ask the user to enable location access
+            Toast.makeText(getApplicationContext(), "Please enable location", Toast.LENGTH_LONG).show();
             SimpleLocation.openSettings(this);
         }
 

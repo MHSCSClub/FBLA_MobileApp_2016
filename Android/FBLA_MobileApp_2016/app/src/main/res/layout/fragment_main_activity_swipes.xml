@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:text="$USERNAME"
+        android:text="Username of Uploader"
         android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -40,7 +40,7 @@
             android:id="@+id/title_label"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="$CAPTION"
+            android:text="Image Title"
             android:textColor="#ffffff"
             android:textSize="30sp"
             android:paddingLeft="5dp"
@@ -70,7 +70,7 @@
         android:layout_alignStart="@+id/imageFrame"
         android:gravity="center"
         android:padding="5dp"
-        android:text="Appropiate or not?"
+        android:text="@string/thumbs_caption"
         android:textSize="20dp" />
 
     <RelativeLayout
@@ -142,7 +142,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="5dp"
-            android:text="$RATING"
+            android:text="How stylish is this outfit?"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <SeekBar

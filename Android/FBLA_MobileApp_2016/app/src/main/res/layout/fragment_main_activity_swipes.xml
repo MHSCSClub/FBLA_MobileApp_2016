@@ -93,7 +93,7 @@
             android:layout_toEndOf="@+id/spacer"
 
             android:layout_toRightOf="@+id/spacer"
-            android:src="@drawable/ic_done_white_128dp_1x"
+            android:src="@drawable/ic_thumbs_up_white"
             app:backgroundTint="#4CAF50"
             app:borderWidth="0dp"
             app:elevation="1dp">
@@ -117,7 +117,7 @@
             android:layout_toStartOf="@+id/spacer"
             android:minHeight="80dp"
             android:minWidth="80dp"
-            android:src="@drawable/ic_close_white_128dp_1x"
+            android:src="@drawable/ic_thumbs_down_white"
             app:backgroundTint="#F44336"
             app:borderWidth="0dp"
             app:elevation="1dp"

@@ -10,6 +10,8 @@
     tools:context="org.mamkschools.mhs.fbla_mobileapp_2016.MainActivitySwipes$PlaceholderFragment">
 
 
+
+
     <TextView
         android:id="@+id/description_label"
         android:layout_width="match_parent"
@@ -152,7 +154,13 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/instructions2" />
-
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:id="@+id/ratingBar"
+            android:layout_below="@+id/styleRating"/>
 
         <EditText
             android:id="@+id/commentText"
@@ -161,7 +169,7 @@
             android:layout_above="@+id/submit_button"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/styleRating"
+            android:layout_below="@+id/ratingBar"
             android:ems="10"
             android:gravity="top"
             android:hint="Comment on the picture"

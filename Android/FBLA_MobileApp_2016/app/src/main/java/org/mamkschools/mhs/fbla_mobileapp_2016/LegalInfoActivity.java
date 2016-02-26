@@ -1,5 +1,6 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -25,5 +26,9 @@ public class LegalInfoActivity extends AppCompatActivity {
             util.log(e.getMessage());
         }
         LegalText.setText(text);
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 }

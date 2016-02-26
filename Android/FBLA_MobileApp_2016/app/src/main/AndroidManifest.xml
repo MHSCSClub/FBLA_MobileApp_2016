@@ -11,10 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true" />
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -22,10 +19,16 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LegalInfoActivity" />
+        <activity android:name=".LegalInfoActivity"
+            android:parentActivityName=".AdditionalActions">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.mamkschools.mhs.fbla_mobileapp_2016.AdditionalActions" />
+        </activity>
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:noHistory="true">
             <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.MAIN" />
@@ -42,7 +45,15 @@
             android:name=".UPLOAD_TST"
             android:label="@string/title_activity_upload__tst"
             android:parentActivityName=".MainActivitySwipes"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.mamkschools.mhs.fbla_mobileapp_2016.MainActivitySwipes" />
+        </activity>
+        <activity android:name=".AdditionalActions"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivitySwipes">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.mamkschools.mhs.fbla_mobileapp_2016.MainActivitySwipes" />

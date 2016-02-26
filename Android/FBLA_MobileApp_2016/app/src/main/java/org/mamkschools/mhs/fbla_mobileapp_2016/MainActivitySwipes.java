@@ -122,7 +122,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
         switch (id) {
             case R.id.action_logout:
-                new Logout().execute((Void) null);
+
                 return true;
         }
 
@@ -137,7 +137,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
                 //openImageIntent();
                 break;
             case R.id.more_stuff:
-                new Logout().execute((Void) null);
+                startActivity(new Intent(getApplicationContext(), AdditionalActions.class));
                 //startActivity(new Intent(getApplicationContext(), null));
                 break;
             default:
@@ -185,28 +185,6 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         }
     }
 
-
-    private class Logout extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... v) {
-            SecureAPI HTTPS = SecureAPI.getInstance(getApplicationContext());
-
-            try {
-                HTTPS.HTTPSGET(Commands.Get.LOGOUT + Constants.AUTHCODE);
-            } catch (Exception ex) {
-                util.log(ex.getMessage());
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void v) {
-            Constants.AUTHCODE = null;
-            Constants.savePrefs(getApplicationContext());
-            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-            finish();
-        }
-    }
 
 
 }

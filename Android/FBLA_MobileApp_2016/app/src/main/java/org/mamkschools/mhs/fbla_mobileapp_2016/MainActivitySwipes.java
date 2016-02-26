@@ -76,7 +76,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
         File picLocation = getFilesDir();
         evaluatePictures = EvaluationFragment.newInstance(db, picture, picLocation, simplocation);
-        myPictures = MeFragmentBetter.newInstance(picLocation);
+        myPictures = UserPictures.newInstance(picLocation);
 
         ImageButton more = (ImageButton) findViewById(R.id.more_stuff);
         more.setOnClickListener(this);

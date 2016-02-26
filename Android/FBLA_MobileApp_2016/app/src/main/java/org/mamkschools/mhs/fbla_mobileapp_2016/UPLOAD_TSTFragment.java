@@ -93,12 +93,13 @@ public class UPLOAD_TSTFragment extends Fragment implements View.OnClickListener
     private void openImageIntent() {
 
         File filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        //noinspection ResultOfMethodCallIgnored
         filePath.mkdirs();
         String fname = "img_"+ System.currentTimeMillis() + ".jpg";
         final File sdImageMainDirectory = new File(filePath, fname);
         outputFileUri = Uri.fromFile(sdImageMainDirectory);
 
-        // Camera.
+        // Camera
         final List<Intent> cameraIntents = new ArrayList<>();
         final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         final PackageManager packageManager = parentContext.getPackageManager();

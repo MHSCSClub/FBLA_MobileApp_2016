@@ -25,9 +25,12 @@
     </string>
 
 
-    <!-- -->
+
     <string name="title_activity_main_activity_swipes">FBLA 2016 Mobile App</string>
+
+    <!-- Strings relating to menus -->
     <string name="action_logout">Logout</string>
+    <string name="action_about">About</string>
 
 
     <string name="title_activity_upload__tst">UPLOAD_TST</string>

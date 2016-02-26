@@ -11,10 +11,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Commands;
@@ -27,7 +30,7 @@ import java.io.File;
 
 import im.delight.android.location.SimpleLocation;
 
-public class MainActivitySwipes extends AppCompatActivity implements View.OnClickListener {
+public class MainActivitySwipes extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 
     private static File location;
 
@@ -39,6 +42,7 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
     //Fragments
     private Fragment evaluatePictures;
     private Fragment myPictures;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,37 +111,15 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main_activity_swipes, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        switch (id) {
-            case R.id.action_logout:
-
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.fab:
-                //Photo chooser (include default, cam, file (see Google Inbox on Android))
-                //openImageIntent();
-                break;
             case R.id.more_stuff:
-                startActivity(new Intent(getApplicationContext(), AdditionalActions.class));
+                PopupMenu popup = new PopupMenu(this, v);
+                popup.setOnMenuItemClickListener(this);
+                MenuInflater inflater = popup.getMenuInflater();
+                inflater.inflate(R.menu.menu_main_activity_swipes, popup.getMenu());
+                popup.show();
+
                 //startActivity(new Intent(getApplicationContext(), null));
                 break;
             default:
@@ -145,6 +127,21 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
 
         }
 
+
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_logout:
+                new Logout().execute((Void) null);
+                return true;
+            case R.id.action_about:
+                startActivity(new Intent(getApplicationContext(), LegalInfoActivity.class));
+                return true;
+            default:
+                return false;
+        }
 
     }
 
@@ -185,6 +182,31 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         }
     }
 
+    private class Logout extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Void... v) {
+            SecureAPI HTTPS = SecureAPI.getInstance(getApplicationContext());
 
+            try {
+                HTTPS.HTTPSGET(Commands.Get.LOGOUT + Constants.AUTHCODE);
+            } catch (Exception ex) {
+                util.log(ex.getMessage());
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean b) {
+            if(b) {
+                Constants.AUTHCODE = null;
+                Constants.savePrefs(getApplicationContext());
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                finish();
+            } else {
+                Toast.makeText(getApplicationContext(), "Logout failed", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
 }

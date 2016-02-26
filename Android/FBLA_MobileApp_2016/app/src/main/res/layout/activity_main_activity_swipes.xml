@@ -35,9 +35,8 @@
             android:adjustViewBounds="false"
             android:clickable="true"
             android:contextClickable="true"
-            android:layout_marginRight="3dp"
+            android:layout_marginRight="5dp"
             android:cropToPadding="false"
-            android:paddingLeft="10dp"
             android:paddingRight="10dp" />
         </LinearLayout>
     </android.support.design.widget.AppBarLayout>
@@ -51,7 +50,7 @@
             <android.support.v4.view.ViewPager android:id="@+id/view_pager"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                />
+                android:layout_marginRight="5dp" />
 
 
         </FrameLayout>

@@ -16,14 +16,13 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".LegalInfoActivity"
-            android:parentActivityName=".AdditionalActions">
+            android:parentActivityName=".MainActivitySwipes">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.mamkschools.mhs.fbla_mobileapp_2016.AdditionalActions" />
+                android:value="org.mamkschools.mhs.fbla_mobileapp_2016.MainActivitySwipes" />
         </activity>
         <activity
             android:name=".LoginActivity"
@@ -47,13 +46,6 @@
             android:parentActivityName=".MainActivitySwipes"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.mamkschools.mhs.fbla_mobileapp_2016.MainActivitySwipes" />
-        </activity>
-        <activity android:name=".AdditionalActions"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".MainActivitySwipes">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.mamkschools.mhs.fbla_mobileapp_2016.MainActivitySwipes" />

@@ -31,7 +31,6 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="20dp"
         android:layout_marginRight="20dp"
-        app:layout_behavior="org.mamkschools.mhs.fbla_mobileapp_2016.lib.ScrollAwareFABBehavior"
         android:src="@drawable/ic_camera" />
 
 

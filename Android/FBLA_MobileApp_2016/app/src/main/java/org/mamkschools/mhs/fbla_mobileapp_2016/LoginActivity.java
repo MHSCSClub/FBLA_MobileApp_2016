@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStop(){
         super.onStop();
         Constants.PREFS_RESTORED = false;
-        Constants.savePrefs(getApplicationContext());
+        Constants.savePrefs(getApplicationContext(), false);
     }
 
     private boolean isNetworkAvailable() {

@@ -41,26 +41,25 @@ public final class Constants {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
         LATITUDE = Double.parseDouble(prefs.getString("LATITUDE", "37.42200"));
         LONGITUDE = Double.parseDouble(prefs.getString("LONGITUDE", "-122.084095"));
-        DEBUG_MODE = prefs.getBoolean("DEBUG_MODE", true);
-        DEMO_MODE = prefs.getBoolean("DEMO_MODE", false);
         AUTHCODE = prefs.getString("AUTHCODE", null);
     }
 
     @SuppressLint("CommitPrefEdits")
-    public static void savePrefs(Context ctx){
+    public static void savePrefs(Context ctx, boolean aSync){
 
         // We need an Editor object to make preference changes.
         // All objects are from android.context.Context
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean("DEBUG_MODE", DEBUG_MODE);
-        editor.putBoolean("DEMO_MODE", DEMO_MODE);
         editor.putString("AUTHCODE", AUTHCODE);
         editor.putString("LATITUDE", Double.toString(LATITUDE));
         editor.putString("LONGITUDE", Double.toString(LONGITUDE));
 
-
-        // Commit the edits! Do not change to "apply" or will not be done because app will close!
-        editor.commit();
+        if(aSync){
+            editor.apply();
+        } else {
+            // Commit the edits! Do not change to "apply" or will not be done because app will close!
+            editor.commit();
+        }
     }
 }

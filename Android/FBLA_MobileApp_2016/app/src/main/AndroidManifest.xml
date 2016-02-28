@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".LegalInfoActivity"
-            android:parentActivityName=".MainActivitySwipes">
+            android:parentActivityName=".MainActivitySwipes"
+            android:label="@string/title_activity_legalinfo">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.mamkschools.mhs.fbla_mobileapp_2016.MainActivitySwipes" />

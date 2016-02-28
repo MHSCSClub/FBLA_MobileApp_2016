@@ -36,5 +36,5 @@
 
 
     <string name="title_activity_upload__tst">UPLOAD_TST</string>
-    <string name="title_activity_additional_actions">AdditionalActions</string>
+    <string name="title_activity_legalinfo">Legal Info</string>
 </resources>

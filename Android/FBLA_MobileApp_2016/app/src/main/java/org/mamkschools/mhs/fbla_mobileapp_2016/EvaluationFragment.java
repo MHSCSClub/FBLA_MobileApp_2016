@@ -42,6 +42,16 @@ import im.delight.android.location.SimpleLocation;
  * Created by jackphillips on 2/16/16.
  */
 public class EvaluationFragment extends Fragment implements View.OnClickListener {
+    /**
+     * The fragment argument representing the section number for this
+     * fragment.
+     */
+    private static final String ARG_SECTION_NUMBER = "section_number";
+
+    /**
+     * Returns a new instance of this fragment for the given section
+     * number.
+     */
     private SQLiteDatabase db;
     private int picNumber;
     private File location;

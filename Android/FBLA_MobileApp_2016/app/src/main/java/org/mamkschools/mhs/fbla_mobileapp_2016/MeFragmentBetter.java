@@ -10,7 +10,11 @@ import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,7 +25,7 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.util;
 import java.io.File;
 import java.util.ArrayList;
 
-public class UserPictures extends Fragment implements View.OnClickListener {
+public class MeFragmentBetter extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     public static final int PIC_UPLOAD_REQUEST = 20;
@@ -33,10 +37,10 @@ public class UserPictures extends Fragment implements View.OnClickListener {
     private LinearLayout commentLayout;
     private File picLoc;
 
-    public static UserPictures newInstance(File picLoc) {
-        UserPictures userPictures =  new UserPictures();
-        userPictures.picLoc = picLoc;
-        return userPictures;
+    public static MeFragmentBetter newInstance(File picLoc) {
+        MeFragmentBetter meFragmentBetter =  new MeFragmentBetter();
+        meFragmentBetter.picLoc = picLoc;
+        return meFragmentBetter;
     }
 
 
@@ -54,7 +58,7 @@ public class UserPictures extends Fragment implements View.OnClickListener {
     }
 
 
-    public UserPictures() {
+    public MeFragmentBetter() {
         // Required empty public constructor
     }
 

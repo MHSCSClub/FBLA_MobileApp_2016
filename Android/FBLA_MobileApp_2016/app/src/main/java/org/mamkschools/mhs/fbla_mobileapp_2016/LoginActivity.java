@@ -264,9 +264,8 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(new Intent(getApplicationContext(), MainActivitySwipes.class));
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.registration_complete, Toast.LENGTH_LONG).show();
-                    mAuthTask = new UserLoginTask(creds.get("username"), creds.get("password"), true);
-                    mAuthTask.execute((Void) null);
                 }
+
             } else {
 
                 if(isLogin) {

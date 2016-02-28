@@ -33,7 +33,7 @@ import java.util.Map;
 
 import im.delight.android.location.SimpleLocation;
 
-public class UPLOAD_TSTFragment extends Fragment implements View.OnClickListener {
+public class uploadFragment extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static Context parentContext;
@@ -46,8 +46,8 @@ public class UPLOAD_TSTFragment extends Fragment implements View.OnClickListener
     private String mParam1;
     private String mParam2;
 
-    public static UPLOAD_TSTFragment newInstance() {
-        return new UPLOAD_TSTFragment();
+    public static uploadFragment newInstance() {
+        return new uploadFragment();
     }
 
 
@@ -62,7 +62,7 @@ public class UPLOAD_TSTFragment extends Fragment implements View.OnClickListener
         view.findViewById(R.id.uploadNow).setOnClickListener(this);
     }
 
-    public UPLOAD_TSTFragment() {
+    public uploadFragment() {
         // Required empty public constructor
     }
 
@@ -91,11 +91,12 @@ public class UPLOAD_TSTFragment extends Fragment implements View.OnClickListener
     private static final int PICTURE_REQUEST_CODE = 1;
 
     private void openImageIntent() {
-
-        File filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        filePath.mkdirs();
-        String fname = "img_"+ System.currentTimeMillis() + ".jpg";
-        final File sdImageMainDirectory = new File(filePath, fname);
+        // Determine Uri of camera image to save.
+        final File root = new File(Environment.DIRECTORY_DCIM);
+        boolean suc = root.mkdirs();
+        util.log("Make Directories - success: " + suc);
+        final String fname = "img_"+ System.currentTimeMillis() + ".jpg";
+        final File sdImageMainDirectory = new File(root, fname);
         outputFileUri = Uri.fromFile(sdImageMainDirectory);
 
         // Camera.
@@ -129,21 +130,21 @@ public class UPLOAD_TSTFragment extends Fragment implements View.OnClickListener
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK && requestCode == PICTURE_REQUEST_CODE) {
-            final boolean isCamera;
-            if (data == null) {
-                isCamera = true;
-            } else {
-                final String action = data.getAction();
-                isCamera = action != null && action.equals(MediaStore.ACTION_IMAGE_CAPTURE);
-            }
+                final boolean isCamera;
+                if (data == null) {
+                    isCamera = true;
+                } else {
+                    final String action = data.getAction();
+                    isCamera = action != null && action.equals(MediaStore.ACTION_IMAGE_CAPTURE);
+                }
 
 
-            if (isCamera) {
-                picUri = outputFileUri;
-            } else {
-                picUri = data.getData();
-            }
-            //picPrev.setImageURI(picUri);
+                if (isCamera) {
+                    picUri = outputFileUri;
+                } else {
+                    picUri = data.getData();
+                }
+                picPrev.setImageURI(picUri);
         }
     }
 
@@ -210,7 +211,6 @@ public class UPLOAD_TSTFragment extends Fragment implements View.OnClickListener
         protected void onPostExecute(Boolean success) {
             if(success){
                 util.log("Upload worked");
-                getActivity().finish();
             } else {
                 util.log("Upload failed");
             }

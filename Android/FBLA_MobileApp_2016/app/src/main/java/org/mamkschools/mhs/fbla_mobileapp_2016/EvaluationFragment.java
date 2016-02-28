@@ -251,16 +251,19 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
 
         String sortOrder =
                 PictureContract.PictureEntry.COLUMN_NAME_PICTURE_ID + " ASC";
-
-        return db.query(
-                PictureContract.PictureEntry.TABLE_NAME,  // The table to query
-                projection,                               // The columns to return
-                null,                                // The columns for the WHERE clause
-                null,                            // The values for the WHERE clause
-                null,                                     // don't group the rows
-                null,                                     // don't filter by row groups
-                sortOrder                                 // The sort order
-        );
+        if(db != null) {
+            return db.query(
+                    PictureContract.PictureEntry.TABLE_NAME,  // The table to query
+                    projection,                               // The columns to return
+                    null,                                // The columns for the WHERE clause
+                    null,                            // The values for the WHERE clause
+                    null,                                     // don't group the rows
+                    null,                                     // don't filter by row groups
+                    sortOrder                                 // The sort order
+            );
+        } else {
+            return null;
+        }
     }
     private class GetPicture extends AsyncTask<Integer, Void, Boolean> {
         SecureAPI picture = SecureAPI.getInstance(getContext());

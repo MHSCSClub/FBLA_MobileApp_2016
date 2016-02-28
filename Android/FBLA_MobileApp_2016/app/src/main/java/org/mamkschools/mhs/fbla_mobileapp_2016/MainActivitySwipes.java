@@ -1,9 +1,12 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -93,7 +96,20 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
         Constants.restorePrefs(getApplicationContext());
+
+        if(!isNetworkAvailable()){
+            Toast.makeText(getApplicationContext(), "Network is not availible. Please connect to the internet", Toast.LENGTH_LONG).show();
+            finish();
+        }
     }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
 
     @Override
     protected void onStop() {

@@ -1,14 +1,22 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    tools:context="org.mamkschools.mhs.fbla_mobileapp_2016.UPLOAD_TSTFragment"
-    android:id="@+id/UploadImage"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="org.mamkschools.mhs.fbla_mobileapp_2016.UploadActivity">
+    <!-- Login progress -->
+    <ProgressBar android:id="@+id/uploadProgress" style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp" android:visibility="gone"
+        android:layout_centerHorizontal="true" />
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:id="@+id/uploadForm">
 
         <LinearLayout
             android:orientation="vertical"
@@ -30,26 +38,14 @@
                 android:minHeight="50dp"
                 android:minWidth="50dp"
                 android:src="#ff0000"
-                android:maxHeight="100dp"
-                android:maxWidth="100dp" />
+                android:adjustViewBounds="true" />
 
 
             <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <AutoCompleteTextView android:id="@+id/editTitleText" android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:hint="Title"
-                    android:inputType="text" android:maxLines="1"
-                    android:singleLine="true" />
-
-            </android.support.design.widget.TextInputLayout>
-
-
-            <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <AutoCompleteTextView android:id="@+id/editRating1" android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:hint="Rating 1"
+                    android:layout_height="wrap_content" android:hint="Image Title"
                     android:inputType="text" android:maxLines="1"
                     android:singleLine="true" />
 

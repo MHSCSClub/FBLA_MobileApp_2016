@@ -32,6 +32,7 @@ public class UserPictures extends Fragment implements View.OnClickListener {
     private String mParam2;
     private LinearLayout commentLayout;
     private File picLoc;
+    private AsyncTask picGet;
 
     public static UserPictures newInstance(File picLoc) {
         UserPictures userPictures =  new UserPictures();
@@ -49,8 +50,7 @@ public class UserPictures extends Fragment implements View.OnClickListener {
         fab.setOnClickListener(this);
 
 
-        new GetMyPictureInfo().execute((Void) null);
-
+        picGet = new GetMyPictureInfo().execute();
     }
 
 
@@ -65,8 +65,14 @@ public class UserPictures extends Fragment implements View.OnClickListener {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
 
-
+    @Override
+    public void onStop(){
+        super.onStop();
+        if(picGet != null && !picGet.getStatus().equals(AsyncTask.Status.FINISHED)){
+            picGet.cancel(true);
+        }
     }
 
     @Override
@@ -87,7 +93,7 @@ public class UserPictures extends Fragment implements View.OnClickListener {
         switch(v.getId()){
             case R.id.cameraButton:
                 default:
-                startActivityForResult(new Intent(getContext(), UPLOAD_TST.class), PIC_UPLOAD_REQUEST);
+                startActivityForResult(new Intent(getContext(), UploadActivity.class), PIC_UPLOAD_REQUEST);
         }
     }
 

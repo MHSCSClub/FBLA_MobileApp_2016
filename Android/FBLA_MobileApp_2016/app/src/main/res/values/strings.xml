@@ -17,10 +17,8 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">The username or password is incorrect. If you do not have an account, please register</string>
     <string name="error_user_exists">User already exists, please try logging in or choose another username.</string>
-    <string name="registration_complete">Account registered, you may now log in</string>
+    <string name="registration_complete">Account registered, now logging in</string>
     <string name="error_field_required">This field is required</string>
-
-
 
 
     <string name="title_activity_main_activity_swipes">FBLA 2016 Mobile App</string>
@@ -35,6 +33,6 @@
     <string name="ok">OK</string>
 
 
-    <string name="title_activity_upload__tst">UPLOAD_TST</string>
+    <string name="title_activity_upload">Upload a Picture</string>
     <string name="title_activity_legalinfo">Legal Info</string>
 </resources>

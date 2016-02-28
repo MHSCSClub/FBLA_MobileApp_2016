@@ -149,7 +149,7 @@ public class LoginActivity extends AppCompatActivity {
             mPasswordView.requestFocus();
             return;
         }
-
+        showProgress(true);
         mAuthTask = new UserLoginTask(username, password, login);
         mAuthTask.execute((Void) null);
     }

@@ -12,6 +12,7 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.R;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -164,7 +165,7 @@ public class SecureAPI {
         return new JSONObject(response);
     }
 
-    public JSONObject HTTPSPOSTMULTI(String action, Map<String, String> params, Map<String, Uri> files, Context ctx) throws Exception {
+    public JSONObject HTTPSPOSTMULTI(String action, Map<String, String> params, Map<String, ByteArrayOutputStream> files, Context ctx) throws Exception {
         URL url = new URL(Constants.API_BASE_URL + action);
         HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
 
@@ -202,11 +203,8 @@ public class SecureAPI {
 
         //Process files
         int it = 0;
-        for (Map.Entry<String, Uri> entry : files.entrySet())
+        for (Map.Entry<String, ByteArrayOutputStream> entry : files.entrySet())
         {
-            ContentResolver cr = ctx.getContentResolver();
-            InputStream inputStream = cr.openInputStream(entry.getValue());
-
             //File wrapping
             request.writeBytes(twoHyphens + boundary + crlf);
             request.writeBytes("Content-Disposition: form-data; name=\"" +
@@ -214,13 +212,9 @@ public class SecureAPI {
                     it + "\"" + crlf);
             request.writeBytes(crlf);
 
-            int nRead;
-            byte[] data = new byte[16384];
+            byte [] data = entry.getValue().toByteArray();
 
-            assert inputStream != null;
-            while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-                request.write(data, 0, nRead);
-            }
+            request.write(data, 0, data.length);
 
             //End file wrapping
             request.writeBytes(crlf);

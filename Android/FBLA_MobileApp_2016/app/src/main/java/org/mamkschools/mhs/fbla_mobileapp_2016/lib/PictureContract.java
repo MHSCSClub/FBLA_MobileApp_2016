@@ -1,8 +1,5 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016.lib;
 
-import android.content.Context;
-import android.database.sqlite.*;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
 public class PictureContract {
@@ -20,7 +17,5 @@ public class PictureContract {
         public static final String COLUMN_NAME_VIEWS = "views";
         public static final String COLUMN_NAME_PRIORITY = "priority";
         public static final String COLUMN_NAME_HOURS = "hours";
-
-
     }
 }

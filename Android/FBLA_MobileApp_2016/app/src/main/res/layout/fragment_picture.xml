@@ -35,7 +35,7 @@
 
 
     <ImageView
-        android:id="@+id/downImage"
+        android:id="@+id/commentImage"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
@@ -52,7 +52,7 @@
         android:layout_height="match_parent"
         android:id="@+id/dcount"
         android:text="5"
-        android:layout_toLeftOf="@+id/downImage"
+        android:layout_toLeftOf="@+id/commentImage"
         android:gravity="center"
         android:layout_marginRight="5dp"
         android:textSize="35dp" />

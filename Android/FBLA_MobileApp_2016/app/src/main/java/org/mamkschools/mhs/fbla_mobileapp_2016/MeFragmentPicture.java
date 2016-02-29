@@ -115,6 +115,7 @@ public class MeFragmentPicture extends Fragment implements View.OnClickListener 
     public void onClick(View v) {
         Intent myintent = new Intent(getContext(), CommentPage.class);
         myintent.putExtra("pid", pid);
+        myintent.putExtra("title", titles);
         startActivity(myintent);
     }
 

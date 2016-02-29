@@ -34,22 +34,22 @@
 
 
     <ImageView
-        android:id="@+id/downImage"
+        android:id="@+id/commentImage"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="47dp"
         android:adjustViewBounds="true"
-        android:src="@drawable/ic_star_black_48dp"
+        android:src="@mipmap/ic_star"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="10dp"
-        />
+        android:foregroundGravity="center_vertical" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/dcount"
         android:text="5"
-        android:layout_toLeftOf="@+id/downImage"
+        android:layout_toLeftOf="@+id/commentImage"
         android:gravity="center"
         android:layout_marginRight="5dp"
         android:textSize="35dp" />

@@ -31,8 +31,7 @@
                 android:id="@+id/myImage"
                 android:layout_gravity="center_horizontal"
                 android:adjustViewBounds="true"
-                android:maxWidth="200dp"
-                android:maxHeight="200dp" />
+                    android:maxHeight="250dp" />
 
                 <TextView
                     android:id="@+id/myImageTitle"

@@ -29,6 +29,7 @@ public class MeFragmentPicture extends Fragment implements View.OnClickListener 
     private TextView title;
     private TextView ucount;
     private TextView dcount;
+    private TextView ellapsed;
 
     private ImageView image;
 
@@ -38,12 +39,13 @@ public class MeFragmentPicture extends Fragment implements View.OnClickListener 
     private int likes;
     private int pid;
     private boolean showDiv;
+    private long ellapsedHours;
 
     private File location;
     private Bitmap imageData;
 
 
-    public static MeFragmentPicture newInstance(int pid, String title, int dislikes, int likes, int views, File location) {
+    public static MeFragmentPicture newInstance(int pid, String title, int dislikes, int likes, int views, File location, long ellapsedHours) {
         MeFragmentPicture frag =  new MeFragmentPicture();
         frag.titles = title;
         frag.pid = pid;
@@ -52,6 +54,7 @@ public class MeFragmentPicture extends Fragment implements View.OnClickListener 
         frag.views = views;
         frag.location = location;
         frag.showDiv = true;
+        frag.ellapsedHours = ellapsedHours;
         return frag;
     }
 
@@ -66,10 +69,12 @@ public class MeFragmentPicture extends Fragment implements View.OnClickListener 
         title = (TextView) view.findViewById(R.id.TitleText);
         ucount = (TextView) view.findViewById(R.id.ucount);
         dcount = (TextView) view.findViewById(R.id.dcount);
+        ellapsed = (TextView) view.findViewById(R.id.date);
 
         title.setText(titles);
         ucount.setText(Integer.toString(likes));
         dcount.setText(Integer.toString(dislikes));
+        ellapsed.setText(String.format(getString(R.string.hours_ago), ellapsedHours));
 
         View div = view.findViewById(R.id.div);
         div.setVisibility(showDiv ? View.VISIBLE : View.GONE);

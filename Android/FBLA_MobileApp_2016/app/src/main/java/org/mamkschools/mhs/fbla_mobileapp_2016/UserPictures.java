@@ -19,7 +19,9 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.util;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class UserPictures extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
@@ -124,8 +126,13 @@ public class UserPictures extends Fragment implements View.OnClickListener {
                     int views = array.getJSONObject(i).getInt("views");
                     int dislikes = array.getJSONObject(i).getInt("dislikes");
                     int likes = array.getJSONObject(i).getInt("likes");
-                    ret.add(MeFragmentPicture.newInstance(pid, title, dislikes, likes, views, picLoc));
 
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                    long different = new Date().getTime() - simpleDateFormat.parse(
+                            array.getJSONObject(i).getString("created")).getTime();
+                    long elapsedHours = different / (1000 * 60 * 60);
+
+                    ret.add(MeFragmentPicture.newInstance(pid, title, dislikes, likes, views, picLoc, elapsedHours));
                 }
             }catch (Exception e){
                 if(Constants.DEBUG_MODE){

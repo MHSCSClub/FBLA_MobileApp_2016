@@ -32,6 +32,8 @@
     <string name="more_info">More Info</string>
     <string name="ok">OK</string>
 
+    <string name="hours_ago" formatted="false">%d hours ago</string>
+
 
     <string name="title_activity_upload">Upload a Picture</string>
     <string name="title_activity_legalinfo">Legal Info</string>

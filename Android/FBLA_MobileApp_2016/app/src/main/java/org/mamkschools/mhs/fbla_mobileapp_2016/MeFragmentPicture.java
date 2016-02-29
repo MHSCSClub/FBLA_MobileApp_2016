@@ -1,5 +1,6 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -81,6 +82,7 @@ public class MeFragmentPicture extends Fragment implements View.OnClickListener 
         title.setText(titles);
         ucount.setText("" + likes);
         dcount.setText("" + dislikes);
+        view.setOnClickListener(this);
     }
 
     public MeFragmentPicture() {
@@ -111,7 +113,9 @@ public class MeFragmentPicture extends Fragment implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-
+        Intent myintent = new Intent(getContext(), CommentPage.class);
+        myintent.putExtra("pid", pid);
+        startActivity(myintent);
     }
 
 }

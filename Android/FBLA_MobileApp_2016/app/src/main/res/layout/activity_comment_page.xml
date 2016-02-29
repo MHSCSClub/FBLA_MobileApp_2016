@@ -13,11 +13,12 @@
         android:paddingTop="60dp"
         android:layout_height="match_parent">
 
-        <android.support.v4.view.ViewPager android:id="@+id/view_pager"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:layout_marginRight="5dp" />
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/view_pager"></LinearLayout>
 
     </FrameLayout>
 

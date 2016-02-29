@@ -23,6 +23,7 @@ public class Comment extends android.app.Fragment {
 
     private String user;
     private String comment;
+    private String style;
 
     private OnFragmentInteractionListener mListener;
 
@@ -35,10 +36,11 @@ public class Comment extends android.app.Fragment {
      * this fragment using the provided parameters.
      */
     // TODO: Rename and change types and number of parameters
-    public static Comment newInstance(String user, String comment) {
+    public static Comment newInstance(String user, String comment, String style) {
         Comment fragment = new Comment();
         fragment.user = user;
         fragment.comment = comment;
+        fragment.style = style;
         return fragment;
     }
 
@@ -54,6 +56,8 @@ public class Comment extends android.app.Fragment {
         text.setText(comment);
         TextView textUser = (TextView) view.findViewById(R.id.username);
         textUser.setText(user);
+        TextView count = (TextView) view.findViewById(R.id.dcount);
+        count.setText(style);
 
     }
     @Override

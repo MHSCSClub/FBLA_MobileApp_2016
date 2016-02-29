@@ -189,6 +189,8 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
         postParams.put("pid", "" + getPictureId(picNumber));
         postParams.put("like", "" + currentRating);
 
+
+
         switch(v.getId()){
             case R.id.yesButton:
                 currentRating = 1;
@@ -229,8 +231,10 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
         params.put("style", "" + srating);
 
         EditText commentView = (EditText) rootView.findViewById(R.id.commentText);
+
         String comment = commentView.getText().toString();
         util.log(comment);
+        commentView.setText("");
         if(comment.length() > 0)
             params.put("comment", comment);
         return params;

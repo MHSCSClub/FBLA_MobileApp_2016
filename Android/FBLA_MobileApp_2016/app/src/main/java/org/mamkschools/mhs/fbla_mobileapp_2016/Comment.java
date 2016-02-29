@@ -19,7 +19,7 @@ import org.w3c.dom.Text;
  * Use the {@link Comment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Comment extends android.app.Fragment {
+public class Comment extends android.app.Fragment{
 
     private String user;
     private String comment;
@@ -74,22 +74,7 @@ public class Comment extends android.app.Fragment {
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
 
     /**
      * This interface must be implemented by activities that contain this

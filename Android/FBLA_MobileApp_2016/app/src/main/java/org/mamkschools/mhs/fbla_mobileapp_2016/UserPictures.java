@@ -142,7 +142,7 @@ public class UserPictures extends Fragment implements View.OnClickListener {
                 util.log("Finished getting my pics");
                 FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                 for(int i = 0; i < ret.size(); i++){
-                    transaction.add(commentLayout.getId(), ret.get(i), "Fragment_" + i);
+                    transaction.add(R.id.commentLayout, ret.get(i), "Fragment_" + i);
                 }
                 transaction.commit();
             }else{

@@ -48,24 +48,6 @@ public class PictureFragment extends Fragment implements View.OnClickListener {
         frag.location = location;
         return frag;
     }
-    public Bitmap getPictureBitmap(File file){
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        options.inMutable = true;
-        if (imageData != null) {
-            options.inBitmap = imageData;
-        }
-        try {
-            Bitmap b = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-            util.log("" + b.getByteCount()); //do not remove line throws exception if decoding problem
-            return b;
-        } catch(Exception e) {
-            //Problem decoding into existing bitmap, allocate new memory
-            options.inBitmap = null;
-            return BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-        }
-
-    }
 
 
     @Override

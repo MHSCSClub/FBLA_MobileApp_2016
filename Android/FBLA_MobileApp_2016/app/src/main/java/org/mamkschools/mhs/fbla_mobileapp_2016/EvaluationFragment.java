@@ -102,12 +102,17 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
         FloatingActionButton no = (FloatingActionButton) rootView.findViewById(R.id.noButton);
         no.setOnClickListener(this);
 
+        SeekBar style = (SeekBar) rootView.findViewById(R.id.styleRating);
+        style.setProgress(style.getMax() / 2);
+
         Button submit = (Button) rootView.findViewById(R.id.submit_button);
         submit.setOnClickListener(this);
 
         Button cancel = (Button) rootView.findViewById(R.id.cancel_button);
         cancel.setOnClickListener(this);
-        
+
+
+
         c = getInfo();
         runFetch(picNumber);
 
@@ -186,10 +191,14 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         Map<String, String> postParams = new HashMap<>();
-        postParams.put("pid", "" + getPictureId(picNumber));
+        int pid = getPictureId(picNumber);
+        postParams.put("pid", "" + pid);
         postParams.put("like", "" + currentRating);
 
-
+        if(pid == -1){
+            Toast.makeText(getContext(), "No pictures left to rate", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         switch(v.getId()){
             case R.id.yesButton:
@@ -228,7 +237,9 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
     private Map<String, String> getRateParams(Map<String, String> params) {
         SeekBar style = (SeekBar) rootView.findViewById(R.id.styleRating);
         int srating = (int) Math.round((double) style.getProgress() / (double) style.getMax() * 10.0);
+        if(srating == 0) srating = 1;
         params.put("style", "" + srating);
+        style.setProgress(style.getMax() / 2);
 
         EditText commentView = (EditText) rootView.findViewById(R.id.commentText);
 

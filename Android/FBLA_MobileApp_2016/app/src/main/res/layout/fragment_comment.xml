@@ -53,5 +53,14 @@
         android:gravity="center"
         android:layout_marginRight="5dp"
         android:textSize="35dp" />
+    <View style="@style/Divider"
+        android:layout_alignParentTop="false"
+        android:layout_alignRight="@+id/commentImage"
+        android:layout_alignEnd="@+id/commentImage"
+        android:layout_alignParentBottom="false"
+        android:layout_alignWithParentIfMissing="false"
+        android:clickable="true"
+        android:layout_marginTop="50dp"
+        android:id="@+id/sep" />
 
 </RelativeLayout>

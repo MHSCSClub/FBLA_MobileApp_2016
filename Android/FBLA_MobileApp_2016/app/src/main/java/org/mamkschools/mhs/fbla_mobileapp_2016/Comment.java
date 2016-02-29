@@ -11,21 +11,15 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Comment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Comment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class Comment extends android.app.Fragment{
 
     private String user;
     private String comment;
     private String style;
+    private boolean showDiv;
 
-    private OnFragmentInteractionListener mListener;
+
 
     public Comment() {
         // Required empty public constructor
@@ -41,7 +35,12 @@ public class Comment extends android.app.Fragment{
         fragment.user = user;
         fragment.comment = comment;
         fragment.style = style;
+        fragment.showDiv = true;
         return fragment;
+    }
+
+    public void setShowDiv(boolean showDiv){
+        this.showDiv = showDiv;
     }
 
     @Override
@@ -58,36 +57,13 @@ public class Comment extends android.app.Fragment{
         textUser.setText(user);
         TextView count = (TextView) view.findViewById(R.id.dcount);
         count.setText(style);
-
+        View sep = view.findViewById(R.id.sep);
+        sep.setVisibility(showDiv ? View.VISIBLE : View.GONE);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_comment, container, false);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

@@ -94,6 +94,7 @@ public class CommentPage extends AppCompatActivity  {
                 util.log("Finished getting my pics");
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 for(int i = 0; i < ret.size(); i++){
+                    ret.get(i).setShowDiv(i == ret.size() - 1);
                     transaction.add(R.id.commentList, ret.get(i), "Fragment_" + i);
                 }
                 transaction.commit();

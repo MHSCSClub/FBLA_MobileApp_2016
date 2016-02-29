@@ -37,6 +37,7 @@ public class MeFragmentPicture extends Fragment implements View.OnClickListener 
     private int dislikes;
     private int likes;
     private int pid;
+    private boolean showDiv;
 
     private File location;
     private Bitmap imageData;
@@ -50,25 +51,12 @@ public class MeFragmentPicture extends Fragment implements View.OnClickListener 
         frag.likes = likes;
         frag.views = views;
         frag.location = location;
+        frag.showDiv = true;
         return frag;
     }
-    public Bitmap getPictureBitmap(File file){
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        options.inMutable = true;
-        if (imageData != null) {
-            options.inBitmap = imageData;
-        }
-        try {
-            Bitmap b = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-            util.log("" + b.getByteCount()); //do not remove line throws exception if decoding problem
-            return b;
-        } catch(Exception e) {
-            //Problem decoding into existing bitmap, allocate new memory
-            options.inBitmap = null;
-            return BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-        }
 
+    public void setShow(boolean showDiv){
+        this.showDiv = showDiv;
     }
 
 
@@ -80,8 +68,11 @@ public class MeFragmentPicture extends Fragment implements View.OnClickListener 
         dcount = (TextView) view.findViewById(R.id.dcount);
 
         title.setText(titles);
-        ucount.setText("" + likes);
-        dcount.setText("" + dislikes);
+        ucount.setText(Integer.toString(likes));
+        dcount.setText(Integer.toString(dislikes));
+
+        View div = view.findViewById(R.id.div);
+        div.setVisibility(showDiv ? View.VISIBLE : View.GONE);
         view.setOnClickListener(this);
     }
 

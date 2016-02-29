@@ -18,6 +18,16 @@
         <LinearLayout android:id="@+id/username_login_form" android:layout_width="match_parent"
             android:layout_height="wrap_content" android:orientation="vertical">
 
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView2"
+                android:src="@mipmap/ic_launcher_big"
+                android:adjustViewBounds="true"
+                android:cropToPadding="true"
+                android:paddingLeft="100dp"
+                android:paddingRight="100dp" />
+
             <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -40,16 +50,23 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <Button android:id="@+id/username_sign_in_button" style="?android:textAppearanceSmall"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:layout_marginTop="16dp" android:text="@string/action_sign_in"
-                android:textStyle="bold" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <Button android:id="@+id/username_register_button" style="?android:textAppearanceSmall"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:layout_marginTop="16dp" android:text="@string/action_register"
-                android:textStyle="bold" />
+                <Button android:id="@+id/username_register_button" style="?android:textAppearanceSmall"
+                    android:layout_width="fill_parent" android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp" android:text="@string/action_register"
+                    android:textStyle="bold"
+                    android:layout_weight="1" />
 
+                <Button android:id="@+id/username_sign_in_button" style="?android:textAppearanceSmall"
+                    android:layout_width="fill_parent" android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp" android:text="@string/action_sign_in"
+                    android:textStyle="bold"
+                    android:layout_weight="1" />
+            </LinearLayout>
 
 
         </LinearLayout>

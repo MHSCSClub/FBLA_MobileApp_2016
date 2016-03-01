@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:fitsSystemWindows="true"
 
     tools:context="org.mamkschools.mhs.fbla_mobileapp_2016.MainActivitySwipes">
 
     <ScrollView
+        android:id="@+id/MainScrollView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/MainScrollView" >
+        android:layout_height="fill_parent">
 
         <LinearLayout
-            android:orientation="vertical"
+            android:id="@+id/commentList"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/commentList">
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/myImageTitle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="Title"
+                android:textSize="40dp"
+                android:layout_gravity="center_horizontal"
+                android:singleLine="true" />
+
             <FrameLayout
                 android:id="@+id/imageFrame"
                 android:layout_width="wrap_content"
@@ -26,25 +38,14 @@
                 android:layout_marginBottom="5dp">
 
                 <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/myImage"
-                android:layout_gravity="center_horizontal"
-                android:adjustViewBounds="true"
+                    android:id="@+id/myImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:adjustViewBounds="true"
                     android:maxHeight="250dp" />
 
-                <TextView
-                    android:id="@+id/myImageTitle"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Image Title"
-                    android:textColor="#ffffff"
-                    android:textSize="20sp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingBottom="5dp"
-                    android:background="#CC424242"
-                    android:layout_gravity="bottom|center_horizontal" />
             </FrameLayout>
 
         </LinearLayout>

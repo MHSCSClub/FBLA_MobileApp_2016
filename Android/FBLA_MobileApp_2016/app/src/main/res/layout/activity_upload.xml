@@ -8,11 +8,13 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="org.mamkschools.mhs.fbla_mobileapp_2016.UploadActivity">
+
     <!-- Login progress -->
     <ProgressBar android:id="@+id/uploadProgress" style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:layout_marginBottom="8dp" android:visibility="gone"
         android:layout_centerHorizontal="true" />
+
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -24,12 +26,12 @@
             android:layout_height="match_parent">
 
 
-
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Get Picture"
-                android:id="@+id/getPic" />
+                android:id="@+id/getPic"
+                android:layout_gravity="center_horizontal" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -56,7 +58,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Upload"
-                android:id="@+id/uploadNow" />
+                android:id="@+id/uploadNow"
+                android:layout_gravity="center_horizontal" />
         </LinearLayout>
     </ScrollView>
 

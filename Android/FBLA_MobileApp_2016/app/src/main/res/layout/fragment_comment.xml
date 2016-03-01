@@ -5,22 +5,6 @@
     android:layout_height="wrap_content"
     tools:context=".Comment">
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/commentText"
-        android:text="title"
-        android:gravity="center|left"
-        android:layout_toLeftOf="@+id/ucount"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginRight="15dp"
-        android:singleLine="true"
-        android:textColor="#424242"
-        android:textSize="20dp" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,20 +13,36 @@
         android:layout_alignParentTop="true"
         android:gravity="top|center"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="8dp"
         android:textSize="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/commentText"
+        android:text="title"
+        android:gravity="center|left"
+        android:layout_toLeftOf="@+id/ucount"
+        android:layout_below="@+id/username"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="2dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="15dp"
+        android:singleLine="true"
+        android:textColor="#424242"
+        android:textSize="20dp" />
 
 
     <ImageView
         android:id="@+id/commentImage"
         android:layout_width="wrap_content"
-        android:layout_height="47dp"
-        android:adjustViewBounds="true"
+        android:layout_height="wrap_content"
         android:src="@mipmap/ic_star"
         android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="10dp"
-        android:foregroundGravity="center_vertical" />
+        android:layout_marginTop="3dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -52,15 +52,16 @@
         android:layout_toLeftOf="@+id/commentImage"
         android:gravity="center"
         android:layout_marginRight="5dp"
+        android:layout_alignBottom="@id/commentImage"
         android:textSize="35dp" />
+
     <View style="@style/Divider"
-        android:layout_alignParentTop="false"
-        android:layout_alignRight="@+id/commentImage"
-        android:layout_alignEnd="@+id/commentImage"
-        android:layout_alignParentBottom="false"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/commentText"
         android:layout_alignWithParentIfMissing="false"
         android:clickable="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="8dp"
+        android:background="#bdbdbd"
         android:id="@+id/sep" />
 
 </RelativeLayout>

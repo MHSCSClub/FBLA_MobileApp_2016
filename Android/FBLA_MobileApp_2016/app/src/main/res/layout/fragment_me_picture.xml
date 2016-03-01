@@ -12,10 +12,10 @@
         android:layout_height="match_parent"
         android:id="@+id/TitleText"
         android:text="title"
-        android:gravity="center|left"
+        android:gravity="top|left"
         android:layout_toLeftOf="@+id/ucount"
         android:layout_marginLeft="10dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginTop="10dp"
         android:layout_alignParentLeft="true"
         android:layout_marginRight="15dp"
         android:singleLine="true"
@@ -30,7 +30,7 @@
         android:layout_alignParentBottom="true"
         android:gravity="bottom|center"
         android:layout_marginLeft="10dp"
-        android:layout_marginBottom="3dp"
+        android:layout_marginBottom="10dp"
         android:textSize="15dp" />
 
 
@@ -77,13 +77,13 @@
         android:gravity="center"
         android:layout_marginRight="5dp"
         android:textSize="35dp" />
+
     <View style="@style/Divider"
-        android:layout_alignParentTop="false"
-        android:layout_alignParentBottom="false"
-        android:layout_alignWithParentIfMissing="false"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
         android:clickable="true"
         android:layout_marginTop="69dp"
-        android:id="@+id/div" />
-
+        android:id="@+id/div"
+        android:background="#bdbdbd" />
 
 </RelativeLayout>

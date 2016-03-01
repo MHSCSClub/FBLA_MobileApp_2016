@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="70dp"
+    android:layout_height="60dp"
     tools:context=".fragment_me"
     android:id="@+id/UploadImage">
 
@@ -12,12 +12,13 @@
         android:layout_height="match_parent"
         android:id="@+id/TitleText"
         android:text="title"
-        android:gravity="center|left"
+        android:gravity="top|left"
         android:layout_toLeftOf="@+id/ucount"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="15dp"
         android:layout_alignParentLeft="true"
         android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
         android:singleLine="true"
         android:textColor="#424242"
         android:textSize="24dp" />
@@ -30,7 +31,7 @@
         android:layout_alignParentBottom="true"
         android:gravity="bottom|center"
         android:layout_marginLeft="10dp"
-        android:layout_marginBottom="3dp"
+        android:layout_marginBottom="5dp"
         android:textSize="15dp" />
 
 
@@ -42,8 +43,8 @@
         android:src="@drawable/ic_thumb_down_rd_48dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
         android:layout_marginRight="10dp"
         />
 
@@ -64,8 +65,8 @@
         android:adjustViewBounds="true"
         android:layout_toLeftOf="@+id/dcount"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
         android:src="@drawable/ic_thumb_up_green_48dp" />
 
     <TextView

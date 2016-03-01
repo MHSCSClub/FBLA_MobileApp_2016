@@ -3,8 +3,12 @@ package org.mamkschools.mhs.fbla_mobileapp_2016.lib;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureContract.PictureEntry;
+
+import java.io.File;
 
 /**
  * Created by jackphillips on 2/13/16.
@@ -50,5 +54,27 @@ public class PictureHelper extends SQLiteOpenHelper {
     }
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
+    }
+
+    public static Bitmap getPictureBitmap(File file){
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        options.inMutable = true;
+        if (Constants.imageBitmap != null) {
+            options.inBitmap = Constants.imageBitmap;
+        }
+        try {
+            Bitmap b = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+            util.log("" + b.getByteCount()); //do not remove line throws exception if decoding problem
+            return b;
+        } catch(Exception e) {
+            //Problem decoding into existing bitmap, allocate new memory
+            options.inBitmap = null;
+            util.log("Allocated new memory");
+            Constants.imageBitmap.recycle();
+            Constants.imageBitmap = null;
+            return BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+        }
+
     }
 }

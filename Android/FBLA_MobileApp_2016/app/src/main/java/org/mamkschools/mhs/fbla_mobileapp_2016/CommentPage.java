@@ -21,6 +21,7 @@ import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureHelper;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.util;
 
@@ -32,6 +33,7 @@ import java.util.ArrayList;
  * Created by jackphillips on 2/26/16.
  */
 public class CommentPage extends AppCompatActivity  {
+
     ImageView myImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,29 +109,15 @@ public class CommentPage extends AppCompatActivity  {
     private class GetPicture extends AsyncTask<Integer, Void, Boolean> {
         SecureAPI picture = SecureAPI.getInstance(getApplicationContext());
         Bitmap imageData;
+        File picFile;
 
         @Override
         protected Boolean doInBackground(Integer... params) {
             try{
                 int pid = params[0];
                 util.log("picture/" + pid + "?authcode=" + Constants.AUTHCODE);
-                File picFile = new File(getFilesDir(), "picture.jpg");
+                picFile = new File(getFilesDir(), "picture.jpg");
                 picture.HTTPSFETCHPIC("picture/" + pid + "?authcode=" + Constants.AUTHCODE, picFile);
-
-                final BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                options.inMutable = true;
-                if (imageData != null) {
-                    options.inBitmap = imageData;
-                }
-                try {
-                    imageData = BitmapFactory.decodeFile(picFile.getAbsolutePath(), options);
-                    util.log("" + imageData.getByteCount()); //do not remove line throws exception if decoding problem
-                } catch(Exception e) {
-                    //Problem decoding into existing bitmap, allocate new memory
-                    options.inBitmap = null;
-                    imageData = BitmapFactory.decodeFile(picFile.getAbsolutePath(), options);
-                }
             }catch(Exception e){
                 util.log(e.getMessage());
                 return false;
@@ -140,7 +128,8 @@ public class CommentPage extends AppCompatActivity  {
         @Override
         protected void onPostExecute(Boolean v) {
             if(v){
-                myImage.setImageBitmap(imageData);
+                Constants.imageBitmap = PictureHelper.getPictureBitmap(picFile);
+                myImage.setImageBitmap(Constants.imageBitmap);
             }else{
                 util.log("Life will go on");
             }

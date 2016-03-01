@@ -25,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureContract;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureHelper;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.util;
 import org.w3c.dom.Text;
@@ -58,8 +59,6 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
     private View ratingLayout;
     private View buttonLayout;
     private View instructions;
-
-    private Bitmap imageData;
 
     private int currentRating;
 
@@ -129,24 +128,7 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
 
         return rootView;
     }
-    public Bitmap getPictureBitmap(File file){
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        options.inMutable = true;
-        if (imageData != null) {
-            options.inBitmap = imageData;
-        }
-        try {
-            Bitmap b = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-            util.log("" + b.getByteCount()); //do not remove line throws exception if decoding problem
-            return b;
-        } catch(Exception e) {
-            //Problem decoding into existing bitmap, allocate new memory
-            options.inBitmap = null;
-            return BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-        }
 
-    }
     public int getPictureId(int picture){
         if(c.getCount() > 0 && picture < c.getCount()) {
             c.moveToPosition(picture);
@@ -289,7 +271,7 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
                 int pid = params[0];
                 util.log("picture/" + pid + "?authcode=" + Constants.AUTHCODE);
                 picture.HTTPSFETCHPIC("picture/" + pid + "?authcode=" + Constants.AUTHCODE, new File(location, "picture.jpg"));
-                imageData = getPictureBitmap(new File(location, "picture.jpg"));
+                Constants.imageBitmap = PictureHelper.getPictureBitmap(new File(location, "picture.jpg"));
             }catch(Exception e){
                 util.log(e.getMessage());
                 return false;
@@ -300,7 +282,7 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
         @Override
         protected void onPostExecute(Boolean v) {
             if(v){
-                image.setImageBitmap(imageData);
+                image.setImageBitmap(Constants.imageBitmap);
             }else{
                 util.log("Life will go on");
             }

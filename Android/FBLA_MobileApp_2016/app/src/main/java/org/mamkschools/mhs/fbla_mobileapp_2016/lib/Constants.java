@@ -3,6 +3,7 @@ package org.mamkschools.mhs.fbla_mobileapp_2016.lib;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -28,6 +29,8 @@ public final class Constants {
 
     public static double LATITUDE;
     public static double LONGITUDE;
+
+    public static Bitmap imageBitmap = null;
 
     private Constants(){
         //Do nothing constructor, exists to defeat instantiation.

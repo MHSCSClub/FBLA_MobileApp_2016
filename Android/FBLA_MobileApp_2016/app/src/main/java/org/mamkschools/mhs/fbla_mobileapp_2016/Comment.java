@@ -12,24 +12,17 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 
-public class Comment extends android.app.Fragment{
+public class Comment extends android.app.Fragment {
 
     private String user;
     private String comment;
     private String style;
     private boolean showDiv;
 
-
-
     public Comment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     */
-    // TODO: Rename and change types and number of parameters
     public static Comment newInstance(String user, String comment, String style) {
         Comment fragment = new Comment();
         fragment.user = user;
@@ -60,6 +53,7 @@ public class Comment extends android.app.Fragment{
         View sep = view.findViewById(R.id.sep);
         sep.setVisibility(showDiv ? View.VISIBLE : View.GONE);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

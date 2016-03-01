@@ -37,4 +37,8 @@
 
     <string name="title_activity_upload">Upload a Picture</string>
     <string name="title_activity_legalinfo">Legal Info</string>
+
+    <string name="upload">Upload Image</string>
+    <string name="imgTitle">Image Title</string>
+    <string name="getPic">Choose Picture</string>
 </resources>

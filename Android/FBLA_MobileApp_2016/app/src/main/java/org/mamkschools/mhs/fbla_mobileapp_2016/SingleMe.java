@@ -46,7 +46,6 @@ public class SingleMe extends Fragment implements View.OnClickListener {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         commentLayout = (LinearLayout) view.findViewById(R.id.commentLayout);
-        NestedScrollView commentScroll = (NestedScrollView) view.findViewById(R.id.commentScroll);
         fab = (FloatingActionButton) getActivity().findViewById(R.id.cameraButton);
         fab.setOnClickListener(this);
 

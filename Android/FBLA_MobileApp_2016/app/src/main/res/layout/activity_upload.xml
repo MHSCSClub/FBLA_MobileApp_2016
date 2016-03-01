@@ -23,13 +23,13 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Get Picture"
+                android:text="@string/getPic"
                 android:id="@+id/getPic"
                 android:layout_gravity="center_horizontal" />
 
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content">
 
                 <AutoCompleteTextView android:id="@+id/editTitleText" android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:hint="Image Title"
+                    android:layout_height="wrap_content" android:hint="@string/imgTitle"
                     android:inputType="text" android:maxLines="1"
                     android:singleLine="true" />
 
@@ -57,7 +57,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Upload"
+                android:text="@string/upload"
                 android:id="@+id/uploadNow"
                 android:layout_gravity="center_horizontal" />
         </LinearLayout>

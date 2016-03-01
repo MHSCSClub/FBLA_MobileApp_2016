@@ -23,7 +23,7 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureContract;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureHelper;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.util;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Debug;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -111,7 +111,7 @@ public class ViewEvaluate extends Fragment implements View.OnClickListener {
         runFetch(picNumber);
 
         if(c.getCount() > 0 && picNumber < c.getCount()) {
-            util.log("From: " + picNumber);
+            Debug.log("From: " + picNumber);
             c.moveToPosition(picNumber);
             int itemId = c.getInt(c.getColumnIndexOrThrow(PictureContract.PictureEntry.COLUMN_NAME_PICTURE_ID));
             String title = c.getString(c.getColumnIndexOrThrow(PictureContract.PictureEntry.COLUMN_NAME_TITLE));
@@ -221,7 +221,7 @@ public class ViewEvaluate extends Fragment implements View.OnClickListener {
         EditText commentView = (EditText) rootView.findViewById(R.id.commentText);
 
         String comment = commentView.getText().toString();
-        util.log(comment);
+        Debug.log(comment);
         commentView.setText("");
         if(comment.length() > 0)
             params.put("comment", comment);
@@ -264,11 +264,11 @@ public class ViewEvaluate extends Fragment implements View.OnClickListener {
         protected Boolean doInBackground(Integer... params) {
             try{
                 int pid = params[0];
-                util.log("picture/" + pid + "?authcode=" + Constants.AUTHCODE);
+                Debug.log("picture/" + pid + "?authcode=" + Constants.AUTHCODE);
                 picture.HTTPSFETCHPIC("picture/" + pid + "?authcode=" + Constants.AUTHCODE, new File(location, "picture.jpg"));
                 Constants.imageBitmap = PictureHelper.getPictureBitmap(new File(location, "picture.jpg"));
             }catch(Exception e){
-                util.log(e.getMessage());
+                Debug.log(e.getMessage());
                 return false;
             }
             return true;
@@ -279,7 +279,7 @@ public class ViewEvaluate extends Fragment implements View.OnClickListener {
             if(v){
                 image.setImageBitmap(Constants.imageBitmap);
             }else{
-                util.log("Life will go on");
+                Debug.log("Life will go on");
             }
         }
     }
@@ -335,7 +335,7 @@ public class ViewEvaluate extends Fragment implements View.OnClickListener {
             db.execSQL("Delete from " + PictureContract.PictureEntry.TABLE_NAME);
             ContentValues values = new ContentValues();
 
-            util.log(Constants.LATITUDE + " " + Constants.LONGITUDE);
+            Debug.log(Constants.LATITUDE + " " + Constants.LONGITUDE);
 
             try {
                 JSONObject response = picture.HTTPSGET("picture/fetch?authcode=" + Constants.AUTHCODE + "&ft_me=1" + "&ft_views=" + view
@@ -383,8 +383,8 @@ public class ViewEvaluate extends Fragment implements View.OnClickListener {
 
                 }
             }catch (Exception e){
-                if(Constants.DEBUG_MODE){
-                    util.log(e.getMessage());
+                if(Debug.DEBUG_MODE){
+                    Debug.log(e.getMessage());
                 }
             }
             return null;
@@ -392,7 +392,7 @@ public class ViewEvaluate extends Fragment implements View.OnClickListener {
 
         @Override
         protected void onPostExecute(Void v) {
-            util.log("Finished getting Picture Infomation");
+            Debug.log("Finished getting Picture Infomation");
             c = getInfo();
             if(c.getCount() > 0){
                 runOnce = true;

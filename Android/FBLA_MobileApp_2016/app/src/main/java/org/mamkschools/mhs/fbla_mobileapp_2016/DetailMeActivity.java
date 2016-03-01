@@ -14,7 +14,7 @@ import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureHelper;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.util;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Debug;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ public class DetailMeActivity extends AppCompatActivity  {
 
             try {
                 JSONObject response = picture.HTTPSGET("picture/" + params[0] + "/comment?authcode=" + Constants.AUTHCODE);
-                util.log("picture/" + params[0] + "/comment?authcode=" + Constants.AUTHCODE);
+                Debug.log("picture/" + params[0] + "/comment?authcode=" + Constants.AUTHCODE);
 
                 JSONArray array = response.getJSONArray("data");
 
@@ -74,8 +74,8 @@ public class DetailMeActivity extends AppCompatActivity  {
 
                 }
             }catch (Exception e){
-                if(Constants.DEBUG_MODE){
-                    util.log("mypics error " + e.getMessage());
+                if(Debug.DEBUG_MODE){
+                    Debug.log("mypics error " + e.getMessage());
                 }
                 return false;
             }
@@ -85,7 +85,7 @@ public class DetailMeActivity extends AppCompatActivity  {
         @Override
         protected void onPostExecute(Boolean v) {
             if(v){
-                util.log("Finished getting my pics");
+                Debug.log("Finished getting my pics");
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 for(int i = 0; i < ret.size(); i++){
                     ret.get(i).setShowDiv(i != ret.size() - 1);
@@ -93,7 +93,7 @@ public class DetailMeActivity extends AppCompatActivity  {
                 }
                 transaction.commit();
             }else{
-                util.log("Did not work_111");
+                Debug.log("Did not work_111");
             }
         }
     }
@@ -107,11 +107,11 @@ public class DetailMeActivity extends AppCompatActivity  {
         protected Boolean doInBackground(Integer... params) {
             try{
                 int pid = params[0];
-                util.log("picture/" + pid + "?authcode=" + Constants.AUTHCODE);
+                Debug.log("picture/" + pid + "?authcode=" + Constants.AUTHCODE);
                 picFile = new File(getFilesDir(), "picture.jpg");
                 picture.HTTPSFETCHPIC("picture/" + pid + "?authcode=" + Constants.AUTHCODE, picFile);
             }catch(Exception e){
-                util.log(e.getMessage());
+                Debug.log(e.getMessage());
                 return false;
             }
             return true;
@@ -123,7 +123,7 @@ public class DetailMeActivity extends AppCompatActivity  {
                 Constants.imageBitmap = PictureHelper.getPictureBitmap(picFile);
                 myImage.setImageBitmap(Constants.imageBitmap);
             }else{
-                util.log("Life will go on");
+                Debug.log("Life will go on");
             }
         }
     }

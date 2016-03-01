@@ -18,9 +18,6 @@ public final class Constants {
     //API URL
     public static final String API_BASE_URL = "https://aakatz3.aakportfolio.com:9084/fbla2016/api/";
 
-    //Output debug info
-    public static boolean DEBUG_MODE = true;
-
     //Authcode needs to be saved and loaded
     public static String AUTHCODE = null;
 

@@ -27,7 +27,7 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Commands;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureHelper;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.util;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Debug;
 
 import java.io.File;
 
@@ -199,7 +199,7 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
             try {
                 HTTPS.HTTPSGET(Commands.Get.LOGOUT + Constants.AUTHCODE);
             } catch (Exception ex) {
-                util.log(ex.getMessage());
+                Debug.log(ex.getMessage());
                 return false;
             }
             return true;

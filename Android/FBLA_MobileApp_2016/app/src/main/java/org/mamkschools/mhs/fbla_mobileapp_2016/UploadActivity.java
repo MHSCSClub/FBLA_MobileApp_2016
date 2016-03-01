@@ -34,7 +34,7 @@ import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Commands;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.util;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Debug;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -194,7 +194,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 Constants.LATITUDE = simpleLocation.getLatitude();
                 Constants.LONGITUDE = simpleLocation.getLongitude();
 
-                util.log("lat" + Constants.LATITUDE + "lon" + Constants.LONGITUDE);
+                Debug.log("lat" + Constants.LATITUDE + "lon" + Constants.LONGITUDE);
 
                 uploadPic.paramMap.put("geolong", "" + Constants.LONGITUDE);
                 uploadPic.paramMap.put("geolat", "" + Constants.LATITUDE);
@@ -265,8 +265,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                     throw new Exception("Impossible status");
                 }
             } catch (Exception e) {
-                if (Constants.DEBUG_MODE) {
-                    util.log(e.getMessage());
+                if (Debug.DEBUG_MODE) {
+                    Debug.log(e.getMessage());
                     e.printStackTrace();
                 }
                 return false;
@@ -279,10 +279,10 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         protected void onPostExecute(Boolean success) {
             showProgress(false);
             if (success) {
-                util.log("Upload worked");
+                Debug.log("Upload worked");
                 finish();
             } else {
-                util.log("Upload failed");
+                Debug.log("Upload failed");
                 Toast.makeText(getApplicationContext(), "Upload failed, please try again", Toast.LENGTH_SHORT).show();
             }
         }

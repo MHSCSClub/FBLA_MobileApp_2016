@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.util;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Debug;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -114,7 +113,7 @@ public class SingleMe extends Fragment implements View.OnClickListener {
 
             try {
                 JSONObject response = picture.HTTPSGET("picture/fetch/me?authcode=" + Constants.AUTHCODE);
-                util.log("picture/fetch/me?authcode=" + Constants.AUTHCODE);
+                Debug.log("picture/fetch/me?authcode=" + Constants.AUTHCODE);
 
                 JSONArray array = response.getJSONArray("data");
 
@@ -133,8 +132,8 @@ public class SingleMe extends Fragment implements View.OnClickListener {
                     ret.add(ViewMe.newInstance(pid, title, dislikes, likes, views, picLoc, elapsedHours));
                 }
             }catch (Exception e){
-                if(Constants.DEBUG_MODE){
-                    util.log("mypics error " + e.getMessage());
+                if(Debug.DEBUG_MODE){
+                    Debug.log("mypics error " + e.getMessage());
                 }
                 return false;
             }
@@ -144,14 +143,14 @@ public class SingleMe extends Fragment implements View.OnClickListener {
         @Override
         protected void onPostExecute(Boolean v) {
             if(v){
-                util.log("Finished getting my pics");
+                Debug.log("Finished getting my pics");
                 FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                 for(int i = 0; i < ret.size(); i++){
                     transaction.add(R.id.commentLayout, ret.get(i), "Fragment_" + i);
                 }
                 transaction.commit();
             }else{
-                util.log("Did not work_111");
+                Debug.log("Did not work_111");
             }
         }
     }

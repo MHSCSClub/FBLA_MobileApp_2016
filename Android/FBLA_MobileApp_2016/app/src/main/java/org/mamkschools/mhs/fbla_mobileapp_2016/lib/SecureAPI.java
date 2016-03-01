@@ -1,12 +1,8 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016.lib;
 
 
-import android.content.ContentResolver;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.net.Uri;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.R;
 
@@ -15,20 +11,16 @@ import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -53,7 +45,7 @@ public class SecureAPI {
                 mySecureAPI = new SecureAPI(c.getApplicationContext()
                         .getResources().openRawResource(R.raw.servercert));
             }catch (Exception e){
-                util.log(e.getMessage());
+                Debug.log(e.getMessage());
             }
         }
         return mySecureAPI;
@@ -68,7 +60,7 @@ public class SecureAPI {
     private void createSocketFactory(InputStream is) throws Exception {
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
         Certificate certificate = certificateFactory.generateCertificate(is);
-        util.log("ca=" + ((X509Certificate) certificate).getSubjectDN());
+        Debug.log("ca=" + ((X509Certificate) certificate).getSubjectDN());
 
 
         KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());

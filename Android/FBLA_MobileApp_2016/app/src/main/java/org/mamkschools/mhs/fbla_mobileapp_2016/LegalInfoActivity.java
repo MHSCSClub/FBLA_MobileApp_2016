@@ -23,7 +23,7 @@ public class LegalInfoActivity extends AppCompatActivity {
                 text += s.nextLine();
             } while(s.hasNextLine());
         }catch(Exception e){
-            util.log(e.getMessage());
+            Debug.log(e.getMessage());
         }
         LegalText.setText(text);
         ActionBar actionBar = getSupportActionBar();

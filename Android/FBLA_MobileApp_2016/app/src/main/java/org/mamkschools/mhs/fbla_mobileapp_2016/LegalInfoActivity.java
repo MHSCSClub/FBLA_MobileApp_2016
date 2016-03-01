@@ -16,7 +16,7 @@ public class LegalInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_legal_info);
         TextView LegalText = (TextView) findViewById(R.id.legaltext);
-        Scanner s = new Scanner(this.getResources().openRawResource(R.raw.filler));
+        Scanner s = new Scanner(this.getResources().openRawResource(R.raw.legal));
         String text = "";
         try{
             do{

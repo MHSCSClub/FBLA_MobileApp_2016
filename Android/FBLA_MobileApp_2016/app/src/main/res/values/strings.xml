@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Is This Professional?</string>
+    <string name="app_name">Is this Professional?</string>
     <string name="legal_error">Error loading legal text</string>
     <string name="title_activity_login">Sign in</string>
 
@@ -21,7 +21,7 @@
     <string name="error_field_required">This field is required</string>
 
 
-    <string name="title_activity_main_activity_swipes">FBLA 2016 Mobile App</string>
+    <string name="title_activity_main_activity_swipes">Is this Professional?</string>
 
     <!-- Strings relating to menus -->
     <string name="action_logout">Logout</string>

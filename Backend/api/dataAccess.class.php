@@ -326,7 +326,7 @@
 		}
 
 		private static function GET_picfetchme($db, $userid) {
-			$res = $db->query("SELECT pid, title, geolat, geolong, created, likes, dislikes, (likes + dislikes) AS views FROM pictures WHERE userid=$userid ORDER BY created");
+			$res = $db->query("SELECT pid, title, geolat, geolong, created, likes, dislikes, (likes + dislikes) AS views FROM pictures WHERE userid=$userid ORDER BY created DESC");
 			return self::formatArrayResults($res);
 		}
 

@@ -37,7 +37,7 @@ import im.delight.android.location.SimpleLocation;
 /**
  * Created by jackphillips on 2/16/16.
  */
-public class ViewEvaluate extends Fragment implements View.OnClickListener {
+public class FragmentEvaluate extends Fragment implements View.OnClickListener {
     private SQLiteDatabase db;
     private int picNumber;
     private File location;
@@ -60,8 +60,8 @@ public class ViewEvaluate extends Fragment implements View.OnClickListener {
     private Cursor c;
 
 
-    public static ViewEvaluate newInstance(SQLiteDatabase db, int picNumber, File location, SimpleLocation simpleLocation) {
-        ViewEvaluate fragment = new ViewEvaluate();
+    public static FragmentEvaluate newInstance(SQLiteDatabase db, int picNumber, File location, SimpleLocation simpleLocation) {
+        FragmentEvaluate fragment = new FragmentEvaluate();
         fragment.db = db;
         fragment.picNumber = picNumber;
         fragment.location = location;
@@ -69,7 +69,7 @@ public class ViewEvaluate extends Fragment implements View.OnClickListener {
         return fragment;
     }
 
-    public ViewEvaluate() {}
+    public FragmentEvaluate() {}
 
 
     @Override

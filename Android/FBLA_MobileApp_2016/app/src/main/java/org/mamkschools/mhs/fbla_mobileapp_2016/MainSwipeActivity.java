@@ -1,19 +1,26 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuInflater;
@@ -39,6 +46,7 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
     private Fragment evaluatePictures;
     private Fragment myPictures;
 
+    private static final int LOC_PERM_REQUEST_CODE = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +64,18 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
             SimpleLocation.openSettings(this);
         }
 
+        //Check if we have permission for location
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String [] {Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.ACCESS_FINE_LOCATION}, LOC_PERM_REQUEST_CODE);
+        }
+
+
+
         if (!Constants.PREFS_RESTORED) {
             Constants.restorePrefs(getApplicationContext());
         }
@@ -70,6 +90,7 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
 
         //Tabs
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        //noinspection deprecation
         tabLayout.setTabsFromPagerAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -78,7 +99,7 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
         int picture = 0;
 
         File picLocation = getFilesDir();
-        evaluatePictures = ViewEvaluate.newInstance(db, picture, picLocation, simplocation);
+        evaluatePictures = FragmentEvaluate.newInstance(db, picture, picLocation, simplocation);
         myPictures = SingleMe.newInstance(picLocation);
 
         ImageButton more = (ImageButton) findViewById(R.id.more_stuff);
@@ -96,6 +117,8 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
         Constants.restorePrefs(getApplicationContext());
+
+
 
         if(!isNetworkAvailable()){
             Toast.makeText(getApplicationContext(), "Network is not availible. Please connect to the internet", Toast.LENGTH_LONG).show();
@@ -245,5 +268,34 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
         //Create the actual dialog from the builder, then show it.
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case LOC_PERM_REQUEST_CODE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! we can do what we need
+
+                } else {
+                    // permission denied, boo!
+                    // tell user they need to go to permissions
+
+                    Toast.makeText(getApplicationContext(), "Please enable location permissions", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                            Uri.fromParts("package", getPackageName(), null));
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 }

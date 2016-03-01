@@ -1,5 +1,6 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -19,6 +20,9 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -60,6 +64,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     private AsyncTask uploadTask;
     private ByteArrayOutputStream picOutputStream;
 
+    private static final int PERMISSION_REQUEST_CODE = 5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +74,13 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        String [] permsToEnable = getDisabledPermissions();
+        if(permsToEnable.length != 0){
+            ActivityCompat.requestPermissions(this,
+                    permsToEnable,
+                    PERMISSION_REQUEST_CODE);
         }
 
         simpleLocation = new SimpleLocation(getApplicationContext());
@@ -301,5 +314,51 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     }
     private int map(int x, int in_min, int in_max, int out_min, int out_max){
         return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    }
+
+    public String [] getDisabledPermissions(){
+        String [] permissions = {Manifest.permission.CAMERA,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        ArrayList<String> disabledPerms = new ArrayList<String>();
+        for (String perm: permissions) {
+            if(ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.READ_CONTACTS)
+                    != PackageManager.PERMISSION_GRANTED){
+                disabledPerms.add(perm);
+            }
+        }
+        return disabledPerms.toArray(new String[disabledPerms.size()]);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay!
+                } else {
+
+                    // permission denied, boo!
+                    // must open settings, as these permissions are critical
+
+                    Toast.makeText(getApplicationContext(), "Please enable location permissions", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                            Uri.fromParts("package", getPackageName(), null));
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 }

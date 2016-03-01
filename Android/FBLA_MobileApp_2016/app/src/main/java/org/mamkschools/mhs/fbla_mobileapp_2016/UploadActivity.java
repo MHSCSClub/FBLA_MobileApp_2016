@@ -96,6 +96,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
             Toast.makeText(getApplicationContext(), "Network is not availible. Please connect to the internet", Toast.LENGTH_LONG).show();
             finish();
         }
+
+        openImageIntent();
     }
 
     @Override
@@ -170,16 +172,27 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
 
             try {
-                byte [] imageBytes = getBytes(getContentResolver().openInputStream(outputFileUri));
-                Bitmap b = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                Bitmap b;
+                {
+                    byte[] imageBytes = getBytes(getContentResolver().openInputStream(outputFileUri));
+                    b = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                }
                 picOutputStream = new ByteArrayOutputStream();
                 int maxDim = Math.max(b.getWidth(), b.getHeight());
                 b = Bitmap.createScaledBitmap(b,map(b.getWidth(),0,maxDim, 0, 4096), map(b.getHeight(), 0, maxDim, 0, 4096), false);
                 b.compress(Bitmap.CompressFormat.JPEG, 70, picOutputStream);
                 picPrev.setImageBitmap(b);
 
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException | NullPointerException e) {
+                if(Debug.DEBUG_MODE) {
+                    e.printStackTrace();
+                }
+
+            } catch (OutOfMemoryError outOfMemoryError){
+                if(Debug.DEBUG_MODE){
+                    outOfMemoryError.printStackTrace();
+                }
+                Toast.makeText(getApplicationContext(), "Out of memory, please increase emmulator ram or close other apps", Toast.LENGTH_LONG).show();
             }
 
         }
@@ -192,27 +205,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 openImageIntent();
                 break;
             case R.id.uploadNow:
-                if(uploadTask != null){
-                    uploadTask.cancel(true);
-                }
-                PicUploadParams uploadPic = new PicUploadParams();
-                uploadPic.pics.put("picture", picOutputStream);
-                if(editTitleText.getText().toString() == null || editTitleText.getText().toString().equals("")){
-                    editTitleText.setError("Title is required");
-                    editTitleText.requestFocus();
-                    break;
-                }
-                uploadPic.paramMap.put("title" , editTitleText.getText().toString());
-
-                Constants.LATITUDE = simpleLocation.getLatitude();
-                Constants.LONGITUDE = simpleLocation.getLongitude();
-
-                Debug.log("lat" + Constants.LATITUDE + "lon" + Constants.LONGITUDE);
-
-                uploadPic.paramMap.put("geolong", "" + Constants.LONGITUDE);
-                uploadPic.paramMap.put("geolat", "" + Constants.LATITUDE);
-                showProgress(true);
-                uploadTask = new PicUpload().execute(uploadPic);
+                uploadImage();
                 break;
             default:
                 //Do nothing
@@ -360,5 +353,28 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
             // other 'case' lines to check for other
             // permissions this app might request
         }
+    }
+    public void uploadImage(){
+        if(uploadTask != null){
+            uploadTask.cancel(true);
+        }
+        PicUploadParams uploadPic = new PicUploadParams();
+        uploadPic.pics.put("picture", picOutputStream);
+        if(editTitleText.getText().toString() == null || editTitleText.getText().toString().equals("")){
+            editTitleText.setError("Title is required");
+            editTitleText.requestFocus();
+            return;
+        }
+        uploadPic.paramMap.put("title" , editTitleText.getText().toString());
+
+        Constants.LATITUDE = simpleLocation.getLatitude();
+        Constants.LONGITUDE = simpleLocation.getLongitude();
+
+        Debug.log("lat" + Constants.LATITUDE + "lon" + Constants.LONGITUDE);
+
+        uploadPic.paramMap.put("geolong", "" + Constants.LONGITUDE);
+        uploadPic.paramMap.put("geolat", "" + Constants.LATITUDE);
+        showProgress(true);
+        uploadTask = new PicUpload().execute(uploadPic);
     }
 }

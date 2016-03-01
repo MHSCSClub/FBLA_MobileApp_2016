@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
 
-    tools:context="org.mamkschools.mhs.fbla_mobileapp_2016.MainActivitySwipes">
+    tools:context=".MainSwipeActivity">
 
     <ScrollView
         android:id="@+id/MainScrollView"

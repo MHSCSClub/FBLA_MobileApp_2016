@@ -1,30 +1,25 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
 
-
-public class Comment extends android.app.Fragment {
+public class SingleComment extends android.app.Fragment {
 
     private String user;
     private String comment;
     private String style;
     private boolean showDiv;
 
-    public Comment() {
+    public SingleComment() {
         // Required empty public constructor
     }
 
-    public static Comment newInstance(String user, String comment, String style) {
-        Comment fragment = new Comment();
+    public static SingleComment newInstance(String user, String comment, String style) {
+        SingleComment fragment = new SingleComment();
         fragment.user = user;
         fragment.comment = comment;
         fragment.style = style;

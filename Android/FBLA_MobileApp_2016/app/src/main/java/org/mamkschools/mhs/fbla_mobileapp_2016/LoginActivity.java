@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.AsyncTask;
@@ -59,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         Constants.restorePrefs(getApplicationContext());
 
         if(Constants.AUTHCODE != null){
-            startActivity(new Intent(getApplicationContext(), MainActivitySwipes.class));
+            startActivity(new Intent(getApplicationContext(), MainSwipeActivity.class));
         }
 
 
@@ -261,7 +260,7 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("AUTHCODE", Constants.AUTHCODE);
 
                     editor.apply();
-                    startActivity(new Intent(getApplicationContext(), MainActivitySwipes.class));
+                    startActivity(new Intent(getApplicationContext(), MainSwipeActivity.class));
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.registration_complete, Toast.LENGTH_LONG).show();
                     mAuthTask = new UserLoginTask(creds.get("username"), creds.get("password"), true);

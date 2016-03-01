@@ -24,28 +24,28 @@
             android:name=".LegalInfoActivity"
             android:label="@string/title_activity_legalinfo"
             android:screenOrientation="portrait"
-            android:parentActivityName=".MainActivitySwipes">
+            android:parentActivityName=".MainSwipeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.mamkschools.mhs.fbla_mobileapp_2016.MainActivitySwipes" />
+                android:value=".MainSwipeActivity" />
         </activity>
         <activity
-            android:name=".CommentPage"
+            android:name=".DetailMeActivity"
             android:label="comment_page"
             android:screenOrientation="portrait"
-            android:parentActivityName=".MainActivitySwipes">
+            android:parentActivityName=".MainSwipeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.mamkschools.mhs.fbla_mobileapp_2016.MainActivitySwipes" />
+                android:value=".MainSwipeActivity" />
         </activity>
         <activity
             android:name=".UploadActivity"
             android:label="@string/title_activity_upload"
-            android:parentActivityName=".MainActivitySwipes"
+            android:parentActivityName=".MainSwipeActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.mamkschools.mhs.fbla_mobileapp_2016.MainActivitySwipes" />
+                android:value=".MainSwipeActivity" />
         </activity>
 
         <activity
@@ -60,7 +60,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivitySwipes"
+            android:name=".MainSwipeActivity"
             android:label="@string/title_activity_main_activity_swipes"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />

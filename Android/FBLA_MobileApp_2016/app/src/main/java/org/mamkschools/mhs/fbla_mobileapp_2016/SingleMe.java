@@ -19,9 +19,11 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.util;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
-public class UserPicturesFragment extends Fragment implements View.OnClickListener {
+public class SingleMe extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     public static final int PIC_UPLOAD_REQUEST = 20;
@@ -34,17 +36,16 @@ public class UserPicturesFragment extends Fragment implements View.OnClickListen
     private File picLoc;
     private AsyncTask picGet;
 
-    public static UserPicturesFragment newInstance(File picLoc) {
-        UserPicturesFragment userPicturesFragment =  new UserPicturesFragment();
-        userPicturesFragment.picLoc = picLoc;
-        return userPicturesFragment;
+    public static SingleMe newInstance(File picLoc) {
+        SingleMe singleMe =  new SingleMe();
+        singleMe.picLoc = picLoc;
+        return singleMe;
     }
-
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //commentLayout = (LinearLayout) view.findViewById(R.id.commentLayout);
+        commentLayout = (LinearLayout) view.findViewById(R.id.commentLayout);
         NestedScrollView commentScroll = (NestedScrollView) view.findViewById(R.id.commentScroll);
         fab = (FloatingActionButton) getActivity().findViewById(R.id.cameraButton);
         fab.setOnClickListener(this);
@@ -54,7 +55,7 @@ public class UserPicturesFragment extends Fragment implements View.OnClickListen
     }
 
 
-    public UserPicturesFragment() {
+    public SingleMe() {
         // Required empty public constructor
     }
 
@@ -80,7 +81,7 @@ public class UserPicturesFragment extends Fragment implements View.OnClickListen
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        return inflater.inflate(R.layout.fragment_user_pictures, container, false);
+        return inflater.inflate(R.layout.fragment_me_better, container, false);
     }
 
     @Override
@@ -105,7 +106,7 @@ public class UserPicturesFragment extends Fragment implements View.OnClickListen
     }
     private class GetMyPictureInfo extends AsyncTask<Void, Boolean, Boolean> {
 
-        private ArrayList<PictureFragment> ret = new ArrayList<>();
+        private ArrayList<ViewMe> ret = new ArrayList<>();
         SecureAPI picture = SecureAPI.getInstance(getContext());
 
 
@@ -124,8 +125,13 @@ public class UserPicturesFragment extends Fragment implements View.OnClickListen
                     int views = array.getJSONObject(i).getInt("views");
                     int dislikes = array.getJSONObject(i).getInt("dislikes");
                     int likes = array.getJSONObject(i).getInt("likes");
-                    ret.add(PictureFragment.newInstance(pid, title, dislikes, likes, views, picLoc));
 
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                    long different = new Date().getTime() - simpleDateFormat.parse(
+                            array.getJSONObject(i).getString("created")).getTime();
+                    long elapsedHours = different / (1000 * 60 * 60);
+
+                    ret.add(ViewMe.newInstance(pid, title, dislikes, likes, views, picLoc, elapsedHours));
                 }
             }catch (Exception e){
                 if(Constants.DEBUG_MODE){
@@ -142,7 +148,7 @@ public class UserPicturesFragment extends Fragment implements View.OnClickListen
                 util.log("Finished getting my pics");
                 FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                 for(int i = 0; i < ret.size(); i++){
-                    transaction.add(commentLayout.getId(), ret.get(i), "Fragment_" + i);
+                    transaction.add(R.id.commentLayout, ret.get(i), "Fragment_" + i);
                 }
                 transaction.commit();
             }else{

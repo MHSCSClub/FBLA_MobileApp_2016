@@ -33,7 +33,7 @@ import java.io.File;
 
 import im.delight.android.location.SimpleLocation;
 
-public class MainActivitySwipes extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
+public class MainSwipeActivity extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 
     //Fragments
     private Fragment evaluatePictures;
@@ -78,8 +78,8 @@ public class MainActivitySwipes extends AppCompatActivity implements View.OnClic
         int picture = 0;
 
         File picLocation = getFilesDir();
-        evaluatePictures = EvaluationFragment.newInstance(db, picture, picLocation, simplocation);
-        myPictures = UserPictures.newInstance(picLocation);
+        evaluatePictures = ViewEvaluate.newInstance(db, picture, picLocation, simplocation);
+        myPictures = SingleMe.newInstance(picLocation);
 
         ImageButton more = (ImageButton) findViewById(R.id.more_stuff);
         more.setOnClickListener(this);

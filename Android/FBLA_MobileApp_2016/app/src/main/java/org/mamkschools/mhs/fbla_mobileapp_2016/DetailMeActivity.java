@@ -1,20 +1,11 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
-import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.support.v4.app.FragmentTransaction.*;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,9 +23,10 @@ import java.util.ArrayList;
 /**
  * Created by jackphillips on 2/26/16.
  */
-public class CommentPage extends AppCompatActivity  {
+public class DetailMeActivity extends AppCompatActivity  {
 
     ImageView myImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +51,7 @@ public class CommentPage extends AppCompatActivity  {
 
     private class GetComments extends AsyncTask<Integer, Boolean, Boolean> {
 
-        private ArrayList<Comment> ret = new ArrayList<>();
+        private ArrayList<SingleComment> ret = new ArrayList<>();
         SecureAPI picture = SecureAPI.getInstance(getApplicationContext());
 
 
@@ -77,7 +69,7 @@ public class CommentPage extends AppCompatActivity  {
                     String user = array.getJSONObject(i).getString("username");
                     String comment = array.getJSONObject(i).getString("comment");
                     if(!style.equals("null")) {
-                        ret.add(Comment.newInstance(user, comment.equals("null") ? "No Comment": comment, style));
+                        ret.add(SingleComment.newInstance(user, comment.equals("null") ? "No comment" : comment, style));
                     }
 
                 }

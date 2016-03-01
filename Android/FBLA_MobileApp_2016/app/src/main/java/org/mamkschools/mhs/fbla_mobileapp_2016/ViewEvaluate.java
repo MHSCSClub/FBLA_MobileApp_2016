@@ -3,13 +3,9 @@ package org.mamkschools.mhs.fbla_mobileapp_2016;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +24,6 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureContract;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureHelper;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.util;
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -42,7 +37,7 @@ import im.delight.android.location.SimpleLocation;
 /**
  * Created by jackphillips on 2/16/16.
  */
-public class EvaluationFragment extends Fragment implements View.OnClickListener {
+public class ViewEvaluate extends Fragment implements View.OnClickListener {
     private SQLiteDatabase db;
     private int picNumber;
     private File location;
@@ -65,8 +60,8 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
     private Cursor c;
 
 
-    public static EvaluationFragment newInstance(SQLiteDatabase db, int picNumber, File location, SimpleLocation simpleLocation) {
-        EvaluationFragment fragment = new EvaluationFragment();
+    public static ViewEvaluate newInstance(SQLiteDatabase db, int picNumber, File location, SimpleLocation simpleLocation) {
+        ViewEvaluate fragment = new ViewEvaluate();
         fragment.db = db;
         fragment.picNumber = picNumber;
         fragment.location = location;
@@ -74,7 +69,7 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
         return fragment;
     }
 
-    public EvaluationFragment() {}
+    public ViewEvaluate() {}
 
 
     @Override
@@ -349,6 +344,7 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
                 JSONArray array = response.getJSONArray("data");
 
                 for(int i = 0; i < array.length(); i++ ){
+
                     int views = array.getJSONObject(i).getInt("views");
                     values.put(PictureContract.PictureEntry.COLUMN_NAME_PICTURE_ID, array.getJSONObject(i).getInt("pid"));
                     values.put(PictureContract.PictureEntry.COLUMN_NAME_GEOLAT, array.getJSONObject(i).getDouble("geolat"));
@@ -358,6 +354,7 @@ public class EvaluationFragment extends Fragment implements View.OnClickListener
                     values.put(PictureContract.PictureEntry.COLUMN_NAME_USERNAME, array.getJSONObject(i).getString("username"));
                     values.put(PictureContract.PictureEntry.COLUMN_NAME_VIEWS, views);
                     values.put(PictureContract.PictureEntry.COLUMN_NAME_CREATED, array.getJSONObject(i).getString("created"));
+
                     //Calculates priority
                     int p;
                     if(views <10)

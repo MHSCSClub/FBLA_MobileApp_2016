@@ -1,7 +1,7 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,11 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.util;
-
 import java.io.File;
 
-public class PictureFragment extends Fragment implements View.OnClickListener {
+public class ViewMe extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -25,6 +23,7 @@ public class PictureFragment extends Fragment implements View.OnClickListener {
     private TextView title;
     private TextView ucount;
     private TextView dcount;
+    private TextView ellapsed;
 
     private ImageView image;
 
@@ -33,20 +32,28 @@ public class PictureFragment extends Fragment implements View.OnClickListener {
     private int dislikes;
     private int likes;
     private int pid;
+    private boolean showDiv;
+    private long ellapsedHours;
 
     private File location;
     private Bitmap imageData;
 
 
-    public static PictureFragment newInstance(int pid, String title, int dislikes, int likes, int views, File location) {
-        PictureFragment frag =  new PictureFragment();
+    public static ViewMe newInstance(int pid, String title, int dislikes, int likes, int views, File location, long ellapsedHours) {
+        ViewMe frag =  new ViewMe();
         frag.titles = title;
         frag.pid = pid;
         frag.dislikes = dislikes;
         frag.likes = likes;
         frag.views = views;
         frag.location = location;
+        frag.showDiv = true;
+        frag.ellapsedHours = ellapsedHours;
         return frag;
+    }
+
+    public void setShow(boolean showDiv){
+        this.showDiv = showDiv;
     }
 
 
@@ -56,13 +63,19 @@ public class PictureFragment extends Fragment implements View.OnClickListener {
         title = (TextView) view.findViewById(R.id.TitleText);
         ucount = (TextView) view.findViewById(R.id.ucount);
         dcount = (TextView) view.findViewById(R.id.dcount);
+        ellapsed = (TextView) view.findViewById(R.id.date);
 
         title.setText(titles);
-        ucount.setText("" + likes);
-        dcount.setText("" + dislikes);
+        ucount.setText(Integer.toString(likes));
+        dcount.setText(Integer.toString(dislikes));
+        ellapsed.setText(String.format(getString(R.string.hours_ago), ellapsedHours));
+
+        View div = view.findViewById(R.id.div);
+        div.setVisibility(showDiv ? View.VISIBLE : View.GONE);
+        view.setOnClickListener(this);
     }
 
-    public PictureFragment() {
+    public ViewMe() {
         // Required empty public constructor
     }
 
@@ -80,7 +93,7 @@ public class PictureFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_picture, container, false);
+        return inflater.inflate(R.layout.fragment_me_picture, container, false);
     }
 
     @Override
@@ -90,7 +103,10 @@ public class PictureFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
+        Intent myintent = new Intent(getContext(), DetailMeActivity.class);
+        myintent.putExtra("pid", pid);
+        myintent.putExtra("title", titles);
+        startActivity(myintent);
     }
 
 }

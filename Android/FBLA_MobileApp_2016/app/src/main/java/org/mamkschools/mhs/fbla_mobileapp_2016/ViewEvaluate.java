@@ -213,8 +213,7 @@ public class ViewEvaluate extends Fragment implements View.OnClickListener {
 
     private Map<String, String> getRateParams(Map<String, String> params) {
         SeekBar style = (SeekBar) rootView.findViewById(R.id.styleRating);
-        int srating = (int) Math.round((double) style.getProgress() / (double) style.getMax() * 10.0);
-        if(srating == 0) srating = 1;
+        int srating = 1 + (int) Math.round((double) style.getProgress() / (double) style.getMax() * 9.0);
         params.put("style", "" + srating);
         style.setProgress(style.getMax() / 2);
 
@@ -365,17 +364,17 @@ public class ViewEvaluate extends Fragment implements View.OnClickListener {
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                     long different = new Date().getTime() - simpleDateFormat.parse(array.getJSONObject(i).getString("created")).getTime();
                     long elapsedHours = different / hoursInMilli;
-                    if(elapsedHours < 10)
-                        p += 3*elapsedHours;
-                    else
-                        p+= 30;
+                    if(elapsedHours < 10) {
+                        p += 3 * elapsedHours;
+                    } else {
+                        p += 30;
+                    }
                     values.put(PictureContract.PictureEntry.COLUMN_NAME_HOURS, elapsedHours);
                     values.put(PictureContract.PictureEntry.COLUMN_NAME_PRIORITY, p);
 
-                    //adds only pictures we want to server
+                    //adds only pictures we want to db
                     if(views < 15 && elapsedHours < 120) {
-                        long newRowId;
-                        newRowId = db.insert(
+                        db.insert(
                                 PictureContract.PictureEntry.TABLE_NAME,
                                 "null",
                                 values);

@@ -30,7 +30,7 @@ public class DetailMeActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_comment_page);
+        setContentView(R.layout.activity_detail_me);
 
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){

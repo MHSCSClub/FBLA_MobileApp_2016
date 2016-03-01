@@ -45,7 +45,7 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
 
         //Must be first
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_activity_swipes);
+        setContentView(R.layout.activity_main_swipe_activity);
 
         SimpleLocation simplocation = new SimpleLocation(this);
 
@@ -126,7 +126,7 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
                 PopupMenu popup = new PopupMenu(this, v);
                 popup.setOnMenuItemClickListener(this);
                 MenuInflater inflater = popup.getMenuInflater();
-                inflater.inflate(R.menu.menu_main_activity_swipes, popup.getMenu());
+                inflater.inflate(R.menu.menu_main_swipe_activity, popup.getMenu());
 
                 popup.show();
 

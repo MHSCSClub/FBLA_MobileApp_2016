@@ -74,7 +74,7 @@ public class ViewEvaluate extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_main_activity_swipes, container, false);
+        rootView = inflater.inflate(R.layout.fragment_view_evaluate, container, false);
         titleLabel = (TextView) rootView.findViewById(R.id.title_label);
         titleLabel.setText("No More Pictures"); //TODO use Strings xml
 

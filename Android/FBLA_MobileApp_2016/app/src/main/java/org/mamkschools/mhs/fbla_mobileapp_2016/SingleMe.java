@@ -81,7 +81,7 @@ public class SingleMe extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        return inflater.inflate(R.layout.fragment_me_better, container, false);
+        return inflater.inflate(R.layout.fragment_view_me, container, false);
     }
 
     @Override

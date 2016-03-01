@@ -13,7 +13,7 @@
         android:id="@+id/TitleText"
         android:text="title"
         android:gravity="top|left"
-        android:layout_toLeftOf="@+id/ucount"
+        android:layout_toLeftOf="@+id/dcount"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_alignParentLeft="true"

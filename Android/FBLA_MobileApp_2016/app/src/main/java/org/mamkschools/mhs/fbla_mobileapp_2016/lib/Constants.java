@@ -20,9 +20,6 @@ public final class Constants {
     //Output debug info
     public static boolean DEBUG_MODE = true;
 
-    //Show static demos in case of server problems
-    public static boolean DEMO_MODE = false;
-
     //Authcode needs to be saved and loaded
     public static String AUTHCODE = null;
 

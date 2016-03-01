@@ -159,7 +159,7 @@ public class ViewEvaluate extends Fragment implements View.OnClickListener {
             new GetPicture().execute(picID);
         }else{
             if(runOnce) {
-                image.setImageDrawable(getResources().getDrawable(R.drawable.finish));
+                image.setImageResource(R.drawable.ic_logo);
                 new GetPictureInfo().execute((Void) null);
                 runOnce = false;
             }

@@ -22,7 +22,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/imageView2"
-                android:src="@mipmap/ic_launcher_big"
+                android:src="@drawable/ic_logo"
                 android:adjustViewBounds="true"
                 android:cropToPadding="true"
                 android:paddingLeft="100dp"

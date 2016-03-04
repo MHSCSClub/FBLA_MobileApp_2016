@@ -20,7 +20,7 @@ public class LegalInfoActivity extends AppCompatActivity {
         String text = "";
         try{
             do{
-                text += s.nextLine();
+                text += s.nextLine() + "\n";
             } while(s.hasNextLine());
         }catch(Exception e){
             Debug.log(e.getMessage());

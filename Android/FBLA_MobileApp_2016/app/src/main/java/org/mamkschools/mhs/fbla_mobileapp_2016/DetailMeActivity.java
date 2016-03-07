@@ -25,7 +25,9 @@ import java.util.ArrayList;
  */
 public class DetailMeActivity extends AppCompatActivity  {
 
-    ImageView myImage;
+    private ImageView myImage;
+    private GetPicture getPicture;
+    private GetComments getComments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +46,21 @@ public class DetailMeActivity extends AppCompatActivity  {
             setTitle(imgTitle);
             TextView titleText = (TextView) findViewById(R.id.myImageTitle);
             titleText.setText(imgTitle);
-            new GetPicture().execute(pid);
-            new GetComments().execute(pid);
+            getPicture = new GetPicture();
+            getPicture.execute(pid);
+            getComments = new GetComments();
+            getComments.execute(pid);
+        }
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        if(getPicture != null && !getPicture.getStatus().equals(AsyncTask.Status.FINISHED)){
+            getPicture.cancel(true);
+        }
+        if(getComments != null && !getComments.getStatus().equals(AsyncTask.Status.FINISHED)){
+            getComments.cancel(true);
         }
     }
 

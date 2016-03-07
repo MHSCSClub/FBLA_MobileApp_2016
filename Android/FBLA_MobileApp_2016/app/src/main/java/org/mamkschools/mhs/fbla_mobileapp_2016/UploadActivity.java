@@ -67,6 +67,18 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     private static final int PERMISSION_REQUEST_CODE = 5;
 
     @Override
+    public void onPause(){
+        System.gc();
+        super.onPause();
+    }
+
+    @Override
+    public void onResume(){
+        System.gc();
+        super.onResume();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
@@ -103,6 +115,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onStop(){
         super.onStop();
+        System.gc();
         if(uploadTask != null && !uploadTask.getStatus().equals(AsyncTask.Status.FINISHED)){
             uploadTask.cancel(true);
         }
@@ -169,31 +182,9 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 outputFileUri = data.getData();
             }
 
+            showProgress(true);
 
-
-            try {
-                Bitmap b;
-                {
-                    byte[] imageBytes = getBytes(getContentResolver().openInputStream(outputFileUri));
-                    b = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                }
-                picOutputStream = new ByteArrayOutputStream();
-                int maxDim = Math.max(b.getWidth(), b.getHeight());
-                b = Bitmap.createScaledBitmap(b,map(b.getWidth(),0,maxDim, 0, 4096), map(b.getHeight(), 0, maxDim, 0, 4096), false);
-                b.compress(Bitmap.CompressFormat.JPEG, 70, picOutputStream);
-                picPrev.setImageBitmap(b);
-
-            } catch (IOException | NullPointerException e) {
-                if(Debug.DEBUG_MODE) {
-                    e.printStackTrace();
-                }
-
-            } catch (OutOfMemoryError outOfMemoryError){
-                if(Debug.DEBUG_MODE){
-                    outOfMemoryError.printStackTrace();
-                }
-                Toast.makeText(getApplicationContext(), "Out of memory, please increase emmulator ram or close other apps", Toast.LENGTH_LONG).show();
-            }
+          new ResizePictureTask().execute();
 
         }
     }
@@ -336,6 +327,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     // permission was granted, yay!
+                    //noinspection UnnecessaryReturnStatement
+                    return;
                 } else {
 
                     // permission denied, boo!
@@ -347,7 +340,6 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }
-                return;
             }
 
             // other 'case' lines to check for other
@@ -376,5 +368,47 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         uploadPic.paramMap.put("geolat", "" + Constants.LATITUDE);
         showProgress(true);
         uploadTask = new PicUpload().execute(uploadPic);
+    }
+
+    private class ResizePictureTask extends AsyncTask<Void, Void, Bitmap>{
+        boolean oomem = false;
+
+        @Override
+        protected Bitmap doInBackground(Void... params) {
+            try {
+                Bitmap b;
+                {
+                    byte[] imageBytes = getBytes(getContentResolver().openInputStream(outputFileUri));
+                    b = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                }
+                System.gc();
+                picOutputStream = new ByteArrayOutputStream();
+                int maxDim = Math.max(b.getWidth(), b.getHeight());
+                b = Bitmap.createScaledBitmap(b,map(b.getWidth(),0,maxDim, 0, 4096), map(b.getHeight(), 0, maxDim, 0, 4096), false);
+                b.compress(Bitmap.CompressFormat.JPEG, 70, picOutputStream);
+                System.gc();
+                return b;
+            } catch (IOException | NullPointerException | OutOfMemoryError e) {
+                if(Debug.DEBUG_MODE) {
+                    e.printStackTrace();
+                }
+
+                if(e instanceof OutOfMemoryError){
+                    oomem = true;
+                }
+
+                return null;
+
+            }
+        }
+        protected void onPostExecute(Bitmap bm){
+            if(oomem){
+                Toast.makeText(getApplicationContext(), "Out of memory, please increase emulator ram or close other apps", Toast.LENGTH_LONG).show();
+            } else {
+                if(picPrev != null) picPrev.setImageBitmap(bm);
+            }
+            System.gc();
+            showProgress(false);
+        }
     }
 }

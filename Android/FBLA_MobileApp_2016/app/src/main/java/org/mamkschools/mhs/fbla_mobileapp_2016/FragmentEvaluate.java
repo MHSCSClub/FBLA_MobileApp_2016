@@ -69,6 +69,18 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
         return fragment;
     }
 
+    @Override
+    public void onPause(){
+        System.gc();
+        super.onPause();
+    }
+
+    @Override
+    public void onResume(){
+        System.gc();
+        super.onResume();
+    }
+
     public FragmentEvaluate() {}
 
 
@@ -150,6 +162,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
     }
 
     public void runFetch(int itemId) {
+        System.gc();
         int picID = getPictureId(itemId);
         String[] data = getData(itemId);
         titleLabel.setText(data[0].length() > 20 ? data[0].substring(0, 20) : data[0]);
@@ -371,7 +384,6 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
                     }
                     values.put(PictureContract.PictureEntry.COLUMN_NAME_HOURS, elapsedHours);
                     values.put(PictureContract.PictureEntry.COLUMN_NAME_PRIORITY, p);
-
                     //adds only pictures we want to db
                     if(views < 15 && elapsedHours < 120) {
                         db.insert(
@@ -400,7 +412,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
             }
             picNumber = 0;
             runFetch(picNumber);
-
+            System.gc();
         }
     }
 

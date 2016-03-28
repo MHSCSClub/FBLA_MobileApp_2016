@@ -13,7 +13,7 @@ An app is to be created that allows FBLA members to interact and share their opi
 * Android Studio, for app development (JDK 8.0+ is recommended)
 * A LAMP server (preferably Ubuntu), for the backend.
  * `mysqlnd` and `openSSL` should be enabled for PHP (5+)
- * `mod_rewrite` for Apache server, a `.htaccess` file (see hta template in background)
+ * `mod_rewrite` for Apache server, a `.htaccess` file (see hta template in backend)
 
 #### Documentation
 All documentation is located in the Doc folder.

@@ -15,8 +15,14 @@ import java.util.Map;
  * Created by Andrew on 10/16/2015.
  */
 public final class Constants {
+
+    //Possible URLs
+    private static final String PROD_URL = "https://aakatz3.aakportfolio.com:9084/fbla2016/api/";
+    private static final String DEV_URL = "https://aakatz3.aakportfolio.com:9085/fbla2016/api/";
+    private static final String DEMO_URL = "https://demosrv.mhsfbla.local/fbla2016/api/";
+
     //API URL
-    public static final String API_BASE_URL = "https://aakatz3.aakportfolio.com:9085/fbla2016/api/";
+    public static final String API_BASE_URL = PROD_URL;
 
     //Authcode needs to be saved and loaded
     public static String AUTHCODE = null;

@@ -20,7 +20,7 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureContract;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureEntry;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureHelper;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Debug;
@@ -125,10 +125,10 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
         if(c.getCount() > 0 && picNumber < c.getCount()) {
             Debug.log("From: " + picNumber);
             c.moveToPosition(picNumber);
-            int itemId = c.getInt(c.getColumnIndexOrThrow(PictureContract.PictureEntry.COLUMN_NAME_PICTURE_ID));
-            String title = c.getString(c.getColumnIndexOrThrow(PictureContract.PictureEntry.COLUMN_NAME_TITLE));
-            String user = c.getString(c.getColumnIndexOrThrow(PictureContract.PictureEntry.COLUMN_NAME_USERNAME));
-            int views = c.getInt(c.getColumnIndexOrThrow(PictureContract.PictureEntry.COLUMN_NAME_VIEWS));
+            int itemId = c.getInt(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_PICTURE_ID));
+            String title = c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_TITLE));
+            String user = c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_USERNAME));
+            int views = c.getInt(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_VIEWS));
             titleLabel.setText(title.length() > 20 ? title.substring(0, 20) : title);
             descriptionLabel.setText(user);
         }
@@ -139,7 +139,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
     public int getPictureId(int picture){
         if(c.getCount() > 0 && picture < c.getCount()) {
             c.moveToPosition(picture);
-            return c.getInt(c.getColumnIndexOrThrow(PictureContract.PictureEntry.COLUMN_NAME_PICTURE_ID));
+            return c.getInt(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_PICTURE_ID));
         }
         return -1;
 
@@ -149,10 +149,10 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
         String[] data = new String[3];
         if(c.getCount() > 0 && picture < c.getCount()) {
             c.moveToPosition(picture);
-            data[0] = c.getString(c.getColumnIndexOrThrow(PictureContract.PictureEntry.COLUMN_NAME_TITLE));
-            data[1] = c.getString(c.getColumnIndexOrThrow(PictureContract.PictureEntry.COLUMN_NAME_USERNAME));
-            data[2] = c.getString(c.getColumnIndexOrThrow(PictureContract.PictureEntry.COLUMN_NAME_HOURS)) + " hours ago, ";
-            data[2] += c.getString(c.getColumnIndexOrThrow(PictureContract.PictureEntry.COLUMN_NAME_DIST)) + " miles away";
+            data[0] = c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_TITLE));
+            data[1] = c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_USERNAME));
+            data[2] = c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_HOURS)) + " hours ago, ";
+            data[2] += c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_DIST)) + " miles away";
             return data;
         }
         data[0] = "No More Pictures";
@@ -178,6 +178,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
             }
         }
     }
+    @SuppressWarnings("unchecked")
     @Override
     public void onClick(View v) {
         Map<String, String> postParams = new HashMap<>();
@@ -242,28 +243,28 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
 
     public Cursor getInfo(){
         String[] projection = {
-                PictureContract.PictureEntry._ID,
-                PictureContract.PictureEntry.COLUMN_NAME_PICTURE_ID,
-                PictureContract.PictureEntry.COLUMN_NAME_GEOLONG,
-                PictureContract.PictureEntry.COLUMN_NAME_GEOLAT,
-                PictureContract.PictureEntry.COLUMN_NAME_USERNAME,
-                PictureContract.PictureEntry.COLUMN_NAME_VIEWS,
-                PictureContract.PictureEntry.COLUMN_NAME_TITLE,
-                PictureContract.PictureEntry.COLUMN_NAME_DIST,
-                PictureContract.PictureEntry.COLUMN_NAME_HOURS
+                PictureEntry._ID,
+                PictureEntry.COLUMN_NAME_PICTURE_ID,
+                PictureEntry.COLUMN_NAME_GEOLONG,
+                PictureEntry.COLUMN_NAME_GEOLAT,
+                PictureEntry.COLUMN_NAME_USERNAME,
+                PictureEntry.COLUMN_NAME_VIEWS,
+                PictureEntry.COLUMN_NAME_TITLE,
+                PictureEntry.COLUMN_NAME_DIST,
+                PictureEntry.COLUMN_NAME_HOURS
         };
 
         String sortOrder =
-                PictureContract.PictureEntry.COLUMN_NAME_PICTURE_ID + " ASC";
+                PictureEntry.COLUMN_NAME_PICTURE_ID + " ASC";
         if(db != null) {
             return db.query(
-                    PictureContract.PictureEntry.TABLE_NAME,  // The table to query
-                    projection,                               // The columns to return
-                    null,                                // The columns for the WHERE clause
+                    PictureEntry.TABLE_NAME,         // The table to query
+                    projection,                      // The columns to return
+                    null,                            // The columns for the WHERE clause
                     null,                            // The values for the WHERE clause
-                    null,                                     // don't group the rows
-                    null,                                     // don't filter by row groups
-                    sortOrder                                 // The sort order
+                    null,                            // don't group the rows
+                    null,                            // don't filter by row groups
+                    sortOrder                        // The sort order
             );
         } else {
             return null;
@@ -300,8 +301,9 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
         SecureAPI picture = SecureAPI.getInstance(getContext());
         JSONObject result;
 
+        @SafeVarargs
         @Override
-        protected Boolean doInBackground(Map<String, String>... params) {
+        protected final Boolean doInBackground(Map<String, String>... params) {
 
             Map<String, String> finalParams = params[0];
             try {
@@ -314,9 +316,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
 
         @Override
         protected void onPostExecute(Boolean v) {
-            if(v) {
-
-            } else {
+            if (!v) {
                 Toast.makeText(rootView.getContext(), "Rating failed", Toast.LENGTH_SHORT).show();
             }
         }
@@ -344,7 +344,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
             Constants.LATITUDE = simpleLocation.getLatitude();
             Constants.LONGITUDE = simpleLocation.getLongitude();
 
-            db.execSQL("Delete from " + PictureContract.PictureEntry.TABLE_NAME);
+            db.execSQL("Delete from " + PictureEntry.TABLE_NAME);
             ContentValues values = new ContentValues();
 
             Debug.log(Constants.LATITUDE + " " + Constants.LONGITUDE);
@@ -358,14 +358,14 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
                 for(int i = 0; i < array.length(); i++ ){
 
                     int views = array.getJSONObject(i).getInt("views");
-                    values.put(PictureContract.PictureEntry.COLUMN_NAME_PICTURE_ID, array.getJSONObject(i).getInt("pid"));
-                    values.put(PictureContract.PictureEntry.COLUMN_NAME_GEOLAT, array.getJSONObject(i).getDouble("geolat"));
-                    values.put(PictureContract.PictureEntry.COLUMN_NAME_GEOLONG, array.getJSONObject(i).getDouble("geolong"));
-                    values.put(PictureContract.PictureEntry.COLUMN_NAME_DIST, Math.round(array.getJSONObject(i).getDouble("dist")));
-                    values.put(PictureContract.PictureEntry.COLUMN_NAME_TITLE, array.getJSONObject(i).getString("title"));
-                    values.put(PictureContract.PictureEntry.COLUMN_NAME_USERNAME, array.getJSONObject(i).getString("username"));
-                    values.put(PictureContract.PictureEntry.COLUMN_NAME_VIEWS, views);
-                    values.put(PictureContract.PictureEntry.COLUMN_NAME_CREATED, array.getJSONObject(i).getString("created"));
+                    values.put(PictureEntry.COLUMN_NAME_PICTURE_ID, array.getJSONObject(i).getInt("pid"));
+                    values.put(PictureEntry.COLUMN_NAME_GEOLAT, array.getJSONObject(i).getDouble("geolat"));
+                    values.put(PictureEntry.COLUMN_NAME_GEOLONG, array.getJSONObject(i).getDouble("geolong"));
+                    values.put(PictureEntry.COLUMN_NAME_DIST, Math.round(array.getJSONObject(i).getDouble("dist")));
+                    values.put(PictureEntry.COLUMN_NAME_TITLE, array.getJSONObject(i).getString("title"));
+                    values.put(PictureEntry.COLUMN_NAME_USERNAME, array.getJSONObject(i).getString("username"));
+                    values.put(PictureEntry.COLUMN_NAME_VIEWS, views);
+                    values.put(PictureEntry.COLUMN_NAME_CREATED, array.getJSONObject(i).getString("created"));
 
                     //Calculates priority
                     int p;
@@ -382,12 +382,12 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
                     } else {
                         p += 30;
                     }
-                    values.put(PictureContract.PictureEntry.COLUMN_NAME_HOURS, elapsedHours);
-                    values.put(PictureContract.PictureEntry.COLUMN_NAME_PRIORITY, p);
+                    values.put(PictureEntry.COLUMN_NAME_HOURS, elapsedHours);
+                    values.put(PictureEntry.COLUMN_NAME_PRIORITY, p);
                     //adds only pictures we want to db
                     if(views < 15 && elapsedHours < 120) {
                         db.insert(
-                                PictureContract.PictureEntry.TABLE_NAME,
+                                PictureEntry.TABLE_NAME,
                                 "null",
                                 values);
                     }

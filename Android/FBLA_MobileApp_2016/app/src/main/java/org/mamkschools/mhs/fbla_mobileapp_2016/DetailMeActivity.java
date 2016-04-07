@@ -25,14 +25,16 @@ import java.util.ArrayList;
  */
 public class DetailMeActivity extends AppCompatActivity  {
 
-    private ImageView myImage;
-    private GetPicture getPicture;
-    private GetComments getComments;
+    ImageView myImage;
+    GetPicture picDownload;
+    GetComments comDownload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_me);
+
+
 
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
@@ -46,23 +48,24 @@ public class DetailMeActivity extends AppCompatActivity  {
             setTitle(imgTitle);
             TextView titleText = (TextView) findViewById(R.id.myImageTitle);
             titleText.setText(imgTitle);
-            getPicture = new GetPicture();
-            getPicture.execute(pid);
-            getComments = new GetComments();
-            getComments.execute(pid);
+            picDownload = new GetPicture();
+            picDownload.execute(pid);
+            comDownload = new GetComments();
+            comDownload.execute(pid);
         }
     }
 
     @Override
     protected void onStop(){
         super.onStop();
-        if(getPicture != null && !getPicture.getStatus().equals(AsyncTask.Status.FINISHED)){
-            getPicture.cancel(true);
+        if(comDownload != null && !comDownload.getStatus().equals(AsyncTask.Status.FINISHED)){
+            comDownload.cancel(true);
         }
-        if(getComments != null && !getComments.getStatus().equals(AsyncTask.Status.FINISHED)){
-            getComments.cancel(true);
+        if(picDownload != null && !picDownload.getStatus().equals(AsyncTask.Status.FINISHED)){
+            picDownload.cancel(true);
         }
     }
+
 
     private class GetComments extends AsyncTask<Integer, Boolean, Boolean> {
 

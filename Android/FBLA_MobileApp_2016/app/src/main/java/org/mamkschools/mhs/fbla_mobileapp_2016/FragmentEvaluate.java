@@ -6,10 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.design.widget.FloatingActionButton;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -59,6 +61,8 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
 
     private Cursor c;
 
+    private GetPicture picDl;
+
 
     public static FragmentEvaluate newInstance(SQLiteDatabase db, int picNumber, File location, SimpleLocation simpleLocation) {
         FragmentEvaluate fragment = new FragmentEvaluate();
@@ -67,18 +71,6 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
         fragment.location = location;
         fragment.simpleLocation = simpleLocation;
         return fragment;
-    }
-
-    @Override
-    public void onPause(){
-        System.gc();
-        super.onPause();
-    }
-
-    @Override
-    public void onResume(){
-        System.gc();
-        super.onResume();
     }
 
     public FragmentEvaluate() {}
@@ -96,10 +88,10 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
         instructions = rootView.findViewById(R.id.instructions);
         additionalLabel = (TextView) rootView.findViewById(R.id.additional_label);
 
-        View imageFrame = rootView.findViewById(R.id.imageFrame);
 
         image = (ImageView) rootView.findViewById(R.id.imageView);
         descriptionLabel = (TextView) rootView.findViewById(R.id.description_label);
+
 
 
         FloatingActionButton yes = (FloatingActionButton) rootView.findViewById(R.id.yesButton);
@@ -111,8 +103,22 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
         SeekBar style = (SeekBar) rootView.findViewById(R.id.styleRating);
         style.setProgress(style.getMax() / 2);
 
-        Button submit = (Button) rootView.findViewById(R.id.submit_button);
+        final Button submit = (Button) rootView.findViewById(R.id.submit_button);
         submit.setOnClickListener(this);
+
+        // your text box
+        EditText edit_txt = (EditText) rootView.findViewById(R.id.commentText);
+
+        edit_txt.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    submit.performClick();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         Button cancel = (Button) rootView.findViewById(R.id.cancel_button);
         cancel.setOnClickListener(this);
@@ -151,8 +157,10 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
             c.moveToPosition(picture);
             data[0] = c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_TITLE));
             data[1] = c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_USERNAME));
-            data[2] = c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_HOURS)) + " hours ago, ";
-            data[2] += c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_DIST)) + " miles away";
+            int hours = Integer.getInteger(c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_HOURS)));
+            int miles = Integer.getInteger(c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_DIST)));
+            data[2] = hours + (hours == 1 ? " hour ago, " : " hours ago, ");
+            data[2] += miles + (miles == 1 ? " mile away" : " miles away");
             return data;
         }
         data[0] = "No More Pictures";
@@ -161,15 +169,23 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
         return data;
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (picDl != null && !picDl.getStatus().equals(AsyncTask.Status.FINISHED)) {
+            picDl.cancel(true);
+        }
+    }
+
     public void runFetch(int itemId) {
-        System.gc();
         int picID = getPictureId(itemId);
         String[] data = getData(itemId);
         titleLabel.setText(data[0].length() > 20 ? data[0].substring(0, 20) : data[0]);
         descriptionLabel.setText(data[1]);
         additionalLabel.setText(data[2]);
         if(picID > 0) {
-            new GetPicture().execute(picID);
+            picDl = new GetPicture();
+            picDl.execute(picID);
         }else{
             if(runOnce) {
                 image.setImageResource(R.drawable.finish);
@@ -178,7 +194,6 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
             }
         }
     }
-    @SuppressWarnings("unchecked")
     @Override
     public void onClick(View v) {
         Map<String, String> postParams = new HashMap<>();
@@ -258,13 +273,13 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
                 PictureEntry.COLUMN_NAME_PICTURE_ID + " ASC";
         if(db != null) {
             return db.query(
-                    PictureEntry.TABLE_NAME,         // The table to query
-                    projection,                      // The columns to return
-                    null,                            // The columns for the WHERE clause
+                    PictureEntry.TABLE_NAME,  // The table to query
+                    projection,                               // The columns to return
+                    null,                                // The columns for the WHERE clause
                     null,                            // The values for the WHERE clause
-                    null,                            // don't group the rows
-                    null,                            // don't filter by row groups
-                    sortOrder                        // The sort order
+                    null,                                     // don't group the rows
+                    null,                                     // don't filter by row groups
+                    sortOrder                                 // The sort order
             );
         } else {
             return null;
@@ -301,9 +316,8 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
         SecureAPI picture = SecureAPI.getInstance(getContext());
         JSONObject result;
 
-        @SafeVarargs
         @Override
-        protected final Boolean doInBackground(Map<String, String>... params) {
+        protected Boolean doInBackground(Map<String, String>... params) {
 
             Map<String, String> finalParams = params[0];
             try {
@@ -316,7 +330,9 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
 
         @Override
         protected void onPostExecute(Boolean v) {
-            if (!v) {
+            if(v) {
+
+            } else {
                 Toast.makeText(rootView.getContext(), "Rating failed", Toast.LENGTH_SHORT).show();
             }
         }
@@ -384,6 +400,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
                     }
                     values.put(PictureEntry.COLUMN_NAME_HOURS, elapsedHours);
                     values.put(PictureEntry.COLUMN_NAME_PRIORITY, p);
+
                     //adds only pictures we want to db
                     if(views < 15 && elapsedHours < 120) {
                         db.insert(
@@ -412,7 +429,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
             }
             picNumber = 0;
             runFetch(picNumber);
-            System.gc();
+
         }
     }
 

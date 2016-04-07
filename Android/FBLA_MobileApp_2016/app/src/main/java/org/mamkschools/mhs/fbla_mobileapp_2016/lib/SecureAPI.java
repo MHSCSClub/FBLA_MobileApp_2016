@@ -30,10 +30,8 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
 
 /**
+ * Handles secure server communications
  * SecureAPI singleton class
- * Used to connect to HTTPS sites with a custom cert
- * Copyright (C) Yi Zhao 2015. All Rights Reserved
- * Copyright (C) Yi Zhao, Andrew Katz, Jack Phillips 2016. All Rights Reserved.
  */
 public class SecureAPI {
 

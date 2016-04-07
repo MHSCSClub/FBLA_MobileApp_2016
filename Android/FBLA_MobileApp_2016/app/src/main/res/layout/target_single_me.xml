@@ -2,10 +2,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="70dp"
-    tools:context=".fragment_me"
-    android:id="@+id/UploadImage">
+    android:background="@color/listItem">
 
     <TextView
         android:layout_width="wrap_content"
@@ -78,12 +77,5 @@
         android:layout_marginRight="5dp"
         android:textSize="35dp" />
 
-    <View style="@style/Divider"
-        android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"
-        android:clickable="true"
-        android:layout_marginTop="69dp"
-        android:id="@+id/div"
-        android:background="#bdbdbd" />
 
 </RelativeLayout>

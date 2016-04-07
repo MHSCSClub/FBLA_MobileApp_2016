@@ -9,6 +9,10 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.*;
 
 import java.util.Scanner;
 
+/**
+ * Shows legal information about app
+ */
+
 public class LegalInfoActivity extends AppCompatActivity {
 
     @Override
@@ -20,7 +24,7 @@ public class LegalInfoActivity extends AppCompatActivity {
         String text = "";
         try{
             do{
-                text += s.nextLine() + "\n";
+                text += s.nextLine();
             } while(s.hasNextLine());
         }catch(Exception e){
             Debug.log(e.getMessage());

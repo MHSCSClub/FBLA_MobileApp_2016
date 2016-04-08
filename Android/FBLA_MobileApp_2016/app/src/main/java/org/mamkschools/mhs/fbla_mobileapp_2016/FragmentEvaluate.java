@@ -157,8 +157,8 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
             c.moveToPosition(picture);
             data[0] = c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_TITLE));
             data[1] = c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_USERNAME));
-            int hours = Integer.getInteger(c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_HOURS)));
-            int miles = Integer.getInteger(c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_DIST)));
+            double hours = Double.parseDouble(c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_HOURS)));
+            double miles = Double.parseDouble(c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_DIST)));
             data[2] = hours + (hours == 1 ? " hour ago, " : " hours ago, ");
             data[2] += miles + (miles == 1 ? " mile away" : " miles away");
             return data;
@@ -420,7 +420,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
 
         @Override
         protected void onPostExecute(Void v) {
-            Debug.log("Finished getting Picture Information");
+            Debug.log("Finished getting Picture Infomation");
             c = getInfo();
             if(c.getCount() > 0){
                 runOnce = true;
@@ -428,11 +428,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
                 runOnce = false;
             }
             picNumber = 0;
-            try {
-                runFetch(picNumber);
-            } catch (Exception ex){
-                ex.printStackTrace();
-            }
+            runFetch(picNumber);
 
         }
     }

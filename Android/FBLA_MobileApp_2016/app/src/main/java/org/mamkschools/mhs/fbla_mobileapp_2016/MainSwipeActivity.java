@@ -95,7 +95,9 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
         tabLayout.setupWithViewPager(viewPager);
 
         PictureHelper mDbHelper = new PictureHelper(getApplicationContext());
+
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
         int picture = 0;
 
         File picLocation = getFilesDir();

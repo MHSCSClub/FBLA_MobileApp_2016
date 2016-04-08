@@ -20,6 +20,7 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureHelper;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureItemAdapter;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Debug;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SimpleDividerItemDecoration;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -115,7 +116,10 @@ public class DetailMeActivity extends AppCompatActivity  {
                 LinearLayoutManager layoutManager=new LinearLayoutManager(getApplicationContext());
                 commentList.setLayoutManager(layoutManager);
 
+                commentList.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
+
                 CommentItemAdapter adapter = new CommentItemAdapter(ret,getApplicationContext());
+                commentList.setAdapter(adapter);
             }else{
                 Debug.log("Did not work_111");
             }

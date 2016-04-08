@@ -21,6 +21,7 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureItem;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureItemAdapter;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Debug;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SimpleDividerItemDecoration;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -150,6 +151,8 @@ public class SingleMe extends Fragment implements View.OnClickListener {
                 RecyclerView picList = (RecyclerView) getView().findViewById(R.id.picList);
                 LinearLayoutManager layoutManager=new LinearLayoutManager(getContext());
                 picList.setLayoutManager(layoutManager);
+
+                picList.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
 
                 PictureItemAdapter adapter=new PictureItemAdapter(ret,getContext());
                 picList.setAdapter(adapter);

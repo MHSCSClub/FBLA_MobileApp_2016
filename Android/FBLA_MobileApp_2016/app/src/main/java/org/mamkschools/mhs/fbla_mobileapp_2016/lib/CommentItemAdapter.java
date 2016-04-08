@@ -32,7 +32,7 @@ public class CommentItemAdapter extends RecyclerView.Adapter<CommentItemAdapter.
 
     @Override
     public void onBindViewHolder(CommentItemAdapter.PictureViewHolder holder, int position) {
-        holder.commentText.setText(commentList.get(position).getComment());
+        holder.commentText.setText(commentList.get(position).getComment().trim());
         holder.userName.setText(commentList.get(position).getUser());
         holder.style.setText(commentList.get(position).getStyleRating());
 

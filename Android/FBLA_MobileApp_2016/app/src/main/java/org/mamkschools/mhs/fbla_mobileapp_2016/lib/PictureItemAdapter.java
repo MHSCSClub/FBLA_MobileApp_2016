@@ -2,7 +2,6 @@ package org.mamkschools.mhs.fbla_mobileapp_2016.lib;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Picture;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +23,7 @@ public class PictureItemAdapter extends RecyclerView.Adapter<PictureItemAdapter.
 
     @Override
     public PictureItemAdapter.PictureViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.target_single_me, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.target_single_picture, parent, false);
         PictureViewHolder viewHolder = new PictureViewHolder(v);
         return viewHolder;
     }

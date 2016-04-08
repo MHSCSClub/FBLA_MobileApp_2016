@@ -420,7 +420,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
 
         @Override
         protected void onPostExecute(Void v) {
-            Debug.log("Finished getting Picture Infomation");
+            Debug.log("Finished getting Picture Information");
             c = getInfo();
             if(c.getCount() > 0){
                 runOnce = true;
@@ -428,7 +428,11 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
                 runOnce = false;
             }
             picNumber = 0;
-            runFetch(picNumber);
+            try {
+                runFetch(picNumber);
+            } catch (Exception ex){
+                ex.printStackTrace();
+            }
 
         }
     }

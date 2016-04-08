@@ -148,8 +148,6 @@ public class SingleMe extends Fragment implements View.OnClickListener {
             if(v){
                 Debug.log("Finished getting my pics");
                 RecyclerView picList = (RecyclerView) getView().findViewById(R.id.picList);
-
-                picList= (RecyclerView) getView().findViewById(R.id.picList);
                 LinearLayoutManager layoutManager=new LinearLayoutManager(getContext());
                 picList.setLayoutManager(layoutManager);
 

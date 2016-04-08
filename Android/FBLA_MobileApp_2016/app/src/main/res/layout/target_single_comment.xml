@@ -21,16 +21,16 @@
         android:layout_height="wrap_content"
         android:id="@+id/commentText"
         android:text="title"
-        android:ellipsize="marquee"
+        android:ellipsize="end"
         android:gravity="center|left"
-        android:scrollHorizontally="false"
+        android:scrollHorizontally="true"
         android:layout_toLeftOf="@+id/dcount"
         android:layout_below="@+id/username"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="2dp"
         android:layout_alignParentLeft="true"
         android:layout_marginRight="20dp"
-        android:singleLine="true"
+        android:singleLine="false"
         android:maxLines="2"
         android:minLines="2"
         android:textColor="#424242"
@@ -51,21 +51,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/dcount"
+        android:id="@+id/style"
         android:text="5"
         android:layout_toLeftOf="@+id/commentImage"
         android:gravity="center"
         android:layout_marginRight="5dp"
         android:layout_alignBottom="@id/commentImage"
         android:textSize="35dp" />
-
-    <View style="@style/Divider"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/commentText"
-        android:layout_alignWithParentIfMissing="false"
-        android:clickable="true"
-        android:layout_marginTop="8dp"
-        android:background="#bdbdbd"
-        android:id="@+id/sep" />
 
 </RelativeLayout>

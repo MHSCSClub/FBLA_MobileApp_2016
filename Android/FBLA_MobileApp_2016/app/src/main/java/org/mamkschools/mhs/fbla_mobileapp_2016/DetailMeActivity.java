@@ -6,13 +6,18 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.CommentItem;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.CommentItemAdapter;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureHelper;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureItemAdapter;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Debug;
 
@@ -69,7 +74,7 @@ public class DetailMeActivity extends AppCompatActivity  {
 
     private class GetComments extends AsyncTask<Integer, Boolean, Boolean> {
 
-        private ArrayList<SingleComment> ret = new ArrayList<>();
+        private ArrayList<CommentItem> ret = new ArrayList<>();
         SecureAPI picture = SecureAPI.getInstance(getApplicationContext());
 
 
@@ -87,7 +92,8 @@ public class DetailMeActivity extends AppCompatActivity  {
                     String user = array.getJSONObject(i).getString("username");
                     String comment = array.getJSONObject(i).getString("comment");
                     if(!style.equals("null")) {
-                        ret.add(SingleComment.newInstance(user, comment.equals("null") ? "No comment" : comment, style));
+                        ret.add(new CommentItem(
+                                comment.equals("null") ? "No comment" : comment, user, style));
                     }
 
                 }
@@ -104,12 +110,12 @@ public class DetailMeActivity extends AppCompatActivity  {
         protected void onPostExecute(Boolean v) {
             if(v){
                 Debug.log("Finished getting my pics");
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                for(int i = 0; i < ret.size(); i++){
-                    ret.get(i).setShowDiv(i != ret.size() - 1);
-                    transaction.add(R.id.commentList, ret.get(i), "Fragment_" + i);
-                }
-                transaction.commit();
+                RecyclerView commentList = (RecyclerView) findViewById(R.id.commentList);
+
+                LinearLayoutManager layoutManager=new LinearLayoutManager(getApplicationContext());
+                commentList.setLayoutManager(layoutManager);
+
+                CommentItemAdapter adapter = new CommentItemAdapter(ret,getApplicationContext());
             }else{
                 Debug.log("Did not work_111");
             }

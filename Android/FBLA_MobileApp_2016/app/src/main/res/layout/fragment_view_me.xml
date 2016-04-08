@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_holder"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,11 +20,14 @@
             android:id="@+id/cameraButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
             app:layout_anchor="@+id/picList"
             app:layout_anchorGravity="bottom|end"
             android:src="@drawable/ic_camera"
-            app:layout_behavior="org.mamkschools.mhs.fbla_mobileapp_2016.lib.FABBehavior"/>
+            app:layout_behavior="org.mamkschools.mhs.fbla_mobileapp_2016.lib.FABBehavior"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="12dp" />
 
 
     </RelativeLayout>

@@ -1,6 +1,7 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -12,8 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.design.widget.FloatingActionButton;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -39,7 +42,7 @@ import im.delight.android.location.SimpleLocation;
 /**
  * Created by jackphillips on 2/16/16.
  */
-public class FragmentEvaluate extends Fragment implements View.OnClickListener {
+public class FragmentEvaluate extends Fragment implements View.OnClickListener{
     private SQLiteDatabase db;
     private int picNumber;
     private File location;
@@ -52,6 +55,8 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
     private TextView descriptionLabel;
     private TextView titleLabel;
     private TextView additionalLabel;
+
+    private FrameLayout imageFrame;
 
     private View ratingLayout;
     private View buttonLayout;
@@ -80,7 +85,9 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_view_evaluate, container, false);
         titleLabel = (TextView) rootView.findViewById(R.id.title_label);
-        titleLabel.setText("No More Pictures"); //TODO use Strings xml
+        titleLabel.setText(R.string.no_pics);
+
+        imageFrame = (FrameLayout) rootView.findViewById(R.id.imageFrame);
 
 
         ratingLayout = rootView.findViewById(R.id.ratingLayout);
@@ -215,12 +222,13 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.cancel_button:
+                hideKeyboard();
                 new SubmitRating().execute(postParams);
                 this.picNumber += 1;
                 runFetch(picNumber);
                 break;
-
             case R.id.submit_button:
+                hideKeyboard();
                 new SubmitRating().execute(getRateParams(postParams));
                 this.picNumber += 1;
                 runFetch(picNumber);
@@ -285,6 +293,8 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
             return null;
         }
     }
+
+
     private class GetPicture extends AsyncTask<Integer, Void, Boolean> {
         SecureAPI picture = SecureAPI.getInstance(getContext());
 
@@ -432,5 +442,13 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener {
 
         }
     }
+    public void hideKeyboard(){
+        InputMethodManager inputManager = (InputMethodManager)
+                getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
+        inputManager.hideSoftInputFromWindow(
+                getActivity().getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
+
+    }
 }

@@ -106,9 +106,6 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
 
         ImageButton more = (ImageButton) findViewById(R.id.more_stuff);
         more.setOnClickListener(this);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(this);
     }
 
 

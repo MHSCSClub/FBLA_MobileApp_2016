@@ -92,11 +92,11 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         mUploadForm = (ScrollView) findViewById(R.id.uploadForm);
         mProgressView = (ProgressBar) findViewById(R.id.uploadProgress);
         if (!isNetworkAvailable()) {
-            Toast.makeText(getApplicationContext(), "Network is not availible. Please connect to the internet", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Network is not available. Please connect to the internet", Toast.LENGTH_LONG).show();
             finish();
         }
 
-        openImageIntent();
+
     }
 
     @Override
@@ -338,6 +338,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay!
+                    openImageIntent();
                     break;
                 } else {
 

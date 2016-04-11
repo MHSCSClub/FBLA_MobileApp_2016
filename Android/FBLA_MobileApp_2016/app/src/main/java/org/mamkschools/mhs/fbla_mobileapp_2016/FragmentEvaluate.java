@@ -16,7 +16,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -24,6 +23,7 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Commands;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureEntry;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureHelper;
@@ -56,7 +56,6 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
     private TextView titleLabel;
     private TextView additionalLabel;
 
-    private FrameLayout imageFrame;
 
     private View ratingLayout;
     private View buttonLayout;
@@ -86,8 +85,6 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         rootView = inflater.inflate(R.layout.fragment_view_evaluate, container, false);
         titleLabel = (TextView) rootView.findViewById(R.id.title_label);
         titleLabel.setText(R.string.no_pics);
-
-        imageFrame = (FrameLayout) rootView.findViewById(R.id.imageFrame);
 
 
         ratingLayout = rootView.findViewById(R.id.ratingLayout);
@@ -376,7 +373,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
             Debug.log(Constants.LATITUDE + " " + Constants.LONGITUDE);
 
             try {
-                JSONObject response = picture.HTTPSGET("picture/fetch?authcode=" + Constants.AUTHCODE + "&ft_me=1" + "&ft_views=" + view
+                JSONObject response = picture.HTTPSGET(Commands.Get.FETCH + Constants.AUTHCODE + "&ft_me=1" + "&ft_views=" + view
                         + "&geolong=" + Constants.LONGITUDE + "&geolat=" + Constants.LATITUDE + "&ft_dist=" + dist);
 
                 JSONArray array = response.getJSONArray("data");
@@ -430,7 +427,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
 
         @Override
         protected void onPostExecute(Void v) {
-            Debug.log("Finished getting Picture Infomation");
+            Debug.log("Finished getting Picture Information");
             c = getInfo();
             if(c.getCount() > 0){
                 runOnce = true;

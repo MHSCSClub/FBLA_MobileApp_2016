@@ -16,8 +16,8 @@ import java.util.Map;
  */
 public final class Constants {
     //API URL
-    public static final String API_BASE_URL = "https://aakatz3.aakportfolio.com:9084/fbla2016/api/";
-    //public static final String API_BASE_URL = "https://192.168.1.5/fbla2016/api/";
+    //public static final String API_BASE_URL = "https://aakatz3.aakportfolio.com:9084/fbla2016/api/";
+    public static final String API_BASE_URL = "https://192.168.1.5/fbla2016/api/";
 
     //Authcode needs to be saved and loaded
     public static String AUTHCODE = null;

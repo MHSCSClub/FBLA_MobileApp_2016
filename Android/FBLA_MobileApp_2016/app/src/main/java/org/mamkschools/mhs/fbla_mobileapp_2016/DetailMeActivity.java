@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Commands;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.CommentItem;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.CommentItemAdapter;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
@@ -120,7 +121,7 @@ public class DetailMeActivity extends AppCompatActivity  {
 
                 CommentItemAdapter adapter = new CommentItemAdapter(ret,getApplicationContext());
                 commentList.setAdapter(adapter);
-            }else{
+            } else {
                 Debug.log("Did not work_111");
             }
         }
@@ -135,9 +136,10 @@ public class DetailMeActivity extends AppCompatActivity  {
         protected Boolean doInBackground(Integer... params) {
             try{
                 int pid = params[0];
-                Debug.log("picture/" + pid + "?authcode=" + Constants.AUTHCODE);
+                String picFileName = Commands.Get.RAW_PIC + pid + Commands.AUTHCODE_BASE + Constants.AUTHCODE;
+                Debug.log(picFileName);
                 picFile = new File(getFilesDir(), "picture.jpg");
-                picture.HTTPSFETCHPIC("picture/" + pid + "?authcode=" + Constants.AUTHCODE, picFile);
+                picture.HTTPSFETCHPIC(picFileName, picFile);
             }catch(Exception e){
                 Debug.log(e.getMessage());
                 return false;

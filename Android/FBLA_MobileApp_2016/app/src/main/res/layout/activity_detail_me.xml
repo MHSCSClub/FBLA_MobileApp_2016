@@ -43,7 +43,11 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="5dp"
                     android:adjustViewBounds="true"
-                    android:maxHeight="200dp" />
+                    android:maxHeight="200dp"
+                    android:minHeight="20dp"
+                    android:nestedScrollingEnabled="false"
+                    android:minWidth="20dp"
+                    android:src="@drawable/finish" />
 
             </FrameLayout>
             <android.support.v7.widget.RecyclerView

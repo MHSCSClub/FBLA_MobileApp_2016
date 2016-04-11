@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,12 +31,11 @@ import java.util.Date;
 
 
 //TODO change to recyclerview
-public class SingleMe extends Fragment implements View.OnClickListener {
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class SingleMe extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener{
     public static final int PIC_UPLOAD_REQUEST = 20;
     public FloatingActionButton fab;
 
+    private SwipeRefreshLayout swipeRefresh;
 
     private File picLoc;
     private AsyncTask picGet;
@@ -53,6 +53,8 @@ public class SingleMe extends Fragment implements View.OnClickListener {
         fab = (FloatingActionButton) getActivity().findViewById(R.id.cameraButton);
         fab.setOnClickListener(this);
 
+        swipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.myPicRefresh);
+        swipeRefresh.setOnRefreshListener(this);
 
         picGet = new GetMyPictureInfo().execute();
     }
@@ -65,9 +67,6 @@ public class SingleMe extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            String mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -106,6 +105,12 @@ public class SingleMe extends Fragment implements View.OnClickListener {
             new GetMyPictureInfo().execute((Void) null);
         }
     }
+
+    @Override
+    public void onRefresh() {
+        picGet = new GetMyPictureInfo().execute();
+    }
+
     private class GetMyPictureInfo extends AsyncTask<Void, Boolean, Boolean> {
 
         private ArrayList<PictureItem> ret = new ArrayList<>();
@@ -159,6 +164,7 @@ public class SingleMe extends Fragment implements View.OnClickListener {
             }else{
                 Debug.log("Did not work_111");
             }
+            swipeRefresh.setRefreshing(false);
         }
     }
 }

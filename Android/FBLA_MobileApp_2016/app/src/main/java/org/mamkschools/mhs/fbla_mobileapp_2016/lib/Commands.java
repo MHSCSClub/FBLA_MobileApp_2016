@@ -16,7 +16,7 @@ public final class Commands {
     public final class Get{
         public static final String TEST = "test/get";
         public static final String LOGOUT = "user/logout" + AUTHCODE_BASE;
-        public static final String FETCH = "picture/fetch";
+        public static final String FETCH = "picture/fetch" + AUTHCODE_BASE;
         public static final String VERIFY = "user/verify" + AUTHCODE_BASE;
         public static final String FETCH_MINE = "picture/fetch/me" + AUTHCODE_BASE;
         public static final String RAW_PIC = "picture/%d";

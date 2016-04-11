@@ -8,7 +8,7 @@ import android.util.Log;
  */
 public class Debug {
     //Output debug info
-    public static boolean DEBUG_MODE = true;
+    public static boolean DEBUG_MODE = false;
 
     //Debug string to identify in Log
     private static final String DEBUG = "FBLA_MobileApp_2016-DBG";

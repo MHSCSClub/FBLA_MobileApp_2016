@@ -87,6 +87,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         titleLabel.setText(R.string.no_pics);
 
 
+
         ratingLayout = rootView.findViewById(R.id.ratingLayout);
         buttonLayout = rootView.findViewById(R.id.buttonLayout);
         instructions = rootView.findViewById(R.id.instructions);
@@ -142,6 +143,8 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
             titleLabel.setText(title.length() > 20 ? title.substring(0, 20) : title);
             descriptionLabel.setText(user);
         }
+
+        hideKeyboard();
 
         return rootView;
     }
@@ -278,10 +281,10 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
                 PictureEntry.COLUMN_NAME_PICTURE_ID + " ASC";
         if(db != null) {
             return db.query(
-                    PictureEntry.TABLE_NAME,  // The table to query
+                    PictureEntry.TABLE_NAME,                  // The table to query
                     projection,                               // The columns to return
-                    null,                                // The columns for the WHERE clause
-                    null,                            // The values for the WHERE clause
+                    null,                                     // The columns for the WHERE clause
+                    null,                                     // The values for the WHERE clause
                     null,                                     // don't group the rows
                     null,                                     // don't filter by row groups
                     sortOrder                                 // The sort order
@@ -323,12 +326,14 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         SecureAPI picture = SecureAPI.getInstance(getContext());
         JSONObject result;
 
+        @SafeVarargs
         @Override
-        protected Boolean doInBackground(Map<String, String>... params) {
+        protected final Boolean doInBackground(Map<String, String>... params) {
 
             Map<String, String> finalParams = params[0];
             try {
-                result = picture.HTTPSPOST("picture/" + finalParams.get("pid") + "/comment?authcode=" + Constants.AUTHCODE, finalParams);
+                result = picture.HTTPSPOST("picture/" + finalParams.get("pid")
+                        + "/comment?authcode=" + Constants.AUTHCODE, finalParams);
             } catch(Exception e) {
                 return false;
             }
@@ -338,7 +343,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         @Override
         protected void onPostExecute(Boolean v) {
             if(v) {
-
+                Debug.log("Rating worked");
             } else {
                 Toast.makeText(rootView.getContext(), "Rating failed", Toast.LENGTH_SHORT).show();
             }
@@ -352,14 +357,12 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
 
         @Override
         protected Void doInBackground(Void... params) {
-
             long secondsInMilli = 1000;
             long minutesInMilli = secondsInMilli * 60;
             long hoursInMilli = minutesInMilli * 60;
             long daysInMilli = hoursInMilli * 24;
 
 
-            int amount = 25;
             int dist = 10000;
             int view = 15;
 
@@ -398,7 +401,9 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
                         p = 30/(views - 10);
 
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                    long different = new Date().getTime() - simpleDateFormat.parse(array.getJSONObject(i).getString("created")).getTime();
+                    long different = new Date().getTime() -
+                            simpleDateFormat.parse(array.getJSONObject(i)
+                                    .getString("created")).getTime();
                     long elapsedHours = different / hoursInMilli;
                     if(elapsedHours < 10) {
                         p += 3 * elapsedHours;
@@ -440,12 +445,16 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         }
     }
     public void hideKeyboard(){
-        InputMethodManager inputManager = (InputMethodManager)
-                getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        try {
+            InputMethodManager inputManager = (InputMethodManager)
+                    getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        inputManager.hideSoftInputFromWindow(
-                getActivity().getCurrentFocus().getWindowToken(),
-                InputMethodManager.HIDE_NOT_ALWAYS);
+            inputManager.hideSoftInputFromWindow(
+                    getActivity().getCurrentFocus().getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        }catch (Exception ignored){
+
+        }
 
     }
 }

@@ -46,8 +46,7 @@
                     android:maxHeight="200dp"
                     android:minHeight="20dp"
                     android:nestedScrollingEnabled="false"
-                    android:minWidth="20dp"
-                    android:src="@drawable/finish" />
+                    android:minWidth="20dp" />
 
             </FrameLayout>
             <android.support.v7.widget.RecyclerView

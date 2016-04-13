@@ -52,6 +52,11 @@ import java.util.Map;
 
 import im.delight.android.location.SimpleLocation;
 
+/**
+ * This activity allows the user to upload pictures. It may be replaced with something with an integrated camera, or something...
+ * Created by Andrew Katz
+ */
+
 public class UploadActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int PICTURE_REQUEST_CODE = 1;
     public static ScrollView mUploadForm;

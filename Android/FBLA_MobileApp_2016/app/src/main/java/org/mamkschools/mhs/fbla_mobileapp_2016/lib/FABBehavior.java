@@ -8,6 +8,9 @@ import android.util.AttributeSet;
 import android.view.View;
 
 public class FABBehavior extends FloatingActionButton.Behavior {
+    private final Context context;
+    private final AttributeSet attributeSet;
+
     @Override
     public void onNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
@@ -20,6 +23,8 @@ public class FABBehavior extends FloatingActionButton.Behavior {
 
     public FABBehavior(Context context, AttributeSet attributeSet){
         super();
+        this.context = context;
+        this.attributeSet = attributeSet;
     }
 
     @Override

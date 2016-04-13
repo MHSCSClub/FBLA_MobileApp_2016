@@ -12,6 +12,7 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.R;
 /**
  * Divider item for lists
  * Created by Andrew A. Katz on 4/8/2016.
+ * Adapted from http://stackoverflow.com/questions/31242812/how-to-add-divider-line-in-recyclerview-in-android
  */
 public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
     private Drawable mDivider;

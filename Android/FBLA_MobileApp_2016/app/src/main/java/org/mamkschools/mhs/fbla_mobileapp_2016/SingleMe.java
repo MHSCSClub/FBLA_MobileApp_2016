@@ -30,8 +30,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 
-//TODO change to recyclerview
 public class SingleMe extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener{
+    //Some static request number that is attatched to the uploader activity
     public static final int PIC_UPLOAD_REQUEST = 20;
     public FloatingActionButton fab;
 
@@ -95,7 +95,8 @@ public class SingleMe extends Fragment implements View.OnClickListener, SwipeRef
         switch(v.getId()){
             case R.id.cameraButton:
                 default:
-                startActivityForResult(new Intent(getContext(), UploadActivity.class), PIC_UPLOAD_REQUEST);
+                startActivityForResult(new Intent(getContext(), UploadActivity.class),
+                        PIC_UPLOAD_REQUEST);
         }
     }
 

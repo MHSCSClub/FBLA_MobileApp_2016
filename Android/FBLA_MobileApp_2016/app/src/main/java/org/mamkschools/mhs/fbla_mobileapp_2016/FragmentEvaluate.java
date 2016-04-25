@@ -40,6 +40,7 @@ import java.util.Map;
 import im.delight.android.location.SimpleLocation;
 
 /**
+ * Fragment for evaluating pictures. This is on the main screen when the app is launched.
  * Created by jackphillips on 2/16/16.
  */
 public class FragmentEvaluate extends Fragment implements View.OnClickListener{
@@ -95,6 +96,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
 
 
         image = (ImageView) rootView.findViewById(R.id.imageView);
+        image.setOnClickListener(this);
         descriptionLabel = (TextView) rootView.findViewById(R.id.description_label);
 
 
@@ -232,6 +234,10 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
                 new SubmitRating().execute(getRateParams(postParams));
                 this.picNumber += 1;
                 runFetch(picNumber);
+                break;
+            case R.id.imageView:
+                new PictureDialog(getContext(),
+                        Constants.imageBitmap, titleLabel.getText().toString()).show();
                 break;
         }
 
@@ -455,6 +461,6 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         }catch (Exception ignored){
 
         }
-
     }
+
 }

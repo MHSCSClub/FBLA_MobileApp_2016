@@ -133,7 +133,7 @@ public class SingleMe extends Fragment implements View.OnClickListener, SwipeRef
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                     long different = new Date().getTime() - simpleDateFormat.parse(
                             array.getJSONObject(i).getString("created")).getTime();
-                    long elapsedHours = different / (1000 * 60 * 60);
+                    long elapsedHours = 3 + (different / (1000 * 60 * 60));
 
                     ret.add(new PictureItem(title, elapsedHours, likes, dislikes, views, pid));
                 }
@@ -150,6 +150,7 @@ public class SingleMe extends Fragment implements View.OnClickListener, SwipeRef
         protected void onPostExecute(Boolean v) {
             if(v){
                 Debug.log("Finished getting my pics");
+                //noinspection ConstantConditions
                 RecyclerView picList = (RecyclerView) getView().findViewById(R.id.picList);
                 LinearLayoutManager layoutManager=new LinearLayoutManager(getContext());
                 picList.setLayoutManager(layoutManager);

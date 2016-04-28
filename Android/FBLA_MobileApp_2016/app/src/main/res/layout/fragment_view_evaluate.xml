@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainSwipeActivity$PlaceholderFragment">
+    tools:context=".MainSwipeActivity">
 
 
 
@@ -86,19 +86,20 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/yesButton"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_alignParentRight="true"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="end|bottom"
-            android:layout_toEndOf="@+id/spacer"
 
-            android:layout_toRightOf="@+id/spacer"
             android:src="@drawable/ic_thumbs_up_white"
             app:backgroundTint="#4CAF50"
             app:borderWidth="0dp"
-            app:elevation="1dp">
+            app:elevation="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/spacer"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:cropToPadding="true">
 
         </android.support.design.widget.FloatingActionButton>
 
@@ -110,8 +111,8 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/noButton"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_gravity="center_horizontal|top"
@@ -123,7 +124,11 @@
             app:backgroundTint="#F44336"
             app:borderWidth="0dp"
             app:elevation="1dp"
-            app:fabSize="normal" />
+            app:fabSize="normal"
+            android:layout_alignParentBottom="true"
+            android:maxHeight="80dp"
+            android:maxWidth="80dp"
+            android:cropToPadding="true" />
 
     </RelativeLayout>
 

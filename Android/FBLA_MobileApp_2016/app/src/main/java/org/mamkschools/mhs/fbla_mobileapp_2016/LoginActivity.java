@@ -218,21 +218,22 @@ public class LoginActivity extends AppCompatActivity {
 
                 String status = returnedJSON.getString("status");
                 String message = returnedJSON.getString("message");
-                if(status.equals("error")) {
-                    if(isLogin) {
-                        return false;
-                    } else {
+                switch (status) {
+                    case "error":
+                        if (isLogin) {
+                            return false;
+                        } else {
 
-                        return false;
-                    }
-                } else if(status.equals("success")) {
-                    if(isLogin) {
-                        Constants.AUTHCODE = returnedJSON.getJSONObject("data").getString("authcode");
+                            return false;
+                        }
+                    case "success":
+                        if (isLogin) {
+                            Constants.AUTHCODE = returnedJSON.getJSONObject("data").getString("authcode");
 
-                    }
-                    return true;
-                } else{
-                    throw new IllegalStateException(status + ": " + message);
+                        }
+                        return true;
+                    default:
+                        throw new IllegalStateException(status + ": " + message);
                 }
             } catch (JSONException jse){
                 if(Debug.DEBUG_MODE){

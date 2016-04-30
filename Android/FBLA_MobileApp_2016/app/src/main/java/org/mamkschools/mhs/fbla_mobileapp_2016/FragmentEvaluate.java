@@ -440,14 +440,9 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         protected void onPostExecute(Void v) {
             Debug.log("Finished getting Picture Information");
             c = getInfo();
-            if(c.getCount() > 0){
-                runOnce = true;
-            }else{
-                runOnce = false;
-            }
+            runOnce = c.getCount() > 0;
             picNumber = 0;
             runFetch(picNumber);
-
         }
     }
     public void hideKeyboard(){

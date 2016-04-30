@@ -89,10 +89,12 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
         simpleLocation = new SimpleLocation(getApplicationContext());
         Button getPic = (Button) (findViewById(R.id.getPic));
+        assert getPic != null;
         getPic.setOnClickListener(this);
         editTitleText = (EditText) findViewById(R.id.editTitleText);
         picPrev = (ImageView) findViewById(R.id.uploadImage);
         Button uploadBtn = (Button) findViewById(R.id.uploadNow);
+        assert uploadBtn != null;
         uploadBtn.setOnClickListener(this);
         mUploadForm = (ScrollView) findViewById(R.id.uploadForm);
         mProgressView = (ProgressBar) findViewById(R.id.uploadProgress);

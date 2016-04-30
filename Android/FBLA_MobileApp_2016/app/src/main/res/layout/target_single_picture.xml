@@ -11,14 +11,16 @@
         android:id="@+id/picPrev"
         android:maxWidth="20dp"
         android:src="@mipmap/ic_launcher"
-        android:layout_marginLeft="10dp" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:contentDescription="@string/image_preview" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/TitleText"
         android:text="title"
-        android:gravity="top|left"
+        android:gravity="top|start"
         android:layout_marginTop="10dp"
         android:layout_marginRight="15dp"
         android:singleLine="true"
@@ -26,7 +28,8 @@
         android:textSize="24dp"
         android:layout_alignLeft="@+id/date"
         android:layout_alignStart="@+id/date"
-        android:layout_toLeftOf="@+id/rateCount" />
+        android:layout_toLeftOf="@+id/rateCount"
+        android:layout_toStartOf="@+id/rateCount" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -36,10 +39,12 @@
         android:layout_alignParentBottom="true"
         android:gravity="bottom|center"
         android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
         android:layout_marginBottom="10dp"
         android:textSize="15dp"
         android:layout_alignParentEnd="false"
-        android:layout_toEndOf="@id/picPrev" />
+        android:layout_toEndOf="@id/picPrev"
+        android:layout_toRightOf="@id/picPrev"/>
 
 
     <ImageView

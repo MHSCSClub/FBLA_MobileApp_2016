@@ -13,10 +13,6 @@ import java.io.File;
  * Created by jackphillips on 2/13/16.
  */
 public class PictureHelper extends SQLiteOpenHelper {
-    private static final String TEXT_TYPE = " TEXT";
-    private static final String COMMA_SEP = ",";
-
-
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + PictureEntry.TABLE_NAME;
 
@@ -46,6 +42,8 @@ public class PictureHelper extends SQLiteOpenHelper {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         options.inMutable = true;
+        options.inScaled = true;
+        options.inSampleSize = 1;
         if (Constants.imageBitmap != null) {
             options.inBitmap = Constants.imageBitmap;
         }
@@ -53,15 +51,23 @@ public class PictureHelper extends SQLiteOpenHelper {
             Bitmap b = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
             Debug.log("" + b.getByteCount()); //do not remove line throws exception if decoding problem
             return b;
-        } catch(Exception e) {
+        } catch(Exception | OutOfMemoryError e) {
             //Problem decoding into existing bitmap, allocate new memory
             options.inBitmap = null;
             Debug.log("Allocated new memory");
             if(Constants.imageBitmap != null)
                 Constants.imageBitmap.recycle();
             Constants.imageBitmap = null;
-            return BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-        }
 
+
+            //Fixes out of memory for bitmaps downloaded **Experimental**
+            while(true){
+                try {
+                    return BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+                } catch (OutOfMemoryError outOfMemoryError){
+                    options.inSampleSize *= 2;
+                }
+            }
+        }
     }
 }

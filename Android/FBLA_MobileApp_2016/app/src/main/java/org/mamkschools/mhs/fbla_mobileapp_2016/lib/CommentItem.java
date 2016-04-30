@@ -9,10 +9,7 @@ public class CommentItem {
     private String user;
     private String styleRating;
 
-
-
     public CommentItem(String comment, String user, String styleRating) {
-
         this.comment = comment;
         this.user = user;
         this.styleRating = styleRating;

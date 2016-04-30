@@ -2,7 +2,6 @@ package org.mamkschools.mhs.fbla_mobileapp_2016;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,7 +13,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -32,9 +30,9 @@ import android.widget.Toast;
 
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Commands;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Debug;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureHelper;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Debug;
 
 import java.io.File;
 
@@ -85,12 +83,12 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
 
         //ViewPager
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        assert viewPager != null;
         viewPager.setAdapter(pagerAdapter);
 
 
         //Tabs
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        //noinspection deprecation
         tabLayout.setTabsFromPagerAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 

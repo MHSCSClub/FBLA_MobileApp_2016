@@ -6,6 +6,7 @@ package org.mamkschools.mhs.fbla_mobileapp_2016.lib;
  * Contains allowed commands that can be run against server.
  * Created by Andrew Katz on 10/23/2015.
  */
+@SuppressWarnings("unused")
 public final class Commands {
 
     public static final String AUTHCODE_BASE = "?authcode=";
@@ -13,6 +14,7 @@ public final class Commands {
     private Commands(){
         //Exists to defeat instantiation
     }
+
     public final class Get{
         public static final String TEST = "test/get";
         public static final String LOGOUT = "user/logout" + AUTHCODE_BASE;

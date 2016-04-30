@@ -89,6 +89,7 @@
             android:id="@+id/yesButton"
             android:layout_width="85dp"
             android:layout_height="85dp"
+            android:layout_alignParentTop="false"
             android:layout_gravity="end|bottom"
 
             android:src="@drawable/ic_thumbs_up_white"
@@ -100,12 +101,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="false"
             android:cropToPadding="true"
-            android:layout_alignWithParentIfMissing="false"
-            android:layout_alignParentTop="true"
-            android:maxHeight="85dp"
-            android:maxWidth="85dp"
-            android:minHeight="85dp"
-            android:minWidth="85dp">
+            android:layout_alignWithParentIfMissing="false">
 
         </android.support.design.widget.FloatingActionButton>
 
@@ -122,7 +118,9 @@
             android:layout_width="85dp"
             android:layout_height="85dp"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="false"
             android:layout_gravity="center_horizontal|top"
+            android:layout_toLeftOf="@+id/spacer"
             android:layout_toStartOf="@+id/spacer"
             android:src="@drawable/ic_thumbs_down_white"
             app:backgroundTint="#F44336"
@@ -130,13 +128,7 @@
             app:elevation="1dp"
             app:fabSize="normal"
             android:layout_alignParentBottom="true"
-            android:cropToPadding="true"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/spacer"
-            android:maxHeight="85dp"
-            android:maxWidth="85dp"
-            android:minHeight="85dp"
-            android:minWidth="85dp" />
+            android:cropToPadding="true" />
 
     </RelativeLayout>
 

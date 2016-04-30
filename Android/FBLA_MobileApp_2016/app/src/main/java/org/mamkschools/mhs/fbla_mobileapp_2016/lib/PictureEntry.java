@@ -7,6 +7,7 @@ import android.provider.BaseColumns;
  * Contains base information about database columns
  */
 
+@SuppressWarnings("unused")
 public class PictureEntry  implements BaseColumns {
 
         public static final String TABLE_NAME = "picture";

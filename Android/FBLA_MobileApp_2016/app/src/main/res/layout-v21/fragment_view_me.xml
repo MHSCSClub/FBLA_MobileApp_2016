@@ -30,7 +30,9 @@
             app:layout_behavior="org.mamkschools.mhs.fbla_mobileapp_2016.lib.FABBehavior"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:layout_margin="12dp"
+            app:elevation="2dp" />
 
 
     </RelativeLayout>

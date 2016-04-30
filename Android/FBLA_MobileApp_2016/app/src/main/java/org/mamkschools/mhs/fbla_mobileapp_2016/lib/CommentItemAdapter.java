@@ -26,8 +26,7 @@ public class CommentItemAdapter extends RecyclerView.Adapter<CommentItemAdapter.
     public CommentItemAdapter.PictureViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.target_single_comment
                 , parent, false);
-        PictureViewHolder viewHolder = new PictureViewHolder(v);
-        return viewHolder;
+        return new PictureViewHolder(v);
     }
 
     @Override

@@ -7,6 +7,9 @@ import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
+/**
+ * Should apply scrolling behavior to fabs
+ */
 @SuppressWarnings("unused")
 public class FABBehavior extends FloatingActionButton.Behavior {
     private final Context context;

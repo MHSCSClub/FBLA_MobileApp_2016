@@ -236,12 +236,12 @@ public class LoginActivity extends AppCompatActivity {
                         throw new IllegalStateException(status + ": " + message);
                 }
             } catch (JSONException jse){
-                if(Util.DEBUG_MODE){
+                if(Constants.DEBUG_MODE){
                     Util.log(jse.getMessage());
                 }
                 return false;
             } catch (IllegalStateException ise){
-                if(Util.DEBUG_MODE){
+                if(Constants.DEBUG_MODE){
                     Util.log("Invalid message: " + ise.getMessage());
                 }
                 return false;

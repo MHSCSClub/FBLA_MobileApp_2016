@@ -28,9 +28,10 @@
         <AutoCompleteTextView
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp"
+            android:inputType="textCapSentences|textCapWords"
             android:id="@+id/editTitleText" android:layout_width="match_parent"
             android:layout_height="wrap_content" android:hint="@string/imgTitle"
-            android:inputType="text" android:maxLines="1"
+            android:maxLines="1"
             android:singleLine="true"
             android:layout_weight="1"/>
 

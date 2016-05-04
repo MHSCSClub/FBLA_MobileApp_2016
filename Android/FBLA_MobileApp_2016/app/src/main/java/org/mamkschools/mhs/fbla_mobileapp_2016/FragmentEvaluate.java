@@ -429,7 +429,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
 
                 }
             }catch (Exception e){
-                if(Util.DEBUG_MODE){
+                if(Constants.DEBUG_MODE){
                     Util.log(e.getMessage());
                 }
             }

@@ -39,15 +39,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainSwipeActivity" />
         </activity>
-        <activity
-            android:name=".UploadActivity"
-            android:label="@string/title_activity_upload"
-            android:parentActivityName=".MainSwipeActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainSwipeActivity" />
-        </activity>
 
         <activity
             android:name=".LoginActivity"

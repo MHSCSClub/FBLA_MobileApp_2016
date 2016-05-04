@@ -29,12 +29,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -62,7 +65,6 @@ import im.delight.android.location.SimpleLocation;
 
 public class FragmentMe extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener{
     //Some static request number that is attached to the uploader activity
-    public static final int PIC_UPLOAD_REQUEST = 20;
     private static final int PERMISSION_REQUEST_CODE = 2;
     public FloatingActionButton fab;
     private Uri outputFileUri;
@@ -111,6 +113,9 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
         super.onStop();
         if(picGet != null && !picGet.getStatus().equals(AsyncTask.Status.FINISHED)){
             picGet.cancel(true);
+        }
+        if(uploadTask != null &&!uploadTask.getStatus().equals(AsyncTask.Status.FINISHED)) {
+            uploadTask.cancel(true);
         }
     }
 
@@ -162,19 +167,9 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
 
     private void showImageDialog(final Bitmap previewBitmap){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setPositiveButton(R.string.upload_dialog, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                EditText edit = (EditText) ((AlertDialog) dialog).findViewById(R.id.editTitleText);
-                FragmentMe.this.uploadImage(previewBitmap, edit.getText().toString());
-                dialog.dismiss();
-            }
-        }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        }).setNeutralButton(R.string.retake, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.upload_dialog, null);
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.setNeutralButton(R.string.retake, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -192,10 +187,38 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
             public void onShow(DialogInterface d) {
                 ImageView image = (ImageView) dialog.findViewById(R.id.previewImage);
                 image.setImageBitmap(previewBitmap);
-                LinearLayout linearLayout = (LinearLayout) dialog.findViewById(R.id.dialogLayout);
-                //linearLayout.
+                dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+                        .setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view){
+                        EditText editTitleText = (EditText)
+                                dialog.findViewById(R.id.editTitleText);
+                        if(editTitleText.getText().toString().trim().equals("")){
+                            editTitleText.setError(getContext().getString(R.string.no_title));
+                            editTitleText.requestFocus();
+                        } else {
+                            FragmentMe.this.uploadImage(previewBitmap, editTitleText.getText().toString().trim());
+                            dialog.dismiss();
+                        }
+                    }
+                });
 
-                dialog.findViewById(R.id.editTitleText).setVisibility(View.VISIBLE);
+                final EditText editTitleText = ((EditText)dialog.findViewById(R.id.editTitleText));
+                editTitleText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER))
+                                || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                            if(editTitleText.getText().toString().trim().equals("")){
+                                editTitleText.setError(getContext().getString(R.string.no_title));
+                                editTitleText.requestFocus();
+                            } else {
+                                FragmentMe.this.uploadImage(previewBitmap, editTitleText.getText().toString().trim());
+                                dialog.dismiss();
+                            }
+                        }
+                        return false;
+                    }
+                });
             }
         });
 
@@ -251,10 +274,6 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
         }
     }
 
-    private void legacyUpload(){
-        startActivityForResult(new Intent(getContext(), UploadActivity.class),
-                PIC_UPLOAD_REQUEST);
-    }
 
     private class GetMyPictureInfo extends AsyncTask<Void, Boolean, Boolean> {
 
@@ -286,7 +305,7 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
                     ret.add(new PictureItem(title, elapsedHours, likes, dislikes, views, pid));
                 }
             }catch (Exception e){
-                if(Util.DEBUG_MODE){
+                if(Constants.DEBUG_MODE){
                     Util.log("mypics error " + e.getMessage());
                 }
                 return false;
@@ -388,12 +407,12 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
 
                 showImageDialog(b);
             } catch (IOException | NullPointerException e) {
-                if(Util.DEBUG_MODE) {
+                if(Constants.DEBUG_MODE) {
                     e.printStackTrace();
                 }
 
             } catch (OutOfMemoryError outOfMemoryError){
-                if(Util.DEBUG_MODE){
+                if(Constants.DEBUG_MODE){
                     outOfMemoryError.printStackTrace();
                 }
                 Toast.makeText(getContext(), "Out of memory, please increase emulator ram or close other apps. If the issue persists, please contact teh developer.", Toast.LENGTH_LONG).show();
@@ -419,17 +438,13 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
         if(show){
             progressDialog = ProgressDialog.show(getActivity(), "Loading",
                     "Please wait, uploading picture", true);
+            progressDialog.setCancelable(false);
         } else {
             progressDialog.dismiss();
         }
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
+
 
     private static class PicUploadParams {
         public Map<String, String> paramMap = new HashMap<>();
@@ -453,7 +468,7 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
                     throw new Exception("Impossible status");
                 }
             } catch (Exception e) {
-                if (Util.DEBUG_MODE) {
+                if (Constants.DEBUG_MODE) {
                     Util.log(e.getMessage());
                     e.printStackTrace();
                 }
@@ -485,7 +500,7 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
         }
         PicUploadParams uploadPic = new PicUploadParams();
         ByteArrayOutputStream picOutputStream = new ByteArrayOutputStream();
-        picBitmap.compress(Bitmap.CompressFormat.JPEG, 70, picOutputStream);
+        picBitmap.compress(Bitmap.CompressFormat.JPEG, 60, picOutputStream);
         uploadPic.pics.put("picture", picOutputStream);
 
         uploadPic.paramMap.put("title" , title);

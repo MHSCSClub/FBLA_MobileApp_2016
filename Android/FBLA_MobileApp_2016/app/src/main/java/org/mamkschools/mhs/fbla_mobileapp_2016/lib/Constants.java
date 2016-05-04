@@ -22,6 +22,9 @@ public final class Constants {
     //Authcode needs to be saved and loaded
     public static String AUTHCODE = null;
 
+    //Output debug info
+    public static final boolean DEBUG_MODE = false;
+
     //Variable to see if prefs restored yet
     public static boolean PREFS_RESTORED = false;
 

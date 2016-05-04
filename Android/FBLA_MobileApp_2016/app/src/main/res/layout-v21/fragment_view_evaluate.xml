@@ -3,54 +3,113 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="5dp"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainSwipeActivity">
 
-
-
-
-    <TextView
-        android:id="@+id/description_label"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:text="Username of Uploader"
-        android:textColor="#000000"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-
-    <FrameLayout
-        android:id="@+id/imageFrame"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/additional_label"
-        android:layout_below="@+id/description_label"
-        android:layout_marginBottom="5dp">
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:background="#000000" />
-
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="15dp"
+        android:id="@+id/description_layout">
         <TextView
             android:id="@+id/title_label"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Image Title"
-            android:textColor="#ffffff"
-            android:textSize="30sp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingBottom="5dp"
-            android:background="#CC424242"
-            android:layout_gravity="bottom|center_horizontal" />
-    </FrameLayout>
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:paddingBottom="10dp"
+            android:text="Title"
+            android:textColor="#000000"
+            android:textSize="40sp"
+            android:gravity="center" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_below="@id/title_label"
+            android:layout_height="20dp"
+            android:id="@+id/info_label"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:id="@+id/by_label"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:includeFontPadding="false"
+                android:text="By"
+                android:textColor="#757575"
+                android:textSize="15sp"
+                android:gravity="bottom"
+                android:paddingRight="2dp" />
+
+            <TextView
+                android:id="@+id/description_label"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:includeFontPadding="false"
+                android:text="Username"
+                android:textStyle="bold"
+                android:textColor="#757575"
+                android:textSize="15sp"
+                android:paddingLeft="3dp"
+                android:gravity="bottom"
+                android:layout_toRightOf="@+id/by_label"
+                android:layout_marginRight="10dp"/>
+
+            <ImageView
+                android:id="@+id/time_img"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="false"
+                android:src="@drawable/ic_alarm_black_48dp"
+                android:layout_toRightOf="@+id/description_label"
+                android:layout_centerVertical="true" />
+
+            <TextView
+                android:id="@+id/time_label"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/time_img"
+                android:text="4 hours ago"
+                android:textColor="#757575"
+                android:textSize="15sp"
+                android:paddingLeft="5dp"
+                android:gravity="bottom"
+                android:layout_marginRight="10dp"/>
+
+            <ImageView
+                android:id="@+id/dist_img"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="false"
+                android:src="@drawable/ic_location_on_black_48dp"
+                android:layout_toRightOf="@+id/time_label"
+                android:layout_centerVertical="true" />
+
+            <TextView
+                android:id="@+id/dist_label"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/dist_img"
+                android:paddingLeft="2dp"
+                android:text="3 miles away"
+                android:textColor="#757575"
+                android:textSize="15sp"
+                android:gravity="bottom"
+                android:layout_centerVertical="true"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_below="@+id/description_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:background="#000000" />
 
     <TextView
         android:id="@+id/additional_label"

@@ -30,7 +30,7 @@ import android.widget.Toast;
 
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Commands;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Debug;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Util;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureHelper;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 
@@ -100,7 +100,7 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
 
         File picLocation = getFilesDir();
         evaluatePictures = FragmentEvaluate.newInstance(db, picture, picLocation, simplocation);
-        myPictures = SingleMe.newInstance(picLocation);
+        myPictures = FragmentMe.newInstance(picLocation);
 
         ImageButton more = (ImageButton) findViewById(R.id.more_stuff);
         more.setOnClickListener(this);
@@ -222,7 +222,7 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
             try {
                 HTTPS.HTTPSGET(Commands.Get.LOGOUT + Constants.AUTHCODE);
             } catch (Exception ex) {
-                Debug.log(ex.getMessage());
+                Util.log(ex.getMessage());
                 return false;
             }
             return true;

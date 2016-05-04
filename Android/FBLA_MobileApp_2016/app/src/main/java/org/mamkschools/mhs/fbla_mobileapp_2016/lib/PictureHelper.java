@@ -49,12 +49,12 @@ public class PictureHelper extends SQLiteOpenHelper {
         }
         try {
             Bitmap b = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-            Debug.log("" + b.getByteCount()); //do not remove line throws exception if decoding problem
+            Util.log("" + b.getByteCount()); //do not remove line throws exception if decoding problem
             return b;
         } catch(Exception | OutOfMemoryError e) {
             //Problem decoding into existing bitmap, allocate new memory
             options.inBitmap = null;
-            Debug.log("Allocated new memory");
+            Util.log("Allocated new memory");
             if(Constants.imageBitmap != null)
                 Constants.imageBitmap.recycle();
             Constants.imageBitmap = null;

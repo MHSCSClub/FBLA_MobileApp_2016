@@ -39,7 +39,7 @@ import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Commands;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Debug;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -67,6 +67,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     private Uri outputFileUri;
     private AsyncTask uploadTask;
     private ByteArrayOutputStream picOutputStream;
+    private Bitmap picBitmap;
 
     private static final int PERMISSION_REQUEST_CODE = 5;
 
@@ -99,11 +100,10 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         mUploadForm = (ScrollView) findViewById(R.id.uploadForm);
         mProgressView = (ProgressBar) findViewById(R.id.uploadProgress);
         if (!isNetworkAvailable()) {
-            Toast.makeText(getApplicationContext(), "Network is not available. Please connect to the internet", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Network is not available. Please connect " +
+                    "to the internet", Toast.LENGTH_LONG).show();
             finish();
         }
-
-
     }
 
     @Override
@@ -173,9 +173,9 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
             if (!isCamera) {
                 outputFileUri = data.getData();
-                Debug.log("Using data.getData");
+                Util.log("Using data.getData");
             } else {
-                Debug.log("Using filename");
+                Util.log("Using filename");
             }
 
 
@@ -186,20 +186,19 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                     byte[] imageBytes = getBytes(getContentResolver().openInputStream(outputFileUri));
                     b = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                 }
-                picOutputStream = new ByteArrayOutputStream();
+
 
                 int maxDim = Math.max(b.getWidth(), b.getHeight());
-                b = Bitmap.createScaledBitmap(b,map(b.getWidth(),0,maxDim, 0, 4096), map(b.getHeight(), 0, maxDim, 0, 4096), false);
-                b.compress(Bitmap.CompressFormat.JPEG, 70, picOutputStream);
+                b = Bitmap.createScaledBitmap(b,Util.map(b.getWidth(),0,maxDim, 0, 4096),
+                        Util.map(b.getHeight(), 0, maxDim, 0, 4096), false);
                 picPrev.setImageBitmap(b);
-
             } catch (IOException | NullPointerException e) {
-                if(Debug.DEBUG_MODE) {
+                if(Util.DEBUG_MODE) {
                     e.printStackTrace();
                 }
 
             } catch (OutOfMemoryError outOfMemoryError){
-                if(Debug.DEBUG_MODE){
+                if(Util.DEBUG_MODE){
                     outOfMemoryError.printStackTrace();
                 }
                 Toast.makeText(getApplicationContext(), "Out of memory, please increase emulator ram or close other apps. If the issue persists, please contact teh developer.", Toast.LENGTH_LONG).show();
@@ -281,8 +280,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                     throw new Exception("Impossible status");
                 }
             } catch (Exception e) {
-                if (Debug.DEBUG_MODE) {
-                    Debug.log(e.getMessage());
+                if (Util.DEBUG_MODE) {
+                    Util.log(e.getMessage());
                     e.printStackTrace();
                 }
                 return false;
@@ -295,10 +294,10 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         protected void onPostExecute(Boolean success) {
             showProgress(false);
             if (success) {
-                Debug.log("Upload worked");
+                Util.log("Upload worked");
                 finish();
             } else {
-                Debug.log("Upload failed");
+                Util.log("Upload failed");
                 Toast.makeText(getApplicationContext(), "Upload failed, please try again", Toast.LENGTH_SHORT).show();
             }
         }
@@ -315,9 +314,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         }
         return byteBuffer.toByteArray();
     }
-    private int map(int x, int in_min, int in_max, int out_min, int out_max){
-        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-    }
+
 
     public String [] getDisabledPermissions(){
         String [] permissions = {Manifest.permission.CAMERA,
@@ -328,7 +325,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         ArrayList<String> disabledPerms = new ArrayList<>();
         for (String perm: permissions) {
             if(ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.READ_CONTACTS)
+                    perm)
                     != PackageManager.PERMISSION_GRANTED){
                 disabledPerms.add(perm);
             }
@@ -338,7 +335,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+                                           @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE: {
                 // If request is cancelled, the result arrays are empty.
@@ -370,6 +368,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
             uploadTask.cancel(true);
         }
         PicUploadParams uploadPic = new PicUploadParams();
+        picOutputStream = new ByteArrayOutputStream();
+        picBitmap.compress(Bitmap.CompressFormat.JPEG, 70, picOutputStream);
         uploadPic.pics.put("picture", picOutputStream);
         if(editTitleText.getText().toString().equals("")){
             editTitleText.setError("Title is required");
@@ -381,7 +381,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         Constants.LATITUDE = simpleLocation.getLatitude();
         Constants.LONGITUDE = simpleLocation.getLongitude();
 
-        Debug.log("lat" + Constants.LATITUDE + "lon" + Constants.LONGITUDE);
+        Util.log("lat" + Constants.LATITUDE + "lon" + Constants.LONGITUDE);
 
         uploadPic.paramMap.put("geolong", "" + Constants.LONGITUDE);
         uploadPic.paramMap.put("geolat", "" + Constants.LATITUDE);

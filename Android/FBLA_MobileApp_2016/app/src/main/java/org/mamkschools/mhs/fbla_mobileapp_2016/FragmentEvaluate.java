@@ -28,7 +28,7 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureEntry;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureHelper;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Debug;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Util;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -136,7 +136,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         runFetch(picNumber);
 
         if(c.getCount() > 0 && picNumber < c.getCount()) {
-            Debug.log("From: " + picNumber);
+            Util.log("From: " + picNumber);
             c.moveToPosition(picNumber);
             int itemId = c.getInt(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_PICTURE_ID));
             String title = c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_TITLE));
@@ -263,7 +263,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         EditText commentView = (EditText) rootView.findViewById(R.id.commentText);
 
         String comment = commentView.getText().toString();
-        Debug.log(comment);
+        Util.log(comment);
         commentView.setText("");
         if(comment.length() > 0)
             params.put("comment", comment);
@@ -308,11 +308,11 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         protected Boolean doInBackground(Integer... params) {
             try{
                 int pid = params[0];
-                Debug.log("picture/" + pid + "?authcode=" + Constants.AUTHCODE);
+                Util.log("picture/" + pid + "?authcode=" + Constants.AUTHCODE);
                 picture.HTTPSFETCHPIC("picture/" + pid + "?authcode=" + Constants.AUTHCODE, new File(location, "picture.jpg"));
                 Constants.imageBitmap = PictureHelper.getPictureBitmap(new File(location, "picture.jpg"));
             }catch(Exception e){
-                Debug.log(e.getMessage());
+                Util.log(e.getMessage());
                 return false;
             }
             return true;
@@ -323,7 +323,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
             if(v){
                 image.setImageBitmap(Constants.imageBitmap);
             }else{
-                Debug.log("Life will go on");
+                Util.log("Life will go on");
             }
         }
     }
@@ -349,7 +349,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         @Override
         protected void onPostExecute(Boolean v) {
             if(v) {
-                Debug.log("Rating worked");
+                Util.log("Rating worked");
             } else {
                 Toast.makeText(rootView.getContext(), "Rating failed", Toast.LENGTH_SHORT).show();
             }
@@ -379,7 +379,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
             db.execSQL("Delete from " + PictureEntry.TABLE_NAME);
             ContentValues values = new ContentValues();
 
-            Debug.log(Constants.LATITUDE + " " + Constants.LONGITUDE);
+            Util.log(Constants.LATITUDE + " " + Constants.LONGITUDE);
 
             try {
                 JSONObject response = picture.HTTPSGET(Commands.Get.FETCH + Constants.AUTHCODE + "&ft_me=1" + "&ft_views=" + view
@@ -429,8 +429,8 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
 
                 }
             }catch (Exception e){
-                if(Debug.DEBUG_MODE){
-                    Debug.log(e.getMessage());
+                if(Util.DEBUG_MODE){
+                    Util.log(e.getMessage());
                 }
             }
             return null;
@@ -438,7 +438,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
 
         @Override
         protected void onPostExecute(Void v) {
-            Debug.log("Finished getting Picture Information");
+            Util.log("Finished getting Picture Information");
             c = getInfo();
             runOnce = c.getCount() > 0;
             picNumber = 0;

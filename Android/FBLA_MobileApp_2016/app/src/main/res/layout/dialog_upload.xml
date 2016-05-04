@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/dialogLayout"
+    android:layout_marginTop="0dp"
+    android:layout_marginBottom="0dp">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/previewImage"
+        android:layout_gravity="center_horizontal"
+        android:longClickable="false"
+        android:layout_weight="01"
+        android:src="@color/colorAccent"
+        android:cropToPadding="false"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:adjustViewBounds="true" />
+
+    <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp">
+
+        <AutoCompleteTextView
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:id="@+id/editTitleText" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:hint="@string/imgTitle"
+            android:inputType="text" android:maxLines="1"
+            android:singleLine="true"
+            android:layout_weight="1"/>
+
+    </android.support.design.widget.TextInputLayout>
+</LinearLayout>

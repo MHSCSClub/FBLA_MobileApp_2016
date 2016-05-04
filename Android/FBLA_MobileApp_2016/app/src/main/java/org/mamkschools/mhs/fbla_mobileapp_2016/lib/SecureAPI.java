@@ -47,7 +47,7 @@ public class SecureAPI {
                 mySecureAPI = new SecureAPI(c.getApplicationContext()
                         .getResources().openRawResource(R.raw.ca));
             }catch (Exception e){
-                Debug.log(e.getMessage());
+                Util.log(e.getMessage());
             }
         }
         return mySecureAPI;
@@ -62,7 +62,7 @@ public class SecureAPI {
     private void createSocketFactory(InputStream is) throws Exception {
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
         Certificate certificate = certificateFactory.generateCertificate(is);
-        Debug.log("ca=" + ((X509Certificate) certificate).getSubjectDN());
+        Util.log("ca=" + ((X509Certificate) certificate).getSubjectDN());
 
 
         KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());

@@ -41,11 +41,15 @@
     <string name="no_pics">No More Pictures</string>
 
     <string name="upload">Upload Image</string>
-    <string name="imgTitle">Image Title</string>
+    <string name="imgTitle">Question or Image Title</string>
     <string name="getPic">Choose Picture</string>
 
     <string name="tap_exit">Tap to exit</string>
 
     <string name="style">How stylish is this outfit?</string>
     <string name="image_preview">Image Preview</string>
+
+    <string name="retake">Retake</string>
+    <string name="upload_dialog">Upload</string>
+    <string name="cancel">Cancel</string>
 </resources>

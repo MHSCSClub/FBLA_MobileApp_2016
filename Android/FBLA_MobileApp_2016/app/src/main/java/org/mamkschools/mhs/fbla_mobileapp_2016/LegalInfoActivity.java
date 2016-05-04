@@ -27,7 +27,7 @@ public class LegalInfoActivity extends AppCompatActivity {
                 text += s.nextLine() + '\n';
             } while(s.hasNextLine());
         }catch(Exception e){
-            Debug.log(e.getMessage());
+            Util.log(e.getMessage());
         }
         assert LegalText != null;
         LegalText.setText(text);

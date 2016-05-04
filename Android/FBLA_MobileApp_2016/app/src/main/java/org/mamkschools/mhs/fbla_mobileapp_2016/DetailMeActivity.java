@@ -19,7 +19,7 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.CommentItemAdapter;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureHelper;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Debug;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Util;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -85,7 +85,7 @@ public class DetailMeActivity extends AppCompatActivity  {
 
             try {
                 JSONObject response = picture.HTTPSGET("picture/" + params[0] + "/comment?authcode=" + Constants.AUTHCODE);
-                Debug.log("picture/" + params[0] + "/comment?authcode=" + Constants.AUTHCODE);
+                Util.log("picture/" + params[0] + "/comment?authcode=" + Constants.AUTHCODE);
 
                 JSONArray array = response.getJSONArray("data");
 
@@ -100,8 +100,8 @@ public class DetailMeActivity extends AppCompatActivity  {
 
                 }
             }catch (Exception e){
-                if(Debug.DEBUG_MODE){
-                    Debug.log("mypics error " + e.getMessage());
+                if(Util.DEBUG_MODE){
+                    Util.log("mypics error " + e.getMessage());
                 }
                 return false;
             }
@@ -111,10 +111,11 @@ public class DetailMeActivity extends AppCompatActivity  {
         @Override
         protected void onPostExecute(Boolean v) {
             if(v){
-                Debug.log("Finished getting my pics");
+                Util.log("Finished getting my pics");
                 RecyclerView commentList = (RecyclerView) findViewById(R.id.commentList);
 
                 LinearLayoutManager layoutManager=new LinearLayoutManager(getApplicationContext());
+                assert commentList != null;
                 commentList.setLayoutManager(layoutManager);
 
                 commentList.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
@@ -122,7 +123,7 @@ public class DetailMeActivity extends AppCompatActivity  {
                 CommentItemAdapter adapter = new CommentItemAdapter(ret,getApplicationContext());
                 commentList.setAdapter(adapter);
             } else {
-                Debug.log("Did not work_111");
+                Util.log("Did not work_111");
             }
         }
     }
@@ -137,11 +138,11 @@ public class DetailMeActivity extends AppCompatActivity  {
             try{
                 int pid = params[0];
                 String picFileName = Commands.Get.RAW_PIC + pid + Commands.AUTHCODE_BASE + Constants.AUTHCODE;
-                Debug.log(picFileName);
+                Util.log(picFileName);
                 picFile = new File(getFilesDir(), "picture.jpg");
                 picture.HTTPSFETCHPIC(picFileName, picFile);
             }catch(Exception e){
-                Debug.log(e.getMessage());
+                Util.log(e.getMessage());
                 return false;
             }
             return true;
@@ -161,7 +162,7 @@ public class DetailMeActivity extends AppCompatActivity  {
                     }
                 });
             }else{
-                Debug.log("Life will go on");
+                Util.log("Life will go on");
             }
         }
     }

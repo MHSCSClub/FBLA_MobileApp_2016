@@ -3,54 +3,188 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="5dp"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:clipToPadding="false"
     tools:context=".MainSwipeActivity">
 
-
-
-
-    <TextView
-        android:id="@+id/description_label"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:text="Username of Uploader"
-        android:textColor="#000000"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/description_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="15dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:id="@+id/title_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:text="Title"
+                    android:textColor="#000000"
+                    android:textIsSelectable="true"
+                    android:textSize="35sp" />
+
+                <RelativeLayout
+                    android:id="@+id/info_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_below="@id/title_label"
+                    android:layout_centerHorizontal="true">
+
+                    <TextView
+                        android:id="@+id/by_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="bottom"
+                        android:includeFontPadding="false"
+                        android:paddingRight="2dp"
+                        android:text="By"
+                        android:textColor="#757575"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/description_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:layout_toRightOf="@+id/by_label"
+                        android:gravity="bottom"
+                        android:includeFontPadding="false"
+                        android:paddingLeft="3dp"
+                        android:text="Username"
+                        android:textColor="#757575"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/time_img"
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/description_label"
+                        android:adjustViewBounds="false"
+                        android:src="@drawable/ic_alarm_black_48dp" />
+
+                    <TextView
+                        android:id="@+id/time_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:layout_toRightOf="@+id/time_img"
+                        android:gravity="bottom"
+                        android:paddingLeft="5dp"
+                        android:text="4 hours ago"
+                        android:textColor="#757575"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:id="@+id/dist_img"
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/time_label"
+                        android:adjustViewBounds="false"
+                        android:src="@drawable/ic_location_on_black_48dp" />
+
+                    <TextView
+                        android:id="@+id/dist_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/dist_img"
+                        android:gravity="bottom"
+                        android:paddingLeft="2dp"
+                        android:text="3 miles away"
+                        android:textColor="#757575"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
 
 
-    <FrameLayout
-        android:id="@+id/imageFrame"
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:background="#000000" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/additional_label"
-        android:layout_below="@+id/description_label"
-        android:layout_marginBottom="5dp">
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="?android:colorBackground"
+        android:elevation="24dp"
+        android:clipToPadding="false"
+        android:paddingBottom="20dp"
+        android:weightSum="4">
 
         <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:background="#FFFFFF" />
+            android:id="@+id/dress_img"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"
+            android:layout_marginTop="15dp"
+            android:adjustViewBounds="false"
+            android:src="@drawable/ic_assignment_ind_black_48dp" />
 
-        <TextView
-            android:id="@+id/title_label"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Image Title"
-            android:textColor="#ffffff"
-            android:textSize="30sp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingBottom="5dp"
-            android:background="#CC424242"
-            android:layout_gravity="bottom|center_horizontal" />
-    </FrameLayout>
+        <ImageView
+            android:id="@+id/down_img"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="44dp"
+            android:layout_marginTop="8dp"
+            android:adjustViewBounds="false"
+            android:src="@drawable/ic_thumb_down_black_48dp" />
+
+        <ImageView
+            android:id="@+id/up_img"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="44dp"
+            android:layout_marginTop="8dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_thumb_up_black_48dp" />
+
+        <ImageView
+            android:id="@+id/help_img"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"
+            android:layout_marginTop="15dp"
+            android:adjustViewBounds="false"
+            android:src="@drawable/ic_help_black_48dp" />
+
+
+    </LinearLayout>
+
+
 
     <TextView
         android:id="@+id/additional_label"
@@ -61,7 +195,8 @@
         android:layout_marginBottom="18dp"
         android:text="X hours ago, Y.Z miles away"
         android:textColor="#616161"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/instructions"
@@ -73,7 +208,8 @@
         android:gravity="center"
         android:padding="5dp"
         android:text="@string/thumbs_caption"
-        android:textSize="20dp" />
+        android:textSize="20dp"
+        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/buttonLayout"
@@ -82,30 +218,27 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal"
-        android:layout_marginTop="5dp">
+        android:visibility="gone">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/yesButton"
             android:layout_width="85dp"
             android:layout_height="85dp"
-            android:layout_gravity="end|bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="false"
 
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="false"
+            android:layout_alignWithParentIfMissing="false"
+            android:layout_gravity="end|bottom"
+            android:layout_toRightOf="@+id/spacer"
+            android:cropToPadding="true"
             android:src="@drawable/ic_thumbs_up_white"
             app:backgroundTint="#4CAF50"
             app:borderWidth="0dp"
-            app:elevation="1dp"
-            android:layout_alignParentBottom="true"
-            android:layout_toRightOf="@+id/spacer"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="false"
-            android:cropToPadding="true"
-            android:layout_alignWithParentIfMissing="false"
-            android:layout_alignParentTop="true"
-            android:maxHeight="85dp"
-            android:maxWidth="85dp"
-            android:minHeight="85dp"
-            android:minWidth="85dp">
+            app:elevation="1dp">
 
         </android.support.design.widget.FloatingActionButton>
 
@@ -113,30 +246,26 @@
             android:id="@+id/spacer"
             android:layout_width="20dp"
             android:layout_height="85dp"
-            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="false"
             android:layout_alignParentTop="false"
-            android:layout_alignParentBottom="false" />
+            android:layout_centerHorizontal="true" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/noButton"
             android:layout_width="85dp"
             android:layout_height="85dp"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="false"
             android:layout_gravity="center_horizontal|top"
+            android:layout_toLeftOf="@+id/spacer"
             android:layout_toStartOf="@+id/spacer"
+            android:cropToPadding="true"
             android:src="@drawable/ic_thumbs_down_white"
             app:backgroundTint="#F44336"
             app:borderWidth="0dp"
             app:elevation="1dp"
-            app:fabSize="normal"
-            android:layout_alignParentBottom="true"
-            android:cropToPadding="true"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/spacer"
-            android:maxHeight="85dp"
-            android:maxWidth="85dp"
-            android:minHeight="85dp"
-            android:minWidth="85dp" />
+            app:fabSize="normal" />
 
     </RelativeLayout>
 
@@ -147,7 +276,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignTop="@+id/additional_label"
-        android:visibility="invisible">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/instructions2"
@@ -161,17 +290,17 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TableRow
+            android:id="@+id/rateTable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/instructions2"
-            android:id="@+id/rateTable">
+            android:layout_below="@+id/instructions2">
 
             <TextView
+                android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1"
-                android:id="@+id/textView"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:text="1" />
 
             <SeekBar
                 android:id="@+id/styleRating"
@@ -183,12 +312,12 @@
                 android:layout_weight="100" />
 
             <TextView
+                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10"
-                android:id="@+id/textView2"
                 android:layout_gravity="right"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:text="10" />
 
         </TableRow>
 
@@ -196,15 +325,15 @@
             android:id="@+id/commentText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/submit_button"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
+            android:layout_below="@+id/rateTable"
             android:ems="10"
             android:gravity="top"
-            android:imeOptions="actionDone"
             android:hint="Comment on the picture"
-            android:inputType="textMultiLine"
-            android:layout_below="@+id/rateTable"
-            android:layout_above="@+id/submit_button" />
+            android:imeOptions="actionDone"
+            android:inputType="textMultiLine" />
 
 
         <View
@@ -232,6 +361,7 @@
             android:text="No Thanks" />
 
     </RelativeLayout>
+
 
 
 </RelativeLayout>

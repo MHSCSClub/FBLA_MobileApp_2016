@@ -96,22 +96,22 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
 
 
         image = (ImageView) rootView.findViewById(R.id.imageView);
-        image.setOnClickListener(this);
+        //image.setOnClickListener(this);
         descriptionLabel = (TextView) rootView.findViewById(R.id.description_label);
 
 
 
         FloatingActionButton yes = (FloatingActionButton) rootView.findViewById(R.id.yesButton);
-        yes.setOnClickListener(this);
+        //yes.setOnClickListener(this);
 
         FloatingActionButton no = (FloatingActionButton) rootView.findViewById(R.id.noButton);
-        no.setOnClickListener(this);
+        //no.setOnClickListener(this);
 
         SeekBar style = (SeekBar) rootView.findViewById(R.id.styleRating);
         style.setProgress(style.getMax() / 2);
 
         final Button submit = (Button) rootView.findViewById(R.id.submit_button);
-        submit.setOnClickListener(this);
+        //submit.setOnClickListener(this);
 
         // your text box
         EditText edit_txt = (EditText) rootView.findViewById(R.id.commentText);
@@ -128,7 +128,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         });
 
         Button cancel = (Button) rootView.findViewById(R.id.cancel_button);
-        cancel.setOnClickListener(this);
+        //cancel.setOnClickListener(this);
 
 
 

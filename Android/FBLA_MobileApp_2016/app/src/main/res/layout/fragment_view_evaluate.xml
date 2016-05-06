@@ -9,8 +9,8 @@
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_above="@+id/rate_layout"
+        android:layout_alignParentTop="true"
         android:fillViewport="true">
 
         <LinearLayout
@@ -22,9 +22,9 @@
                 android:id="@+id/description_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="15dp"
                 android:background="#FFFFFF"
                 android:elevation="2dp"
+                android:paddingBottom="15dp"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin">
 
@@ -138,39 +138,44 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:background="#3F51B5"
-        android:elevation="24dp"
         android:clipToPadding="false"
+        android:elevation="24dp"
         android:paddingBottom="20dp"
-        android:weightSum="4">
+        android:weightSum="3">
 
-        <ImageView
-            android:id="@+id/dress_img"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="24dp"
-            android:layout_marginTop="18dp"
-            android:adjustViewBounds="false"
-            android:src="@drawable/ic_assignment_ind_white_48dp" />
 
         <ImageView
             android:id="@+id/down_img"
             android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="12dp"
             android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@drawable/blue_ripple"
+            android:src="@drawable/ic_thumb_down_white_48dp" />
+
+        <ImageView
+            android:id="@+id/dress_img"
+            android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_marginTop="15dp"
-            android:layout_marginRight="5dp"
+            android:layout_weight="1"
             android:adjustViewBounds="false"
-            android:src="@drawable/ic_thumb_down_white_48dp" />
+            android:src="@drawable/ic_assignment_ind_white_48dp" />
 
         <ImageView
             android:id="@+id/up_img"
             android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="12dp"
             android:layout_weight="1"
-            android:layout_height="30dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="5dp"
             android:adjustViewBounds="true"
+            android:background="@drawable/blue_ripple"
             android:src="@drawable/ic_thumb_up_white_48dp" />
+
+        <!--
 
         <ImageView
             android:id="@+id/help_img"
@@ -181,9 +186,48 @@
             android:adjustViewBounds="false"
             android:src="@drawable/ic_help_white_48dp" />
 
-
+            -->
     </LinearLayout>
 
+
+    <LinearLayout
+        android:id="@+id/rate_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="#00ffffff"
+        android:clipToPadding="false"
+        android:paddingBottom="20dp"
+        android:elevation="24dp"
+        android:weightSum="3">
+
+
+        <Button
+            android:id="@+id/down_button"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@drawable/blue_ripple" />
+
+        <Button
+            android:id="@+id/dress_button"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@drawable/blue_ripple" />
+
+        <Button
+            android:id="@+id/up_button"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@drawable/blue_ripple" />
+
+
+    </LinearLayout>
 
 
     <TextView
@@ -361,7 +405,6 @@
             android:text="No Thanks" />
 
     </RelativeLayout>
-
 
 
 </RelativeLayout>

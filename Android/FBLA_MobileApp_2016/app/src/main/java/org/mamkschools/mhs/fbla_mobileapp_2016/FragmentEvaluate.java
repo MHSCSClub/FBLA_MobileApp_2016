@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,11 +102,11 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
 
 
 
-        FloatingActionButton yes = (FloatingActionButton) rootView.findViewById(R.id.yesButton);
-        //yes.setOnClickListener(this);
+        Button up_button = (Button) rootView.findViewById(R.id.up_button);
+        up_button.setOnClickListener(this);
 
-        FloatingActionButton no = (FloatingActionButton) rootView.findViewById(R.id.noButton);
-        //no.setOnClickListener(this);
+        Button down_button = (Button) rootView.findViewById(R.id.down_button);
+        down_button.setOnClickListener(this);
 
         SeekBar style = (SeekBar) rootView.findViewById(R.id.styleRating);
         style.setProgress(style.getMax() / 2);
@@ -208,7 +209,6 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         Map<String, String> postParams = new HashMap<>();
         int pid = getPictureId(picNumber);
         postParams.put("pid", "" + pid);
-        postParams.put("like", "" + currentRating);
 
         if(pid == -1){
             Toast.makeText(getContext(), "No pictures left to rate", Toast.LENGTH_SHORT).show();
@@ -216,11 +216,19 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         }
 
         switch(v.getId()){
-            case R.id.yesButton:
+
+            case R.id.up_button:
                 currentRating = 1;
+                Util.log("up");
+                postParams.put("like", "1");
+                new SubmitRating().execute(postParams);
                 break;
-            case R.id.noButton:
+
+            case R.id.down_button:
                 currentRating = 0;
+                Util.log("down");
+                postParams.put("like", "0");
+                new SubmitRating().execute(postParams);
                 break;
 
             case R.id.cancel_button:
@@ -239,18 +247,6 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
                 new PictureDialog(getContext(),
                         Constants.imageBitmap, titleLabel.getText().toString()).show();
                 break;
-        }
-
-        if(ratingLayout.getVisibility() == View.INVISIBLE) {
-            ratingLayout.setVisibility(View.VISIBLE);
-            additionalLabel.setVisibility(View.INVISIBLE);
-            buttonLayout.setVisibility(View.INVISIBLE);
-            instructions.setVisibility(View.INVISIBLE);
-        } else {
-            ratingLayout.setVisibility(View.INVISIBLE);
-            additionalLabel.setVisibility(View.VISIBLE);
-            buttonLayout.setVisibility(View.VISIBLE);
-            instructions.setVisibility(View.VISIBLE);
         }
     }
 

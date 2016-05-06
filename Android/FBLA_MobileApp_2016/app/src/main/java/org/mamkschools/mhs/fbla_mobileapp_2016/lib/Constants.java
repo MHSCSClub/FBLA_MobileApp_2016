@@ -23,7 +23,7 @@ public final class Constants {
     public static String AUTHCODE = null;
 
     //Output debug info
-    public static final boolean DEBUG_MODE = false;
+    public static final boolean DEBUG_MODE = true;
 
     //Variable to see if prefs restored yet
     public static boolean PREFS_RESTORED = false;

@@ -26,6 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Commands;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Picture;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureEntry;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureHelper;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
@@ -34,6 +35,8 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Util;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +48,6 @@ import im.delight.android.location.SimpleLocation;
  * Created by jackphillips on 2/16/16.
  */
 public class FragmentEvaluate extends Fragment implements View.OnClickListener{
-    private SQLiteDatabase db;
     private int picNumber;
     private File location;
     private SimpleLocation simpleLocation;
@@ -65,14 +67,13 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
 
     private int currentRating;
 
-    private Cursor c;
+    private ArrayList<Picture> pics = new ArrayList<Picture>();
 
     private GetPicture picDl;
 
 
-    public static FragmentEvaluate newInstance(SQLiteDatabase db, int picNumber, File location, SimpleLocation simpleLocation) {
+    public static FragmentEvaluate newInstance(int picNumber, File location, SimpleLocation simpleLocation) {
         FragmentEvaluate fragment = new FragmentEvaluate();
-        fragment.db = db;
         fragment.picNumber = picNumber;
         fragment.location = location;
         fragment.simpleLocation = simpleLocation;
@@ -133,16 +134,14 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
 
 
 
-        c = getInfo();
+
         runFetch(picNumber);
 
-        if(c.getCount() > 0 && picNumber < c.getCount()) {
+        if(pics.size() > 0 && picNumber < pics.size()) {
             Util.log("From: " + picNumber);
-            c.moveToPosition(picNumber);
-            int itemId = c.getInt(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_PICTURE_ID));
-            String title = c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_TITLE));
-            String user = c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_USERNAME));
-            int views = c.getInt(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_VIEWS));
+            int itemId = pics.get(picNumber).entryid;
+            String title = pics.get(picNumber).title;
+            String user = pics.get(picNumber).username;
             titleLabel.setText(title.length() > 20 ? title.substring(0, 20) : title);
             descriptionLabel.setText(user);
         }
@@ -153,9 +152,9 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
     }
 
     public int getPictureId(int picture){
-        if(c.getCount() > 0 && picture < c.getCount()) {
-            c.moveToPosition(picture);
-            return c.getInt(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_PICTURE_ID));
+        if(pics.size() > 0 && picture < pics.size()) {
+
+            return pics.get(picture).entryid;
         }
         return -1;
 
@@ -163,12 +162,11 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
 
     public String[] getData(int picture){
         String[] data = new String[3];
-        if(c.getCount() > 0 && picture < c.getCount()) {
-            c.moveToPosition(picture);
-            data[0] = c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_TITLE));
-            data[1] = c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_USERNAME));
-            double hours = Double.parseDouble(c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_HOURS)));
-            double miles = Double.parseDouble(c.getString(c.getColumnIndexOrThrow(PictureEntry.COLUMN_NAME_DIST)));
+        if(pics.size() > 0 && picture < pics.size()) {
+            data[0] = pics.get(picture).title;
+            data[1] = pics.get(picture).username;
+            double hours = pics.get(picture).hours;
+            double miles = pics.get(picture).dist;
             data[2] = hours + (hours == 1 ? " hour ago, " : " hours ago, ");
             data[2] += miles + (miles == 1 ? " mile away" : " miles away");
             return data;
@@ -266,37 +264,6 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         return params;
     }
 
-    public Cursor getInfo(){
-        String[] projection = {
-                PictureEntry._ID,
-                PictureEntry.COLUMN_NAME_PICTURE_ID,
-                PictureEntry.COLUMN_NAME_GEOLONG,
-                PictureEntry.COLUMN_NAME_GEOLAT,
-                PictureEntry.COLUMN_NAME_USERNAME,
-                PictureEntry.COLUMN_NAME_VIEWS,
-                PictureEntry.COLUMN_NAME_TITLE,
-                PictureEntry.COLUMN_NAME_DIST,
-                PictureEntry.COLUMN_NAME_HOURS
-        };
-
-        String sortOrder =
-                PictureEntry.COLUMN_NAME_PICTURE_ID + " ASC";
-        if(db != null) {
-            return db.query(
-                    PictureEntry.TABLE_NAME,                  // The table to query
-                    projection,                               // The columns to return
-                    null,                                     // The columns for the WHERE clause
-                    null,                                     // The values for the WHERE clause
-                    null,                                     // don't group the rows
-                    null,                                     // don't filter by row groups
-                    sortOrder                                 // The sort order
-            );
-        } else {
-            return null;
-        }
-    }
-
-
     private class GetPicture extends AsyncTask<Integer, Void, Boolean> {
         SecureAPI picture = SecureAPI.getInstance(getContext());
 
@@ -346,6 +313,9 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         protected void onPostExecute(Boolean v) {
             if(v) {
                 Util.log("Rating worked");
+                picNumber += 1;
+                runFetch(picNumber);
+
             } else {
                 Toast.makeText(rootView.getContext(), "Rating failed", Toast.LENGTH_SHORT).show();
             }
@@ -355,6 +325,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
 
         private ArrayList<JSONObject> ret = new ArrayList<>();
         SecureAPI picture = SecureAPI.getInstance(getContext());
+        ArrayList<Picture> pictures = new ArrayList<Picture>();
 
 
         @Override
@@ -372,8 +343,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
             Constants.LATITUDE = simpleLocation.getLatitude();
             Constants.LONGITUDE = simpleLocation.getLongitude();
 
-            db.execSQL("Delete from " + PictureEntry.TABLE_NAME);
-            ContentValues values = new ContentValues();
+
 
             Util.log(Constants.LATITUDE + " " + Constants.LONGITUDE);
 
@@ -386,14 +356,13 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
                 for(int i = 0; i < array.length(); i++ ){
 
                     int views = array.getJSONObject(i).getInt("views");
-                    values.put(PictureEntry.COLUMN_NAME_PICTURE_ID, array.getJSONObject(i).getInt("pid"));
-                    values.put(PictureEntry.COLUMN_NAME_GEOLAT, array.getJSONObject(i).getDouble("geolat"));
-                    values.put(PictureEntry.COLUMN_NAME_GEOLONG, array.getJSONObject(i).getDouble("geolong"));
-                    values.put(PictureEntry.COLUMN_NAME_DIST, Math.round(array.getJSONObject(i).getDouble("dist")));
-                    values.put(PictureEntry.COLUMN_NAME_TITLE, array.getJSONObject(i).getString("title"));
-                    values.put(PictureEntry.COLUMN_NAME_USERNAME, array.getJSONObject(i).getString("username"));
-                    values.put(PictureEntry.COLUMN_NAME_VIEWS, views);
-                    values.put(PictureEntry.COLUMN_NAME_CREATED, array.getJSONObject(i).getString("created"));
+                    int pid = array.getJSONObject(i).getInt("pid");
+                    double geolat =  array.getJSONObject(i).getDouble("geolat");
+                    double geolong = array.getJSONObject(i).getDouble("geolong");
+                    double distance =  Math.round(array.getJSONObject(i).getDouble("dist"));
+                    String title = array.getJSONObject(i).getString("title");
+                    String username = array.getJSONObject(i).getString("username");
+                    String created = array.getJSONObject(i).getString("created");
 
                     //Calculates priority
                     int p;
@@ -412,16 +381,9 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
                     } else {
                         p += 30;
                     }
-                    values.put(PictureEntry.COLUMN_NAME_HOURS, elapsedHours);
-                    values.put(PictureEntry.COLUMN_NAME_PRIORITY, p);
-
-                    //adds only pictures we want to db
-                    if(views < 15 && elapsedHours < 120) {
-                        db.insert(
-                                PictureEntry.TABLE_NAME,
-                                "null",
-                                values);
-                    }
+                    double hours =  elapsedHours;
+                    double priority = p;
+                    pictures.add(new Picture(pid, geolat, geolong, created, title, username, priority, hours));
 
                 }
             }catch (Exception e){
@@ -435,8 +397,14 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         @Override
         protected void onPostExecute(Void v) {
             Util.log("Finished getting Picture Information");
-            c = getInfo();
-            runOnce = c.getCount() > 0;
+            Collections.sort(pictures, new Comparator<Picture>() {
+                public int compare(Picture p1, Picture p2) {
+                    return (int) (p2.priority - p1.priority);
+                }
+            });
+
+            pics = pictures;
+            runOnce = pics.size() > 0;
             picNumber = 0;
             runFetch(picNumber);
         }

@@ -92,14 +92,12 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
         tabLayout.setTabsFromPagerAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        PictureHelper mDbHelper = new PictureHelper(getApplicationContext());
 
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         int picture = 0;
 
         File picLocation = getFilesDir();
-        evaluatePictures = FragmentEvaluate.newInstance(db, picture, picLocation, simplocation);
+        evaluatePictures = FragmentEvaluate.newInstance(picture, picLocation, simplocation);
         myPictures = FragmentMe.newInstance(picLocation);
 
         ImageButton more = (ImageButton) findViewById(R.id.more_stuff);

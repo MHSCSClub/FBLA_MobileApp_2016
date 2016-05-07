@@ -208,7 +208,7 @@
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:background="@drawable/blue_ripple" />
+                android:background="#00000000" />
 
             <Button
                 android:id="@+id/dress_button"
@@ -216,7 +216,7 @@
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:background="@drawable/blue_ripple" />
+                android:background="#00000000" />
 
             <Button
                 android:id="@+id/up_button"
@@ -224,7 +224,7 @@
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:background="@drawable/blue_ripple" />
+                android:background="#00000000" />
 
 
         </LinearLayout>
@@ -291,7 +291,7 @@
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:background="@drawable/blue_ripple" />
+                android:background="#00000000" />
 
             <Button
                 android:id="@+id/comment_button"
@@ -299,7 +299,7 @@
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:background="@drawable/blue_ripple" />
+                android:background="#00000000" />
 
             <Button
                 android:id="@+id/cancel_button"
@@ -307,7 +307,7 @@
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:background="@drawable/blue_ripple" />
+                android:background="#00000000" />
 
         </LinearLayout>
 
@@ -354,7 +354,7 @@
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:background="@drawable/blue_ripple" />
+                android:background="#00000000" />
 
         </LinearLayout>
 

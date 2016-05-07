@@ -7,44 +7,65 @@
     tools:context=".DetailMeActivity">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/myImage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:adjustViewBounds="true"
-                android:minHeight="20dp"
-                android:minWidth="20dp" />
-            <TextView
-                android:id="@+id/title_label"
+                android:adjustViewBounds="false"
+                android:minHeight="100dp"
+                android:layout_above="@+id/scrollView2"
+                android:layout_alignParentTop="true" />
+
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/myImage"
-                android:gravity="center"
-                android:paddingBottom="10dp"
-                android:text="Titleasdfffffffffffffffffsadfasdfsdfdasfasdfasdfasdfasdfsadfasdfasfasddfasf"
-                android:textColor="#000000"
-                android:textIsSelectable="true"
-                android:textSize="35sp" />
+                android:id="@+id/scrollView2"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/title_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingBottom="10dp"
+                        android:text="title"
+                        android:textColor="#000000"
+                        android:textIsSelectable="true"
+                        android:textSize="35sp"
+                        android:layout_above="@+id/commentList"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/commentList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true">
+
+                    </android.support.v7.widget.RecyclerView>
+                </LinearLayout>
+            </ScrollView>
 
         </RelativeLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/commentList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-        </android.support.v7.widget.RecyclerView>
-    </LinearLayout>
+
+
 
 
 </android.support.design.widget.CoordinatorLayout>

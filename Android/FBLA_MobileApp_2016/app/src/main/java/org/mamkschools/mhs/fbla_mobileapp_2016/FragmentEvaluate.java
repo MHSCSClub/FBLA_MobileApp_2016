@@ -295,9 +295,11 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         @Override
         protected void onPostExecute(Boolean v) {
             if(v){
+                image.setImageBitmap(null);
                 image.setImageBitmap(Constants.imageBitmap);
                 //ViewGroup.MarginLayoutParams imageViewParams = new ViewGroup.MarginLayoutParams(ViewGroup.MarginLayoutParams.MATCH_PARENT, ViewGroup.MarginLayoutParams.WRAP_CONTENT);
-                //image.setLayoutParams(imageViewParams);
+
+                //image.setScaleType(ImageView.ScaleType.CENTER);
             }else{
                 Util.log("Life will go on");
             }

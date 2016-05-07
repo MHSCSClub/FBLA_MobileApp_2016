@@ -381,9 +381,8 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
                     } else {
                         p += 30;
                     }
-                    double hours =  elapsedHours;
                     double priority = p;
-                    pictures.add(new Picture(pid, geolat, geolong, created, title, username, priority, hours));
+                    pictures.add(new Picture(pid, geolat, geolong, created, title, username, priority, (double) elapsedHours));
 
                 }
             }catch (Exception e){

@@ -171,19 +171,6 @@
             android:adjustViewBounds="true"
             android:background="#00000000"
             android:src="@drawable/ic_thumb_up_white_48dp" />
-
-        <!--
-
-        <ImageView
-            android:id="@+id/help_img"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="24dp"
-            android:layout_marginTop="18dp"
-            android:adjustViewBounds="false"
-            android:src="@drawable/ic_help_white_48dp" />
-
-            -->
     </LinearLayout>
 
 

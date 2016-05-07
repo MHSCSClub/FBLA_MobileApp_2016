@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,6 +66,9 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
 
     private GetPicture picDl;
 
+    private RelativeLayout [] bottomBars = new RelativeLayout[3];
+
+
 
     public static FragmentEvaluate newInstance(int picNumber, File location, SimpleLocation simpleLocation) {
         FragmentEvaluate fragment = new FragmentEvaluate();
@@ -86,6 +90,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
 
 
         image = (ImageView) rootView.findViewById(R.id.imageView);
+        image.setOnClickListener(this);
         descriptionLabel = (TextView) rootView.findViewById(R.id.description_label);
 
         Button up_button = (Button) rootView.findViewById(R.id.up_button);
@@ -93,6 +98,23 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
 
         Button down_button = (Button) rootView.findViewById(R.id.down_button);
         down_button.setOnClickListener(this);
+
+        Button back_button = (Button) rootView.findViewById(R.id.back_button);
+        back_button.setOnClickListener(this);
+
+        Button comment_button = (Button) rootView.findViewById(R.id.comment_button);
+        comment_button.setOnClickListener(this);
+
+        Button cancel_button = (Button) rootView.findViewById(R.id.cancel_button);
+        cancel_button.setOnClickListener(this);
+
+        Button refresh_button = (Button) rootView.findViewById(R.id.refresh_button);
+        refresh_button.setOnClickListener(this);
+
+        bottomBars[0] = (RelativeLayout) rootView.findViewById(R.id.primary_layout);
+        bottomBars[1] = (RelativeLayout) rootView.findViewById(R.id.comment_layout);
+        bottomBars[2] = (RelativeLayout) rootView.findViewById(R.id.refresh_layout);
+
 
         runFetch(picNumber);
 
@@ -128,9 +150,11 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
             double miles = pics.get(picture).dist;
             data[2] = hours + (hours == 1 ? " hour ago, " : " hours ago, ");
             data[2] += miles + (miles == 1 ? " mile away" : " miles away");
+            switchBottomBar(0);
             return data;
         }
         data[0] = "No More Pictures";
+        switchBottomBar(2);
         data[1] = "";
         data[2] = "";
         return data;
@@ -157,6 +181,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
             if(runOnce) {
                 image.setImageResource(R.drawable.finish);
                 new GetPictureInfo().execute((Void) null);
+                switchBottomBar(2);
                 runOnce = false;
             }
         }
@@ -177,16 +202,35 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
             case R.id.up_button:
                 currentRating = 1;
                 Util.log("up");
-                postParams.put("like", "1");
-                new SubmitRating().execute(postParams);
+                switchBottomBar(1);
+                //new SubmitRating().execute(postParams);
                 break;
 
             case R.id.down_button:
                 currentRating = 0;
                 Util.log("down");
-                postParams.put("like", "0");
+                switchBottomBar(1);
+                //new SubmitRating().execute(postParams);
+                break;
+            case R.id.back_button:
+                switchBottomBar(0);
+                break;
+            case R.id.comment_button:
+                switchBottomBar(0);
+                Toast.makeText(getContext(), "Add Comment", Toast.LENGTH_SHORT);
+                postParams.put("like", "" + currentRating);
                 new SubmitRating().execute(postParams);
                 break;
+            case R.id.cancel_button:
+                switchBottomBar(0);
+                postParams.put("like", "" + currentRating);
+                new SubmitRating().execute(postParams);
+                break;
+            case R.id.refresh_button:
+                new GetPictureInfo().execute((Void) null);
+                break;
+
+
 
             /*case R.id.cancel_button:
                 hideKeyboard();
@@ -206,7 +250,15 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
                 break;
         }
     }
-
+    private void switchBottomBar(int bar){
+        for(int i = 0; i < bottomBars.length; i++){
+            if(i == bar){
+                bottomBars[i].setVisibility(bottomBars[i].VISIBLE);
+            }else{
+                bottomBars[i].setVisibility(bottomBars[i].GONE);
+            }
+        }
+    }
     /*private Map<String, String> getRateParams(Map<String, String> params) {
         SeekBar style = (SeekBar) rootView.findViewById(R.id.styleRating);
         int srating = 1 + (int) Math.round((double) style.getProgress() / (double) style.getMax() * 9.0);
@@ -244,6 +296,8 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         protected void onPostExecute(Boolean v) {
             if(v){
                 image.setImageBitmap(Constants.imageBitmap);
+                //ViewGroup.MarginLayoutParams imageViewParams = new ViewGroup.MarginLayoutParams(ViewGroup.MarginLayoutParams.MATCH_PARENT, ViewGroup.MarginLayoutParams.WRAP_CONTENT);
+                //image.setLayoutParams(imageViewParams);
             }else{
                 Util.log("Life will go on");
             }

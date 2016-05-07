@@ -240,13 +240,10 @@
 
     <!-- Comment Layout -->
     <RelativeLayout
-        android:id="@+id/star_layout"
+        android:id="@+id/comment_layout"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
         android:orientation="horizontal"
         android:visibility="gone">
 
@@ -329,7 +326,6 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignTop="@+id/additional_label"
         android:visibility="gone">
 
         <LinearLayout

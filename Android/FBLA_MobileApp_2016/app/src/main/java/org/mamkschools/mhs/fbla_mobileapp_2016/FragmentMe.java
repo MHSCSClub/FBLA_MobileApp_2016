@@ -398,13 +398,17 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
                 {
                     byte[] imageBytes = getBytes(getActivity().getContentResolver().openInputStream(outputFileUri));
                     b = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-            }
+                }
 
 
                 int maxDim = Math.max(b.getWidth(), b.getHeight());
-                b = Bitmap.createScaledBitmap(b,Util.map(b.getWidth(),0,maxDim, 0, 4096),
-                        Util.map(b.getHeight(), 0, maxDim, 0, 4096), false);
-
+                try {
+                    b = Bitmap.createScaledBitmap(b, Util.map(b.getWidth(), 0, maxDim, 0, 4096),
+                            Util.map(b.getHeight(), 0, maxDim, 0, 4096), false);
+                } catch (OutOfMemoryError outOfMemoryError){
+                    Util.log("Out of memory with resize, skipping resize!");
+                    outOfMemoryError.printStackTrace();
+                }
                 showImageDialog(b);
             } catch (IOException | NullPointerException e) {
                 if(Constants.DEBUG_MODE) {

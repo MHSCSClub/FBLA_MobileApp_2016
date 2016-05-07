@@ -1,28 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/dialogLayout"
-    android:layout_marginTop="0dp"
-    android:layout_marginBottom="0dp">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/dialogLayout">
 
-    <ImageView
+    <ScrollView
+        android:id="@+id/scroll_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/previewImage"
-        android:layout_gravity="center_horizontal"
-        android:longClickable="false"
-        android:layout_weight="01"
-        android:src="@drawable/finish"
-        android:cropToPadding="false"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp"
-        android:adjustViewBounds="true" />
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp">
 
-    <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/previewImage"
+            android:longClickable="false"
+            android:src="@drawable/finish"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true" />
+
+    </ScrollView>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/image_title"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
+        android:layout_below="@id/scroll_layout"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
         android:layout_marginBottom="0dp">
 
         <AutoCompleteTextView
@@ -36,4 +46,5 @@
             android:layout_weight="1"/>
 
     </android.support.design.widget.TextInputLayout>
-</LinearLayout>
+
+</RelativeLayout>

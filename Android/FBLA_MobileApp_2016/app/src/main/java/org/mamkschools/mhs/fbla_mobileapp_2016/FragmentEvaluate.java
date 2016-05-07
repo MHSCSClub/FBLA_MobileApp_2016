@@ -58,12 +58,6 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
     private ImageView image;
     private TextView descriptionLabel;
     private TextView titleLabel;
-    private TextView additionalLabel;
-
-
-    private View ratingLayout;
-    private View buttonLayout;
-    private View instructions;
 
     private int currentRating;
 
@@ -91,49 +85,14 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
 
 
 
-        ratingLayout = rootView.findViewById(R.id.ratingLayout);
-        buttonLayout = rootView.findViewById(R.id.buttonLayout);
-        instructions = rootView.findViewById(R.id.instructions);
-        additionalLabel = (TextView) rootView.findViewById(R.id.additional_label);
-
-
         image = (ImageView) rootView.findViewById(R.id.imageView);
-        //image.setOnClickListener(this);
         descriptionLabel = (TextView) rootView.findViewById(R.id.description_label);
-
-
 
         Button up_button = (Button) rootView.findViewById(R.id.up_button);
         up_button.setOnClickListener(this);
 
         Button down_button = (Button) rootView.findViewById(R.id.down_button);
         down_button.setOnClickListener(this);
-
-        SeekBar style = (SeekBar) rootView.findViewById(R.id.styleRating);
-        style.setProgress(style.getMax() / 2);
-
-        final Button submit = (Button) rootView.findViewById(R.id.submit_button);
-        //submit.setOnClickListener(this);
-
-        // your text box
-        EditText edit_txt = (EditText) rootView.findViewById(R.id.commentText);
-
-        edit_txt.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    submit.performClick();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        Button cancel = (Button) rootView.findViewById(R.id.cancel_button);
-        //cancel.setOnClickListener(this);
-
-
-
 
         runFetch(picNumber);
 
@@ -190,7 +149,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         String[] data = getData(itemId);
         titleLabel.setText(data[0].length() > 20 ? data[0].substring(0, 20) : data[0]);
         descriptionLabel.setText(data[1]);
-        additionalLabel.setText(data[2]);
+        //additionalLabel.setText(data[2]);
         if(picID > 0) {
             picDl = new GetPicture();
             picDl.execute(picID);
@@ -229,7 +188,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
                 new SubmitRating().execute(postParams);
                 break;
 
-            case R.id.cancel_button:
+            /*case R.id.cancel_button:
                 hideKeyboard();
                 new SubmitRating().execute(postParams);
                 this.picNumber += 1;
@@ -240,7 +199,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
                 new SubmitRating().execute(getRateParams(postParams));
                 this.picNumber += 1;
                 runFetch(picNumber);
-                break;
+                break; */
             case R.id.imageView:
                 new PictureDialog(getContext(),
                         Constants.imageBitmap, titleLabel.getText().toString()).show();
@@ -248,7 +207,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         }
     }
 
-    private Map<String, String> getRateParams(Map<String, String> params) {
+    /*private Map<String, String> getRateParams(Map<String, String> params) {
         SeekBar style = (SeekBar) rootView.findViewById(R.id.styleRating);
         int srating = 1 + (int) Math.round((double) style.getProgress() / (double) style.getMax() * 9.0);
         params.put("style", "" + srating);
@@ -262,7 +221,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         if(comment.length() > 0)
             params.put("comment", comment);
         return params;
-    }
+    } */
 
     private class GetPicture extends AsyncTask<Integer, Void, Boolean> {
         SecureAPI picture = SecureAPI.getInstance(getContext());

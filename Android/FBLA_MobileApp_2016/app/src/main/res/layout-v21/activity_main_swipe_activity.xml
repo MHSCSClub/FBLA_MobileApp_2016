@@ -30,7 +30,7 @@
             android:id="@+id/more_stuff"
             android:gravity="end"
             android:layout_weight="1"
-            android:background="#00000000"
+            android:background="@drawable/blue_ripple"
             android:hapticFeedbackEnabled="true"
             android:adjustViewBounds="false"
             android:clickable="true"

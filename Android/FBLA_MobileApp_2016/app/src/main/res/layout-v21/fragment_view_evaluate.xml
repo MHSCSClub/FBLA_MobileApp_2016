@@ -152,7 +152,7 @@
             android:layout_marginTop="12dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:background="#00000000"
+            android:background="@drawable/blue_ripple"
             android:src="@drawable/ic_thumb_down_white_48dp" />
 
         <ImageView
@@ -172,7 +172,7 @@
             android:layout_marginTop="12dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:background="#00000000"
+            android:background="@drawable/blue_ripple"
             android:src="@drawable/ic_thumb_up_white_48dp" />
 
         <!--
@@ -208,7 +208,7 @@
             android:layout_height="60dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:background="#00000000" />
+            android:background="@drawable/blue_ripple" />
 
         <Button
             android:id="@+id/dress_button"
@@ -216,7 +216,7 @@
             android:layout_height="60dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:background="#00000000" />
+            android:background="@drawable/blue_ripple" />
 
         <Button
             android:id="@+id/up_button"
@@ -224,7 +224,7 @@
             android:layout_height="60dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:background="#00000000" />
+            android:background="@drawable/blue_ripple" />
 
 
     </LinearLayout>

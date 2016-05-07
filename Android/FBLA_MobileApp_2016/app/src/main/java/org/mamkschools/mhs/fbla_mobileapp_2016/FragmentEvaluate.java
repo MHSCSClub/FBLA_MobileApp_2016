@@ -379,7 +379,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
 
                     //Calculates priority
                     int p;
-                    if(views <10)
+                    if(views <= 10)
                         p = (int) ((30 * Math.log(11 - views))/(Math.log(11)) + 40);
                     else
                         p = 30/(views - 10);

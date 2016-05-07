@@ -14,7 +14,7 @@
         android:layout_gravity="center_horizontal"
         android:longClickable="false"
         android:layout_weight="01"
-        android:src="@color/colorAccent"
+        android:src="@drawable/finish"
         android:cropToPadding="false"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"

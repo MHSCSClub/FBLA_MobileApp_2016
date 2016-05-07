@@ -1,58 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/detail_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context=".DetailMeActivity">
 
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/myImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:adjustViewBounds="true"
+                android:minHeight="20dp"
+                android:minWidth="20dp" />
             <TextView
-                android:id="@+id/myImageTitle"
+                android:id="@+id/title_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_below="@+id/myImage"
                 android:gravity="center"
-                android:text="Title"
-                android:textSize="40dp"
-                android:layout_gravity="center_horizontal"
-                android:singleLine="true"
-                android:maxLines="2" />
+                android:paddingBottom="10dp"
+                android:text="Titleasdfffffffffffffffffsadfasdfsdfdasfasdfasdfasdfasdfsadfasdfasfasddfasf"
+                android:textColor="#000000"
+                android:textIsSelectable="true"
+                android:textSize="35sp" />
 
-            <FrameLayout
-                android:id="@+id/imageFrame"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="5dp">
+        </RelativeLayout>
 
-                <ImageView
-                    android:id="@+id/myImage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
-                    android:adjustViewBounds="true"
-                    android:maxHeight="200dp"
-                    android:minHeight="20dp"
-                    android:nestedScrollingEnabled="false"
-                    android:minWidth="20dp" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/commentList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            </FrameLayout>
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/commentList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </android.support.v7.widget.RecyclerView>
-        </LinearLayout>
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

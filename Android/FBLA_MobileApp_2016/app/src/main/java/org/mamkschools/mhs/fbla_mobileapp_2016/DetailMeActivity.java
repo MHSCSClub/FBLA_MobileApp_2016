@@ -41,8 +41,6 @@ public class DetailMeActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_me);
 
-
-
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -53,8 +51,6 @@ public class DetailMeActivity extends AppCompatActivity  {
             int pid = extras.getInt("pid");
             String imgTitle = extras.getString("title");
             setTitle(imgTitle);
-            titleText = (TextView) findViewById(R.id.myImageTitle);
-            titleText.setText(imgTitle);
             picDownload = new GetPicture();
             picDownload.execute(pid);
             comDownload = new GetComments();
@@ -153,14 +149,14 @@ public class DetailMeActivity extends AppCompatActivity  {
             if(v){
                 Constants.imageBitmap = PictureHelper.getPictureBitmap(picFile);
                 myImage.setImageBitmap(Constants.imageBitmap);
-                myImage.setOnClickListener(new View.OnClickListener(){
+                /*myImage.setOnClickListener(new View.OnClickListener(){
 
                     @Override
                     public void onClick(View v) {
                         new PictureDialog(DetailMeActivity.this,
                                 Constants.imageBitmap, titleText.getText().toString()).show();
                     }
-                });
+                }); */
             }else{
                 Util.log("Life will go on");
             }

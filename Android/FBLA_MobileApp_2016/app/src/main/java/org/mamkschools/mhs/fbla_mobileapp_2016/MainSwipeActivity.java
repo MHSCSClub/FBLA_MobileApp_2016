@@ -89,7 +89,7 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
 
         //Tabs
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.setTabsFromPagerAdapter(pagerAdapter);
+        assert tabLayout != null;
         tabLayout.setupWithViewPager(viewPager);
 
 

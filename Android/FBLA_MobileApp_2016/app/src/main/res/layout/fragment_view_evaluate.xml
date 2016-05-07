@@ -201,13 +201,6 @@
             android:paddingBottom="20dp"
             android:weightSum="3">
 
-        <Button
-            android:id="@+id/dress_button"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:background="@drawable/blue_ripple" />
 
             <Button
                 android:id="@+id/down_button"

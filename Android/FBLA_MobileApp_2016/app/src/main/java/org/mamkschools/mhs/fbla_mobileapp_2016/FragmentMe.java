@@ -168,8 +168,8 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
     private void showImageDialog(final Bitmap previewBitmap){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setPositiveButton(R.string.upload_dialog, null);
-        builder.setNegativeButton(R.string.cancel, null);
-        builder.setNeutralButton(R.string.retake, new DialogInterface.OnClickListener() {
+        builder.setNeutralButton(R.string.cancel, null);
+        builder.setNegativeButton(R.string.retake, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -180,7 +180,7 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View dialogLayout = inflater.inflate(R.layout.dialog_upload, null);
         dialog.setView(dialogLayout);
-        dialog.setTitle("Upload Image stuffs");
+        dialog.setTitle("Upload Image");
 
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override

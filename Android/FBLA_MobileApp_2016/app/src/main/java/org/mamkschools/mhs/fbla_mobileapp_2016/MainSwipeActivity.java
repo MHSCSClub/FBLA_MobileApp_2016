@@ -116,7 +116,7 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
 
 
         if(!isNetworkAvailable()){
-            Toast.makeText(getApplicationContext(), "Network is not availible. Please connect to the internet", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Network is not available. Please connect to the internet", Toast.LENGTH_LONG).show();
             finish();
         }
     }

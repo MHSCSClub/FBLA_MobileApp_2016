@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -168,6 +169,17 @@ public class DetailMeActivity extends AppCompatActivity  {
             }else{
                 Util.log("Life will go on");
             }
+        }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()){
+            case R.id.action_show_picture:
+                myImage.setVisibility(myImage.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                findViewById(R.id.detail_content).requestLayout();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

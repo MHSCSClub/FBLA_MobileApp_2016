@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".DetailMeActivity">
 
-    <item android:id="@+id/action_picture"  android:title="Show Picture"
+    <item android:id="@+id/action_show_picture"  android:title="Show Picture"
         android:icon="@drawable/ic_photo_white_36dp" app:showAsAction="always" />
 
 </menu>

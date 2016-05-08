@@ -72,8 +72,6 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
                             Manifest.permission.ACCESS_FINE_LOCATION}, LOC_PERM_REQUEST_CODE);
         }
 
-
-
         if (!Constants.PREFS_RESTORED) {
             Constants.restorePrefs(getApplicationContext());
         }
@@ -86,13 +84,10 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
         assert viewPager != null;
         viewPager.setAdapter(pagerAdapter);
 
-
         //Tabs
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         assert tabLayout != null;
         tabLayout.setupWithViewPager(viewPager);
-
-
 
         int picture = 0;
 

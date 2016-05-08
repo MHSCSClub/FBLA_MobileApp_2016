@@ -69,7 +69,7 @@ public class CommentItemAdapter extends RecyclerView.Adapter<CommentItemAdapter.
         @Override
         public void onClick(View v) {
             small = !small;
-            commentText.setMaxLines(small ? 3 : 100);
+            commentText.setMaxLines(small ? 100 : 2);
         }
     }
 }

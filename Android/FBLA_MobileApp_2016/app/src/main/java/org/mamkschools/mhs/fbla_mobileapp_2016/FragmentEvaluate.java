@@ -1,24 +1,33 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Point;
+import android.media.Rating;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.design.widget.FloatingActionButton;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -203,47 +212,28 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
                 currentRating = 1;
                 Util.log("up");
                 switchBottomBar(1);
-                //new SubmitRating().execute(postParams);
                 break;
-
             case R.id.down_button:
                 currentRating = 0;
                 Util.log("down");
                 switchBottomBar(1);
-                //new SubmitRating().execute(postParams);
                 break;
             case R.id.back_button:
                 switchBottomBar(0);
                 break;
             case R.id.comment_button:
                 switchBottomBar(0);
-                Toast.makeText(getContext(), "Add Comment", Toast.LENGTH_SHORT);
-                postParams.put("like", "" + currentRating);
-                new SubmitRating().execute(postParams);
+                postParams.put("like", "" + Integer.toString(currentRating));
+                getComment(postParams);
                 break;
             case R.id.cancel_button:
                 switchBottomBar(0);
-                postParams.put("like", "" + currentRating);
+                postParams.put("like", Integer.toString(currentRating));
                 new SubmitRating().execute(postParams);
                 break;
             case R.id.refresh_button:
                 new GetPictureInfo().execute((Void) null);
                 break;
-
-
-
-            /*case R.id.cancel_button:
-                hideKeyboard();
-                new SubmitRating().execute(postParams);
-                this.picNumber += 1;
-                runFetch(picNumber);
-                break;
-            case R.id.submit_button:
-                hideKeyboard();
-                new SubmitRating().execute(getRateParams(postParams));
-                this.picNumber += 1;
-                runFetch(picNumber);
-                break; */
             case R.id.imageView:
                 new PictureDialog(getContext(),
                         Constants.imageBitmap, titleLabel.getText().toString()).show();
@@ -252,20 +242,52 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
     }
     private void switchBottomBar(int bar){
         for(int i = 0; i < bottomBars.length; i++){
-            if(i == bar){
-                bottomBars[i].setVisibility(bottomBars[i].VISIBLE);
-            }else{
-                bottomBars[i].setVisibility(bottomBars[i].GONE);
-            }
+                bottomBars[i].setVisibility(i == bar ? View.VISIBLE : View.GONE);
         }
     }
-    /*private Map<String, String> getRateParams(Map<String, String> params) {
-        SeekBar style = (SeekBar) rootView.findViewById(R.id.styleRating);
-        int srating = 1 + (int) Math.round((double) style.getProgress() / (double) style.getMax() * 9.0);
-        params.put("style", "" + srating);
-        style.setProgress(style.getMax() / 2);
 
-        EditText commentView = (EditText) rootView.findViewById(R.id.commentText);
+    private void getComment(final Map<String, String> postParams){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which){
+                new SubmitRating().execute(postParams);
+            }
+        });
+        builder.setPositiveButton(R.string.comment, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                EditText editCommentText = (EditText)
+                        ((AlertDialog) dialog).findViewById(R.id.user_comment);
+                RatingBar userRating = (RatingBar)
+                        ((AlertDialog) dialog).findViewById(R.id.user_rate);
+                postParams.put("style", Integer.toString(
+                        Math.round(userRating.getRating())));
+                String comment = editCommentText.getText().toString().trim();
+                if(!comment.equals("")){
+                    postParams.put("comment", comment);
+                }
+                new SubmitRating().execute(postParams);
+                dialog.dismiss();
+            }
+        });
+        final AlertDialog dialog = builder.create();
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final View dialogLayout = inflater.inflate(R.layout.dialog_rate, null);
+        dialog.setView(dialogLayout);
+        dialog.setTitle("Upload Image");
+
+
+        dialog.show();
+    }
+
+    private Map<String, String> getRateParams(Map<String, String> params, Dialog dialogView) {
+        RatingBar style = (RatingBar) dialogView.findViewById(R.id.user_rate);
+        int styleRating = Math.round(style.getRating());
+        params.put("style", "" + styleRating);
+        style.setRating(3);
+
+        EditText commentView = (EditText) rootView.findViewById(R.id.user_comment);
 
         String comment = commentView.getText().toString();
         Util.log(comment);
@@ -273,7 +295,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         if(comment.length() > 0)
             params.put("comment", comment);
         return params;
-    } */
+    }
 
     private class GetPicture extends AsyncTask<Integer, Void, Boolean> {
         SecureAPI picture = SecureAPI.getInstance(getContext());

@@ -6,11 +6,13 @@
     <RatingBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/ratingBar"
+        android:id="@+id/user_rate"
         android:layout_gravity="center_horizontal"
         android:numStars="5"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:stepSize="1"
+        android:rating="3" />
     <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/view">
@@ -21,7 +23,7 @@
         android:layout_height="wrap_content" android:hint="Comment on the picture"
         android:inputType="text" android:maxLines="4" android:maxLength="800"
         android:singleLine="true"
-        android:layout_below="@+id/ratingBar"
+        android:layout_below="@+id/user_rate"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 </RelativeLayout>

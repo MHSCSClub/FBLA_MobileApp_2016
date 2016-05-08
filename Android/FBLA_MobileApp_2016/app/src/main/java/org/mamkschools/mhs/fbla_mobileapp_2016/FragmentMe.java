@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -29,14 +30,17 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -178,15 +182,41 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
         });
         final AlertDialog dialog = builder.create();
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View dialogLayout = inflater.inflate(R.layout.dialog_upload, null);
+        final View dialogLayout = inflater.inflate(R.layout.dialog_upload, null);
         dialog.setView(dialogLayout);
         dialog.setTitle("Upload Image");
 
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface d) {
+
                 ImageView image = (ImageView) dialog.findViewById(R.id.previewImage);
                 image.setImageBitmap(previewBitmap);
+
+                WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+                Display display = wm.getDefaultDisplay();
+
+                Point size = new Point();
+                display.getSize(size);
+                int height = size.y;
+                ScrollView scroll = (ScrollView) dialog.findViewById(R.id.scroll_layout);
+
+
+                int width = previewBitmap.getScaledWidth(R.id.previewImage);
+                int h = previewBitmap.getScaledHeight(R.id.previewImage);
+
+                int ratio = h/width;
+
+                Util.log("" + width);
+                Util.log("" + h);
+                Util.log("" + ratio);
+                Util.log("" + (height - 1000));
+                if(ratio > 1.3){
+
+                    scroll.getLayoutParams().height = (int) (height * .5);
+                }
+
+
                 dialog.getButton(DialogInterface.BUTTON_POSITIVE)
                         .setOnClickListener(new View.OnClickListener(){
                     @Override

@@ -13,6 +13,7 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.DetailMeActivity;
 import org.mamkschools.mhs.fbla_mobileapp_2016.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CommentItemAdapter extends RecyclerView.Adapter<CommentItemAdapter.PictureViewHolder> {
 
@@ -33,8 +34,14 @@ public class CommentItemAdapter extends RecyclerView.Adapter<CommentItemAdapter.
     public void onBindViewHolder(CommentItemAdapter.PictureViewHolder holder, int position) {
         holder.commentText.setText(commentList.get(position).getComment().trim());
         holder.userName.setText(commentList.get(position).getUser());
-        holder.style.setText(commentList.get(position).getStyleRating());
+        int rating = Integer.parseInt(commentList.get(position).getStyleRating());
+        int fill = Math.round(rating / 2f); //convert from 10 pt system to 5 pt system, take this out!! when we change rating
 
+        char stars[] = new char[5];
+        Arrays.fill(stars, '★');
+
+        holder.style_fill.setText(stars, 0, fill);
+        holder.style_unfill.setText(stars, 0, 5-fill);
     }
     @Override
     public int getItemCount() {
@@ -44,7 +51,8 @@ public class CommentItemAdapter extends RecyclerView.Adapter<CommentItemAdapter.
     public static class PictureViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView commentText;
         private TextView userName;
-        private TextView style;
+        private TextView style_fill;
+        private TextView style_unfill;
         private boolean small;
 
 
@@ -52,7 +60,8 @@ public class CommentItemAdapter extends RecyclerView.Adapter<CommentItemAdapter.
             super(itemView);
             commentText = (TextView) itemView.findViewById(R.id.commentText);
             userName = (TextView) itemView.findViewById(R.id.username);
-            style = (TextView) itemView.findViewById(R.id.style);
+            style_fill = (TextView) itemView.findViewById(R.id.style_fill);
+            style_unfill = (TextView) itemView.findViewById(R.id.style_unfill);
             itemView.setOnClickListener(this);
             small = true;
         }

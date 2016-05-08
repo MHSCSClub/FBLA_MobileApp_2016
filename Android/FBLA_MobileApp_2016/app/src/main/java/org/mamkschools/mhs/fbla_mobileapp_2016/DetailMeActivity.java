@@ -114,7 +114,7 @@ public class DetailMeActivity extends AppCompatActivity  {
                 assert commentList != null;
                 commentList.setLayoutManager(layoutManager);
 
-                commentList.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
+                //commentList.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
 
                 CommentItemAdapter adapter = new CommentItemAdapter(ret,getApplicationContext());
                 commentList.setAdapter(adapter);

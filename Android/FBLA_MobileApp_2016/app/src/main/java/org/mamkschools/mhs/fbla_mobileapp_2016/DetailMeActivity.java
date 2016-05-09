@@ -3,6 +3,7 @@ package org.mamkschools.mhs.fbla_mobileapp_2016;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,12 +32,15 @@ import java.util.ArrayList;
  * Has detailed + comment stuffs
  * Created by jackphillips on 2/26/16.
  */
-public class DetailMeActivity extends AppCompatActivity  {
+public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-    ImageView myImage;
-    GetPicture picDownload;
-    GetComments comDownload;
+    private ImageView myImage;
+    private GetPicture picDownload;
+    private GetComments comDownload;
+    SwipeRefreshLayout refreshLayout;
     private TextView titleText;
+    private int pid;
+    private int refreshing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +51,18 @@ public class DetailMeActivity extends AppCompatActivity  {
         if(actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.detail_refresh);
+        refreshLayout.setOnRefreshListener(this);
+
         Bundle extras = getIntent().getExtras();
         myImage = (ImageView) findViewById(R.id.myImage);
         if (extras != null) {
-            int pid = extras.getInt("pid");
+            refreshing = 2;
+            pid = extras.getInt("pid");
             String imgTitle = extras.getString("title");
             setTitle(imgTitle);
-            picDownload = new GetPicture();
-            picDownload.execute(pid);
-            comDownload = new GetComments();
-            comDownload.execute(pid);
+            onRefresh();
         }
     }
 
@@ -76,6 +82,14 @@ public class DetailMeActivity extends AppCompatActivity  {
         if(picDownload != null && !picDownload.getStatus().equals(AsyncTask.Status.FINISHED)){
             picDownload.cancel(true);
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        picDownload = new GetPicture();
+        picDownload.execute(pid);
+        comDownload = new GetComments();
+        comDownload.execute(pid);
     }
 
 
@@ -130,6 +144,7 @@ public class DetailMeActivity extends AppCompatActivity  {
             } else {
                 Util.log("Did not work_111");
             }
+            stopRefresh();
         }
     }
 
@@ -155,18 +170,10 @@ public class DetailMeActivity extends AppCompatActivity  {
 
         @Override
         protected void onPostExecute(Boolean v) {
+            stopRefresh();
             if(v){
                 Constants.imageBitmap = PictureHelper.getPictureBitmap(picFile);
                 myImage.setImageBitmap(Constants.imageBitmap);
-                //myImage.setVisibility(View.VISIBLE);
-                /*myImage.setOnClickListener(new View.OnClickListener(){
-
-                    @Override
-                    public void onClick(View v) {
-                        new PictureDialog(DetailMeActivity.this,
-                                Constants.imageBitmap, titleText.getText().toString()).show();
-                    }
-                }); */
             }else{
                 Util.log("Life will go on");
             }
@@ -181,6 +188,12 @@ public class DetailMeActivity extends AppCompatActivity  {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+    public void stopRefresh(){
+        refreshing--;
+        if(refreshing <= 0){
+            refreshLayout.setRefreshing(false);
         }
     }
 }

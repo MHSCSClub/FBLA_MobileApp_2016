@@ -3,146 +3,148 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/detail_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:id="@+id/detail_content"
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-            <ImageView
-                android:id="@+id/myImage"
+            <RelativeLayout
+                android:id="@+id/detail_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="false"
-                android:layout_alignParentStart="false"
-                android:layout_gravity="center_horizontal"
-                android:adjustViewBounds="true"
-                android:cropToPadding="true"
-                android:visibility="gone" />
+                android:layout_height="match_parent">
 
-            <TableLayout
-                android:id="@+id/tableLayout"
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/myImage">
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/likes_label"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="bottom|center_horizontal"
-                        android:includeFontPadding="false"
-                        android:text="6"
-                        android:textColor="#2E7D32"
-                        android:textSize="30sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/views_label"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="bottom|center_horizontal"
-                        android:includeFontPadding="false"
-                        android:text="8"
-                        android:textColor="#000000"
-                        android:textSize="30sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/rate_label"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_horizontal"
-                        android:text="4.5"
-                        android:textColor="#000000"
-                        android:textSize="30sp"
-                        android:textStyle="bold" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="-4dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center_horizontal"
-                        android:includeFontPadding="false"
-                        android:text="Likes"
-                        android:textColor="#757575"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center_horizontal"
-                        android:includeFontPadding="false"
-                        android:text="Views"
-                        android:textColor="#757575"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center_horizontal"
-                        android:text="Average Rating"
-                        android:textColor="#757575"
-                        android:textSize="13sp" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:background="#EDEDED"
-                    android:paddingBottom="5dp">
-
-                    <TextView
-                        android:id="@+id/time_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:includeFontPadding="false"
-                        android:text="Submitted 8 hours ago"
-                        android:textColor="#757575"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-                </TableRow>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/commentList"
+                <ImageView
+                    android:id="@+id/myImage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="false"
+                    android:layout_alignParentStart="false"
+                    android:layout_gravity="center_horizontal"
+                    android:adjustViewBounds="true"
+                    android:cropToPadding="true"
+                    android:visibility="gone" />
+
+                <TableLayout
+                    android:id="@+id/tableLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
                     android:layout_alignParentBottom="true"
-                    android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_below="@+id/detail_main">
+                    android:layout_below="@+id/myImage">
 
-                </android.support.v7.widget.RecyclerView>
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-            </TableLayout>
-        </RelativeLayout>
-    </ScrollView>
+                        <TextView
+                            android:id="@+id/likes_label"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="bottom|center_horizontal"
+                            android:includeFontPadding="false"
+                            android:text="6"
+                            android:textColor="#2E7D32"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
 
+                        <TextView
+                            android:id="@+id/views_label"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="bottom|center_horizontal"
+                            android:includeFontPadding="false"
+                            android:text="8"
+                            android:textColor="#000000"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
 
+                        <TextView
+                            android:id="@+id/rate_label"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:text="4.5"
+                            android:textColor="#000000"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="-4dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:includeFontPadding="false"
+                            android:text="Likes"
+                            android:textColor="#757575"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:includeFontPadding="false"
+                            android:text="Views"
+                            android:textColor="#757575"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:text="Average Rating"
+                            android:textColor="#757575"
+                            android:textSize="13sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:background="#EDEDED"
+                        android:paddingBottom="5dp">
+
+                        <TextView
+                            android:id="@+id/time_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:includeFontPadding="false"
+                            android:text="Submitted 8 hours ago"
+                            android:textColor="#757575"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                    </TableRow>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/commentList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/detail_main">
+
+                    </android.support.v7.widget.RecyclerView>
+                </TableLayout>
+            </RelativeLayout>
+        </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

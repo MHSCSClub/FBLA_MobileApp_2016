@@ -158,6 +158,7 @@ public class DetailMeActivity extends AppCompatActivity  {
             if(v){
                 Constants.imageBitmap = PictureHelper.getPictureBitmap(picFile);
                 myImage.setImageBitmap(Constants.imageBitmap);
+                //myImage.setVisibility(View.VISIBLE);
                 /*myImage.setOnClickListener(new View.OnClickListener(){
 
                     @Override

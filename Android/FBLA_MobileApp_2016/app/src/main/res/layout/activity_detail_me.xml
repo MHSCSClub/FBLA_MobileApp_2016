@@ -30,6 +30,7 @@
                 android:layout_height="fill_parent"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
+                android:layout_marginTop="5dp"
                 android:layout_below="@+id/myImage">
 
                 <TableRow

@@ -1,39 +1,35 @@
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_holder"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <RelativeLayout
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/myPicRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/myPicRefresh"
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/picList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent" />
 
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/picList" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
-        </android.support.v4.widget.SwipeRefreshLayout>
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/cameraButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_anchor="@+id/picList"
-            app:layout_anchorGravity="bottom|end"
-            android:src="@drawable/ic_camera"
-            app:layout_behavior="org.mamkschools.mhs.fbla_mobileapp_2016.lib.FABBehavior"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="12dp"
-            app:elevation="2dp" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/cameraButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="12dp"
+        android:src="@drawable/ic_photo_camera_white_48dp"
+        app:elevation="2dp"
+        app:layout_anchor="@+id/picList"
+        app:layout_anchorGravity="bottom|end"
+        app:layout_behavior="org.mamkschools.mhs.fbla_mobileapp_2016.lib.FABBehavior" />
 
-
-    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

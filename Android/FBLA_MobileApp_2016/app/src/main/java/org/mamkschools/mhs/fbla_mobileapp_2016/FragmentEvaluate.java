@@ -6,33 +6,22 @@ package org.mamkschools.mhs.fbla_mobileapp_2016;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Point;
-import android.media.Rating;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.Display;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.design.widget.FloatingActionButton;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +30,6 @@ import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Commands;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Picture;
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureEntry;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureHelper;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Util;
@@ -81,7 +69,8 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
 
     private RelativeLayout [] bottomBars = new RelativeLayout[3];
 
-
+    private ScrollView evalContent;
+    private ProgressBar progressBar;
 
     public static FragmentEvaluate newInstance(int picNumber, File location, SimpleLocation simpleLocation) {
         FragmentEvaluate fragment = new FragmentEvaluate();
@@ -124,9 +113,13 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         Button refresh_button = (Button) rootView.findViewById(R.id.refresh_button);
         refresh_button.setOnClickListener(this);
 
+        progressBar = (ProgressBar) rootView.findViewById(R.id.eval_progress);
+        evalContent = (ScrollView) rootView.findViewById(R.id.eval_content);
+
         bottomBars[0] = (RelativeLayout) rootView.findViewById(R.id.primary_layout);
         bottomBars[1] = (RelativeLayout) rootView.findViewById(R.id.comment_layout);
         bottomBars[2] = (RelativeLayout) rootView.findViewById(R.id.refresh_layout);
+
 
 
         runFetch(picNumber);
@@ -147,7 +140,6 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
 
     public int getPictureId(int picture){
         if(pics.size() > 0 && picture < pics.size()) {
-
             return pics.get(picture).entryid;
         }
         return -1;
@@ -188,6 +180,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         descriptionLabel.setText(data[1]);
         //additionalLabel.setText(data[2]);
         if(picID > 0) {
+            showProgress(true);
             picDl = new GetPicture();
             picDl.execute(picID);
         }else{
@@ -337,7 +330,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
                 image.setImageBitmap(null);
                 image.setImageBitmap(Constants.imageBitmap);
                 //ViewGroup.MarginLayoutParams imageViewParams = new ViewGroup.MarginLayoutParams(ViewGroup.MarginLayoutParams.MATCH_PARENT, ViewGroup.MarginLayoutParams.WRAP_CONTENT);
-
+                showProgress(false);
                 //image.setScaleType(ImageView.ScaleType.CENTER);
             }else{
                 Util.log("Life will go on");
@@ -393,10 +386,6 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
             int dist = 10000;
             int view = 15;
 
-            //debug added actual locations
-            Constants.LATITUDE = simpleLocation.getLatitude();
-            Constants.LONGITUDE = simpleLocation.getLongitude();
-
 
 
             Util.log(Constants.LATITUDE + " " + Constants.LONGITUDE);
@@ -406,6 +395,12 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
                         + "&geolong=" + Constants.LONGITUDE + "&geolat=" + Constants.LATITUDE + "&ft_dist=" + dist);
 
                 JSONArray array = response.getJSONArray("data");
+
+                //debug added actual locations
+                Constants.LATITUDE = simpleLocation.getLatitude();
+                Constants.LONGITUDE = simpleLocation.getLongitude();
+
+
 
                 for(int i = 0; i < array.length(); i++ ){
 
@@ -473,6 +468,11 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         }catch (Exception ignored){
 
         }
+    }
+
+    private void showProgress(Boolean show){
+        evalContent.setVisibility(show ? View.GONE : View.VISIBLE);
+        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
 }

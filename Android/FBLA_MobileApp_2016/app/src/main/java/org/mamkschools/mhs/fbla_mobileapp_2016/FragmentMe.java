@@ -164,8 +164,9 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
             ActivityCompat.requestPermissions(getActivity(),
                     permsToEnable,
                     PERMISSION_REQUEST_CODE);
-        }
+        } else {
             openImageIntent();
+        }
     }
 
     private void showImageDialog(final Bitmap previewBitmap){
@@ -282,6 +283,8 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay!
+                    Util.log("Perms grantedS");
+                    openImageIntent();
                     break;
                 } else {
 

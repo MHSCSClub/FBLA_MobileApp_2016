@@ -174,7 +174,7 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
     }
 
     @Override
-    public void logoutComplete() {
+    public void logout() {
         startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         finish();
     }

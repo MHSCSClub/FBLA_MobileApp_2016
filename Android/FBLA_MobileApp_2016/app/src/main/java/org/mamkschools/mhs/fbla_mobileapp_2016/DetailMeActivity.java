@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -37,11 +38,12 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
     private ImageView myImage;
     private GetPicture picDownload;
     private GetComments comDownload;
-    SwipeRefreshLayout refreshLayout;
+    private SwipeRefreshLayout refreshLayout;
     private TextView titleText;
     private int pid;
     private int refreshing;
     private Bitmap image;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +56,16 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
         }
 
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.detail_refresh);
+        assert refreshLayout != null;
         refreshLayout.setOnRefreshListener(this);
+        progressBar = (ProgressBar) findViewById(R.id.detail_progress);
+        assert progressBar != null;
+
+        showProgress(true);
 
         Bundle extras = getIntent().getExtras();
         myImage = (ImageView) findViewById(R.id.myImage);
         if (extras != null) {
-            refreshing = 2;
             pid = extras.getInt("pid");
             String imgTitle = extras.getString("title");
             setTitle(imgTitle);
@@ -87,6 +93,7 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
 
     @Override
     public void onRefresh() {
+        refreshing = 2;
         picDownload = new GetPicture();
         picDownload.execute(pid);
         comDownload = new GetComments();
@@ -197,6 +204,7 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
         refreshing--;
         if(refreshing <= 0){
             refreshLayout.setRefreshing(false);
+            showProgress(false);
         }
     }
 
@@ -206,5 +214,10 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
         if(image != null){
             image.recycle();
         }
+    }
+
+    private void showProgress(boolean show){
+        refreshLayout.setVisibility(show ? View.GONE : View.VISIBLE);
+        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 }

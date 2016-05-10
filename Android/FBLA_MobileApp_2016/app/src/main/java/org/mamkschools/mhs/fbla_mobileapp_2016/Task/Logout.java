@@ -21,7 +21,7 @@ public class Logout extends AsyncTask<Void, Void, Boolean> {
     private LogoutCompletionListener callback;
 
     public interface LogoutCompletionListener{
-        void logoutComplete();
+        void logout();
     }
     public Logout(Context context, LogoutCompletionListener callback){
         this.context = context;
@@ -43,12 +43,11 @@ public class Logout extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean b) {
-        if(b) {
-            Constants.AUTHCODE = null;
-            Constants.savePrefs(context, false);
-            callback.logoutComplete();
-        } else {
-            Toast.makeText(context, "Logout failed", Toast.LENGTH_SHORT).show();
+        Constants.AUTHCODE = null;
+        Constants.savePrefs(context, false);
+        callback.logout();
+        if (!b) {
+            Util.log("Logout failed");
         }
     }
 }

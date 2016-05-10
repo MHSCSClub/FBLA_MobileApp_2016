@@ -186,6 +186,9 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
                 myImage.setVisibility(myImage.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
                 findViewById(R.id.detail_content).requestLayout();
                 return true;
+            case android.R.id.home:
+                finish();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

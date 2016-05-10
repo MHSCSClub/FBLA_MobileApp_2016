@@ -128,6 +128,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
                 android:adjustViewBounds="true"
+
                 android:background="#000000" />
 
 

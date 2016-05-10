@@ -26,6 +26,7 @@ public class Logout extends AsyncTask<Void, Void, Boolean> {
     public Logout(Context context, LogoutCompletionListener callback){
         this.context = context;
         this.callback = callback;
+        execute();
     }
     @Override
     protected Boolean doInBackground(Void... v) {

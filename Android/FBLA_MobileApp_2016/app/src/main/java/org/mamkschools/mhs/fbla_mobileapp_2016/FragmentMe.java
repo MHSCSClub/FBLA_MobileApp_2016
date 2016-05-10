@@ -110,6 +110,7 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
         super.onCreate(savedInstanceState);
     }
 
+
     @Override
     public void onStop(){
         super.onStop();

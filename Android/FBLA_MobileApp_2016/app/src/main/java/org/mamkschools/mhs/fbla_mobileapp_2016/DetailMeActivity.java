@@ -41,6 +41,7 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
     private TextView titleText;
     private int pid;
     private int refreshing;
+    private Bitmap image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,7 +151,6 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
 
     private class GetPicture extends AsyncTask<Integer, Void, Boolean> {
         SecureAPI picture = SecureAPI.getInstance(getApplicationContext());
-        Bitmap imageData;
         File picFile;
 
         @Override
@@ -172,8 +172,8 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
         protected void onPostExecute(Boolean v) {
             stopRefresh();
             if(v){
-                Constants.imageBitmap = PictureHelper.getPictureBitmap(picFile);
-                myImage.setImageBitmap(Constants.imageBitmap);
+                image = PictureHelper.getPictureBitmap(picFile);
+                myImage.setImageBitmap(image);
             }else{
                 Util.log("Life will go on");
             }
@@ -197,6 +197,14 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
         refreshing--;
         if(refreshing <= 0){
             refreshLayout.setRefreshing(false);
+        }
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        if(image != null){
+            image.recycle();
         }
     }
 }

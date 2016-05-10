@@ -3,10 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FFAB00</color>
-    <color name="positive">#B39DDB</color>
-    <color name="negative">#7E57C2</color>
-    <color name="fab">#BBDEFB</color>
-    <color name="listDivider">#EEEEEE</color>
+    <color name="listDivider">#E0E0E0</color>
     <color name="topDark">#000000</color>
     <color name="background">#F5F5F5</color>
 </resources>

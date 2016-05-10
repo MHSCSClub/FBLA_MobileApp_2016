@@ -266,15 +266,18 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
                 new SubmitRating().execute(postParams);
             }
         });
-        builder.setPositiveButton(R.string.comment, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 EditText editCommentText = (EditText)
                         ((AlertDialog) dialog).findViewById(R.id.user_comment);
+
                 RatingBar userRating = (RatingBar)
                         ((AlertDialog) dialog).findViewById(R.id.user_rate);
+
                 postParams.put("style", Integer.toString(
                         Math.round(userRating.getRating())));
+
                 String comment = editCommentText.getText().toString().trim();
                 if(!comment.equals("")){
                     postParams.put("comment", comment);
@@ -287,7 +290,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View dialogLayout = inflater.inflate(R.layout.dialog_rate, null);
         dialog.setView(dialogLayout);
-        dialog.setTitle("Rate Picture");
+        dialog.setTitle("How does my tie look?"); //Question goes here
 
         dialog.show();
     }

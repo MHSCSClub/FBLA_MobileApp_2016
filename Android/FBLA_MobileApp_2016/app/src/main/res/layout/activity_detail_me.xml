@@ -135,6 +135,26 @@
                             android:textStyle="bold" />
                     </TableRow>
 
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:visibility="gone"
+                        android:paddingBottom="13dp">
+
+                        <TextView
+                            android:id="@+id/nocomment_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_weight="1"
+                            android:includeFontPadding="false"
+                            android:text="No comments"
+                            android:textColor="#424242"
+                            android:textSize="16sp" />
+                    </TableRow>
+
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/commentList"
                         android:layout_width="match_parent"
@@ -151,7 +171,8 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <ProgressBar android:id="@+id/detail_progress" style="?android:attr/progressBarStyleLarge"
-        android:layout_width="match_parent" android:layout_height="match_parent"
-        android:layout_marginBottom="8dp" android:visibility="visible"
-        android:padding="100dp" />
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp" android:visibility="gone"
+        android:padding="100dp"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>

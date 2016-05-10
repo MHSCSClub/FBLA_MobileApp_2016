@@ -275,8 +275,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View dialogLayout = inflater.inflate(R.layout.dialog_rate, null);
         dialog.setView(dialogLayout);
-        dialog.setTitle("Upload Image");
-
+        dialog.setTitle("Rate Picture");
 
         dialog.show();
     }

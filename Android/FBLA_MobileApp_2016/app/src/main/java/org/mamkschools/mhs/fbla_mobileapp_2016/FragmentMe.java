@@ -201,18 +201,17 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
                 ScrollView scroll = (ScrollView) dialog.findViewById(R.id.scroll_layout);
 
 
-                int width = previewBitmap.getScaledWidth(R.id.previewImage);
-                int h = previewBitmap.getScaledHeight(R.id.previewImage);
+                double h = image.getDrawable().getBounds().height();
+                double w = image.getDrawable().getBounds().width();
 
-                int ratio = h/width;
 
-                Util.log("" + width);
-                Util.log("" + h);
+                double ratio = h/w;
+
                 Util.log("" + ratio);
-                Util.log("" + (height - 1000));
+                Util.log("" + (w));
+                Util.log("" + (h));
                 if(ratio > 1.3){
-
-                    scroll.getLayoutParams().height = (int) (height * .5);
+                    scroll.getLayoutParams().height = (int) (height * .46);
                 }
 
 

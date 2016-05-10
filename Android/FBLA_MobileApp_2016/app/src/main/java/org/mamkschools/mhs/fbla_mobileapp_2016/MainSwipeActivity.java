@@ -21,6 +21,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -275,7 +276,24 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
         }
     }
     private void showDressCode(){
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.DRESS_CODE));
-        startActivity(browserIntent);
+        //Create an alert dialog builder for a new alert dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        //Set the title and message
+        builder.setIcon(R.mipmap.ic_launcher)
+                .setMessage(Html.fromHtml(getApplicationContext().getString(R.string.dress_code_dialog)))
+                .setTitle("FBLA Official Dress Code");
+
+        //Add an OK button
+        builder.setPositiveButton(R.string.ok,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+        //Create the actual dialog from the builder, then show it.
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

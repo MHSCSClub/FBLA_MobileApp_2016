@@ -10,6 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +41,7 @@ public class PictureDialog extends Dialog implements View.OnClickListener{
 
         ImageView bigPicture = (ImageView) findViewById(R.id.big_picture);
         TextView imageTitle = (TextView) findViewById(R.id.picture_label);
-        FrameLayout imageLayout = (FrameLayout) findViewById(R.id.big_picture_frame);
+        RelativeLayout imageLayout = (RelativeLayout) findViewById(R.id.big_picture_frame);
         bigPicture.setImageBitmap(image);
         imageTitle.setText(imageTitleText);
         imageLayout.setOnClickListener(this);

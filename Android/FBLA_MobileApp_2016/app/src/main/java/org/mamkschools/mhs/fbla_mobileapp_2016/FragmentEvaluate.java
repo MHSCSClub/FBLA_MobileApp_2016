@@ -1,3 +1,7 @@
+// Use this for showing/hiding  info layout: showInfoLayout(boolean b);
+
+
+
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
 import android.app.AlertDialog;
@@ -195,6 +199,14 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
             }
         }
     }
+
+    public void showInfoLayout(boolean show){
+        View rootView = getView();
+        assert rootView != null;
+        RelativeLayout infoLayout = (RelativeLayout) rootView.findViewById(R.id.info_label);
+        infoLayout.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
     @Override
     public void onClick(View v) {
         Map<String, String> postParams = new HashMap<>();
@@ -305,6 +317,9 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
                 int pid = params[0];
                 Util.log("picture/" + pid + "?authcode=" + Constants.AUTHCODE);
                 picture.HTTPSFETCHPIC("picture/" + pid + "?authcode=" + Constants.AUTHCODE, new File(location, "picture.jpg"));
+                if(Constants.imageBitmap != null){
+                    Constants.imageBitmap.recycle();
+                }
                 Constants.imageBitmap = PictureHelper.getPictureBitmap(new File(location, "picture.jpg"));
             }catch(Exception e){
                 Util.log(e.getMessage());

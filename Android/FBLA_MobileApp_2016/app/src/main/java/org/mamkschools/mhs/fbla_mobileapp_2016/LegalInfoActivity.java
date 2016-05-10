@@ -14,7 +14,6 @@ import java.util.Scanner;
  */
 
 public class LegalInfoActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

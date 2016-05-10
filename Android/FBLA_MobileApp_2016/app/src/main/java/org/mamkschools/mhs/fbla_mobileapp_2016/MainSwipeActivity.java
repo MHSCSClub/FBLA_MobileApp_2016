@@ -33,12 +33,13 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Util;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureHelper;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
+import org.mamkschools.mhs.fbla_mobileapp_2016.task.Logout;
 
 import java.io.File;
 
 import im.delight.android.location.SimpleLocation;
 
-public class MainSwipeActivity extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
+public class MainSwipeActivity extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener, Logout.LogoutCompletionListener{
 
     //Fragments
     private Fragment evaluatePictures;
@@ -96,6 +97,7 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
         myPictures = FragmentMe.newInstance(picLocation);
 
         ImageButton more = (ImageButton) findViewById(R.id.more_stuff);
+        assert more != null;
         more.setOnClickListener(this);
     }
 
@@ -157,7 +159,7 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_logout:
-                new Logout().execute((Void) null);
+                new Logout(this, this);
                 return true;
             case R.id.action_about:
                 showAbout();
@@ -168,6 +170,12 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
             default:
                 return false;
         }
+    }
+
+    @Override
+    public void logoutComplete() {
+        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        finish();
     }
 
 
@@ -207,32 +215,7 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    private class Logout extends AsyncTask<Void, Void, Boolean> {
-        @Override
-        protected Boolean doInBackground(Void... v) {
-            SecureAPI HTTPS = SecureAPI.getInstance(getApplicationContext());
 
-            try {
-                HTTPS.HTTPSGET(Commands.Get.LOGOUT + Constants.AUTHCODE);
-            } catch (Exception ex) {
-                Util.log(ex.getMessage());
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean b) {
-            if(b) {
-                Constants.AUTHCODE = null;
-                Constants.savePrefs(getApplicationContext(), false);
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                finish();
-            } else {
-                Toast.makeText(getApplicationContext(), "Logout failed", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
     private void showAbout(){
         //Create an alert dialog builder for a new alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

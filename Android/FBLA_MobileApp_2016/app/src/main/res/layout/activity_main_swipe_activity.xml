@@ -33,7 +33,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="false"
-                android:background="#00000000"
+                android:background="#00FFFFFF"
                 android:clickable="true"
                 android:contextClickable="true"
                 android:cropToPadding="false"
@@ -41,8 +41,10 @@
                 android:hapticFeedbackEnabled="true"
                 android:paddingLeft="20dp"
                 android:paddingRight="25dp"
+                android:paddingBottom="5dp"
                 android:src="@drawable/overflow" />
         </LinearLayout>
+
     </android.support.design.widget.AppBarLayout>
 
 

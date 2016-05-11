@@ -373,7 +373,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
                 TextView star_level = (TextView) dialog.findViewById(R.id.star_level);
                 star_level.setVisibility(View.VISIBLE);
                 star_level.setText(feedback[irate]);
-                if(irate <= 2) {
+                if(irate <= 1) {
                     star_level.setTextColor(Color.parseColor("#ED332D"));
                 } else {
                     star_level.setTextColor(Color.parseColor("#4CAF50"));

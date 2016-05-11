@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         app:layout_anchor="@+id/picList"
         app:layout_anchorGravity="bottom|end"
-        android:src="@drawable/ic_camera"
+        android:src="@drawable/ic_photo_camera_white_48dp"
         app:layout_behavior="org.mamkschools.mhs.fbla_mobileapp_2016.lib.FABBehavior"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"

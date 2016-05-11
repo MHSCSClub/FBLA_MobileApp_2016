@@ -45,7 +45,9 @@ public class Logout extends AsyncTask<Void, Void, Boolean> {
     protected void onPostExecute(Boolean b) {
         Constants.AUTHCODE = null;
         Constants.savePrefs(context, false);
-        callback.logout();
+        if(callback != null){
+            callback.logout();
+        }
         if (!b) {
             Util.log("Logout failed");
         }

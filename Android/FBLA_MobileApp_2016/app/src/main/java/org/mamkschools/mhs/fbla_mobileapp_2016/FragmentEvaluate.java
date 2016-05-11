@@ -34,6 +34,8 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Picture;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureHelper;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Util;
+import org.mamkschools.mhs.fbla_mobileapp_2016.task.Logout;
+import org.mamkschools.mhs.fbla_mobileapp_2016.task.VerifyAuthcode;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -51,7 +53,7 @@ import im.delight.android.location.SimpleLocation;
  * Fragment for evaluating pictures. This is on the main screen when the app is launched.
  * Created by jackphillips on 2/16/16.
  */
-public class FragmentEvaluate extends Fragment implements View.OnClickListener{
+public class FragmentEvaluate extends Fragment implements View.OnClickListener, VerifyAuthcode.InvalidAuthcodeListener {
     private int picNumber;
     private File location;
     private SimpleLocation simpleLocation;
@@ -148,7 +150,6 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
             return pics.get(picture).entryid;
         }
         return -1;
-
     }
 
     public String[] getData(int picture){
@@ -198,6 +199,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
             picDl = new GetPicture();
             picDl.execute(picID);
         }else{
+            image.setImageResource(R.drawable.finish);
             if(runOnce) {
                 image.setImageResource(R.drawable.finish);
                 new GetPictureInfo().execute((Void) null);
@@ -216,6 +218,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
+        new VerifyAuthcode(getContext(), this);
         Map<String, String> postParams = new HashMap<>();
         int pid = getPictureId(picNumber);
         postParams.put("pid", "" + pid);
@@ -329,6 +332,17 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         if(comment.length() > 0)
             params.put("comment", comment);
         return params;
+    }
+
+    @Override
+    public void onAuthcodeInvalid() {
+        Toast.makeText(getContext(), "Please login again", Toast.LENGTH_LONG).show();
+        new Logout(getContext(), null);
+    }
+
+    @Override
+    public void onAuthcodeValid() {
+
     }
 
     private class GetPicture extends AsyncTask<Integer, Void, Boolean> {

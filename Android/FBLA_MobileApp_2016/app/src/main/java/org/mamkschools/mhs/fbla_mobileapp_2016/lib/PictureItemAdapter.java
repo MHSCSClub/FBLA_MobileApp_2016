@@ -32,6 +32,8 @@ public class PictureItemAdapter extends RecyclerView.Adapter<PictureItemAdapter.
     public void onBindViewHolder(PictureItemAdapter.PictureViewHolder holder, int position) {
         holder.title.setText(pictureList.get(position).getTitle());
         holder.pid = pictureList.get(position).getPid();
+        holder.views = pictureList.get(position).getViews();
+        holder.up = pictureList.get(position).getUp();
         holder.rateCount.setText(Integer.toString(Math.abs(pictureList.get(position).getRate())));
         holder.rateImage.setImageResource(pictureList.get(position).getRate() >= 0 ?
                 R.drawable.ic_thumb_up_green_48dp : R.drawable.ic_thumb_down_rd_48dp);
@@ -63,6 +65,8 @@ public class PictureItemAdapter extends RecyclerView.Adapter<PictureItemAdapter.
         protected TextView hours;
         protected ImageView rateImage;
         protected int pid;
+        protected int views;
+        protected int up;
         protected TextView title;
 
         public PictureViewHolder(View itemView) {
@@ -79,6 +83,8 @@ public class PictureItemAdapter extends RecyclerView.Adapter<PictureItemAdapter.
             Intent myIntent = new Intent(v.getContext(), DetailMeActivity.class);
             myIntent.putExtra("pid", pid);
             myIntent.putExtra("title", title.getText());
+            myIntent.putExtra("views", views);
+            myIntent.putExtra("up", up);
             v.getContext().startActivity(myIntent);
         }
     }

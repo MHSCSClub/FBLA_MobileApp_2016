@@ -10,6 +10,7 @@ public class PictureItem {
     private int rate;
     private int views;
     private int pid;
+    private int up;
 
 
 
@@ -19,7 +20,10 @@ public class PictureItem {
         this.rate = up - down;
         this.views = views;
         this.pid = pid;
+        this.up = up;
     }
+
+    public int getUp () { return up;}
 
     public String getTitle() {
         return title;

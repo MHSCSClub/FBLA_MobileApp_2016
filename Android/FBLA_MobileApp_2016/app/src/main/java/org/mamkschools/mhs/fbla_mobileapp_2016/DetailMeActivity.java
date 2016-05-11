@@ -1,6 +1,7 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -47,6 +48,11 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
     private Bitmap image;
     private ProgressBar progressBar;
 
+    private int views;
+    private double up;
+    private TextView avgStar;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,12 +72,30 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
         new VerifyAuthcode(this, this);
 
         showProgress(true);
+        TextView percentLabel = (TextView) findViewById(R.id.percent_label);
+        TextView viewsLabel = (TextView) findViewById(R.id.views_label);
+        avgStar = (TextView) findViewById(R.id.rate_label);
 
         Bundle extras = getIntent().getExtras();
         myImage = (ImageView) findViewById(R.id.myImage);
         if (extras != null) {
             pid = extras.getInt("pid");
             String imgTitle = extras.getString("title");
+            this.views = extras.getInt("views");
+            this.up = extras.getInt("up");
+            Util.log("" + up);
+            if(views > 0) {
+                double percent = (up / views) * 100;
+                percentLabel.setText("" +  ((int) percent) + "%");
+                if(percent < 50){
+                    percentLabel.setTextColor(Color.parseColor("#ED332D"));
+                }else{
+                    percentLabel.setTextColor(Color.parseColor("#2E7D32"));
+                }
+            }else{
+                percentLabel.setText("NA");
+            }
+            viewsLabel.setText("" + views);
             setTitle(imgTitle);
             onRefresh();
         }
@@ -120,7 +144,8 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
 
         private ArrayList<CommentItem> ret = new ArrayList<>();
         SecureAPI picture = SecureAPI.getInstance(getApplicationContext());
-
+        private int totalStyle;
+        private int totalComments = 0;
 
         @Override
         protected Boolean doInBackground(Integer... params) {
@@ -138,7 +163,11 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
                     if(!style.equals("null")) {
                         ret.add(new CommentItem(
                                 comment.equals("null") ? "No comment" : comment, user, style));
+                        totalStyle += Math.round(Integer.parseInt(style)/ 2f);
+                        Util.log(style);
+                        totalComments++;
                     }
+
 
                 }
             }catch (Exception e){
@@ -170,11 +199,14 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
 
                     CommentItemAdapter adapter = new CommentItemAdapter(ret, getApplicationContext());
                     commentList.setAdapter(adapter);
+                    double avg = Math.round(totalStyle/totalComments);
+                    avgStar.setText("" + avg);
                 } else {
                     //noinspection ConstantConditions
                     findViewById(R.id.nocomment_text).setVisibility(View.VISIBLE);
                     //noinspection ConstantConditions
                     findViewById(R.id.commentList).setVisibility(View.GONE);
+                    avgStar.setText("NA");
                 }
             } else {
                 Util.log("Did not work_111");

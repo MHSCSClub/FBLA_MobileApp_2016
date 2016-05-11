@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -258,17 +259,23 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
                 break;
         }
     }
-    private void switchBottomBar(int bar){
-        for(int i = 0; i < bottomBars.length; i++){
-            bottomBars[i].setVisibility(i == bar ? View.VISIBLE : View.GONE);
+    private void switchBottomBar(final int bar) {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < bottomBars.length; i++) {
+                    bottomBars[i].setVisibility(i == bar ? View.VISIBLE : View.GONE);
 
-        }
-        if(bar == 1){
-            String[] data = getData(picNumber);
-            titleLabel.setText(data[0].length() > 20 ? data[0].substring(0, 20) : data[0]);
-        }else if (bar == 0){
-            titleLabel.setText("Is this Professional?");
-        }
+                }
+                if (bar == 1) {
+                    String[] data = getData(picNumber);
+                    titleLabel.setText(data[0].length() > 20 ? data[0].substring(0, 20) : data[0]);
+                } else if (bar == 0) {
+                    titleLabel.setText("Is this Professional?");
+                }
+            }
+        }, 300);
     }
 
     private void getComment(final Map<String, String> postParams){

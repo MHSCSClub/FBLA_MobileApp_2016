@@ -42,6 +42,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 import im.delight.android.location.SimpleLocation;
 
@@ -60,6 +61,8 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
     private ImageView image;
     private TextView descriptionLabel;
     private TextView titleLabel;
+    private TextView timeLabel;
+    private TextView distLabel;
 
     private int currentRating;
 
@@ -88,7 +91,8 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
         rootView = inflater.inflate(R.layout.fragment_view_evaluate, container, false);
         titleLabel = (TextView) rootView.findViewById(R.id.title_label);
         titleLabel.setText(R.string.no_pics);
-
+        timeLabel = (TextView) rootView.findViewById(R.id.time_label);
+        distLabel = (TextView) rootView.findViewById(R.id.dist_label);
 
 
         image = (ImageView) rootView.findViewById(R.id.imageView);
@@ -147,21 +151,28 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
     }
 
     public String[] getData(int picture){
-        String[] data = new String[3];
+        String[] data = new String[4];
         if(pics.size() > 0 && picture < pics.size()) {
             data[0] = pics.get(picture).title;
             data[1] = pics.get(picture).username;
             double hours = pics.get(picture).hours;
             double miles = pics.get(picture).dist;
-            data[2] = hours + (hours == 1 ? " hour ago, " : " hours ago, ");
-            data[2] += miles + (miles == 1 ? " mile away" : " miles away");
-            switchBottomBar(0);
+            data[2] = ((int) hours) + (hours == 1 ? " hour ago, " : " hours ago, ");
+            if(hours >= 24){
+                int days = (int) hours/24;
+                data[2] = days + (days == 1 ? " day ago, " : " days ago, ");
+            }
+            if(miles > 100){
+                miles = 50;
+            }
+            data[3] = ((int) miles) + (miles == 1 ? " mile away" : " miles away");
             return data;
         }
         data[0] = "No More Pictures";
-        switchBottomBar(2);
+
         data[1] = "";
         data[2] = "";
+        data[3] = "";
         return data;
     }
 
@@ -176,9 +187,11 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
     public void runFetch(int itemId) {
         int picID = getPictureId(itemId);
         String[] data = getData(itemId);
-        titleLabel.setText(data[0].length() > 20 ? data[0].substring(0, 20) : data[0]);
+        titleLabel.setText(data[0]);
         descriptionLabel.setText(data[1]);
-        //additionalLabel.setText(data[2]);
+        timeLabel.setText(data[2]);
+        distLabel.setText(data[3]);
+        switchBottomBar(0);
         if(picID > 0) {
             showProgress(true);
             picDl = new GetPicture();
@@ -247,7 +260,14 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
     }
     private void switchBottomBar(int bar){
         for(int i = 0; i < bottomBars.length; i++){
-                bottomBars[i].setVisibility(i == bar ? View.VISIBLE : View.GONE);
+            bottomBars[i].setVisibility(i == bar ? View.VISIBLE : View.GONE);
+
+        }
+        if(bar == 1){
+            String[] data = getData(picNumber);
+            titleLabel.setText(data[0].length() > 20 ? data[0].substring(0, 20) : data[0]);
+        }else if (bar == 0){
+            titleLabel.setText("Is this Professional?");
         }
     }
 
@@ -420,18 +440,32 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener{
                     else
                         p = 30/(views - 10);
 
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+
+                    Date d = simpleDateFormat2.parse(array.getJSONObject(i)
+                            .getString("created"));
+
+                    TimeZone tz = TimeZone.getDefault();
+                    Util.log(tz.getDisplayName());
+
+                    int hours = (tz.getOffset(d.getTime()) + tz.getDSTSavings()) / 1000 / 60 / 60;
+                    Util.log("" + hours);
+
+
+
                     long different = new Date().getTime() -
-                            simpleDateFormat.parse(array.getJSONObject(i)
-                                    .getString("created")).getTime();
-                    long elapsedHours = different / hoursInMilli;
+                            d.getTime();
+                    long elapsedHours = (different / (1000 * 60 * 60)) - hours;
+
                     if(elapsedHours < 10) {
                         p += 3 * elapsedHours;
                     } else {
                         p += 30;
                     }
                     double priority = p;
-                    pictures.add(new Picture(pid, geolat, geolong, created, title, username, priority, (double) elapsedHours));
+                    Util.log("" + distance);
+                    pictures.add(new Picture(pid, geolat, geolong, created, title, username, priority, (double) elapsedHours, distance));
 
                 }
             }catch (Exception e){

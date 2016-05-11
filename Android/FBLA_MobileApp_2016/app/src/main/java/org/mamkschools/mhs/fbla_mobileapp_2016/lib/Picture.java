@@ -14,7 +14,7 @@ public class Picture {
     public double priority;
     public double hours;
 
-    public Picture(int entryid, double geolat, double geolong, String created, String title, String username, double priority, double hours){
+    public Picture(int entryid, double geolat, double geolong, String created, String title, String username, double priority, double hours, double dist){
         this.entryid = entryid;
         this.geolat = geolat;
         this.geolong = geolong;

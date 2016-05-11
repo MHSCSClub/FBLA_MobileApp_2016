@@ -60,7 +60,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import im.delight.android.location.SimpleLocation;
 
@@ -328,10 +330,25 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
                     int dislikes = array.getJSONObject(i).getInt("dislikes");
                     int likes = array.getJSONObject(i).getInt("likes");
 
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                    long different = new Date().getTime() - simpleDateFormat.parse(
-                            array.getJSONObject(i).getString("created")).getTime();
-                    long elapsedHours = 3 + (different / (1000 * 60 * 60));
+
+
+                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+
+                    Date d = simpleDateFormat2.parse(array.getJSONObject(i)
+                            .getString("created"));
+
+                    TimeZone tz = TimeZone.getDefault();
+                    Util.log(tz.getDisplayName());
+
+                    int hours = (tz.getOffset(d.getTime()) + tz.getDSTSavings()) / 1000 / 60 / 60;
+                    Util.log("" + hours);
+
+
+
+                    long different = new Date().getTime() -
+                            d.getTime();
+                    long elapsedHours = (different / (1000 * 60 * 60)) - hours;
 
                     ret.add(new PictureItem(title, elapsedHours, likes, dislikes, views, pid));
                 }

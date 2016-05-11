@@ -35,13 +35,14 @@ public class CommentItemAdapter extends RecyclerView.Adapter<CommentItemAdapter.
         holder.commentText.setText(commentList.get(position).getComment().trim());
         holder.userName.setText(commentList.get(position).getUser());
         int rating = Integer.parseInt(commentList.get(position).getStyleRating());
-        int fill = Math.round(rating / 2f); //convert from 10 pt system to 5 pt system, take this out!! when we change rating
+        Util.log("" + rating);
+        int fill = Math.min(rating, 5); //Math.round(rating / 2f); //convert from 10 pt system to 5 pt system, take this out!! when we change rating
 
         char stars[] = new char[5];
         Arrays.fill(stars, '★');
 
         holder.style_fill.setText(stars, 0, fill);
-        holder.style_unfill.setText(stars, 0, 5-fill);
+        holder.style_unfill.setText(stars, 0, 5 - fill);
     }
     @Override
     public int getItemCount() {

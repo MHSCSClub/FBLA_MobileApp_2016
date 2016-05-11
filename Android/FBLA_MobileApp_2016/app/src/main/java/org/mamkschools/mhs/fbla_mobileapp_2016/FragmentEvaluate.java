@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -71,6 +72,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
     private TextView titleLabel;
     private TextView timeLabel;
     private TextView distLabel;
+    private View infoLabel;
 
     private int currentRating;
 
@@ -101,6 +103,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
         titleLabel.setText(R.string.no_pics);
         timeLabel = (TextView) rootView.findViewById(R.id.time_label);
         distLabel = (TextView) rootView.findViewById(R.id.dist_label);
+        infoLabel = rootView.findViewById(R.id.info_label);
 
 
         image = (ImageView) rootView.findViewById(R.id.imageView);
@@ -141,7 +144,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
             int itemId = pics.get(picNumber).entryid;
             String title = pics.get(picNumber).title;
             String user = pics.get(picNumber).username;
-            titleLabel.setText(title.length() > 20 ? title.substring(0, 20) : title);
+            titleLabel.setText(title);
             descriptionLabel.setText(user);
         }
 
@@ -309,6 +312,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
                 for (int i = 0; i < bottomBars.length; i++) {
                     bottomBars[i].setVisibility(i == bar ? View.VISIBLE : View.GONE);
                 }
+                infoLabel.setVisibility(View.VISIBLE);
                 if (bar == 1) {
                     String[] data = getData(picNumber);
                     titleLabel.setText(data[0]);
@@ -317,6 +321,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
                     titleLabel.setText("Is this Professional?");
                 }else{
                     titleLabel.setText("No More Pictures");
+                    infoLabel.setVisibility(View.INVISIBLE);
                 }
             }
         }, 300);
@@ -354,9 +359,27 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View dialogLayout = inflater.inflate(R.layout.dialog_rate, null);
         dialog.setView(dialogLayout);
-        dialog.setTitle("How does my tie look?"); //Question goes here
+        dialog.setTitle(pics.get(picNumber).title); //Question goes here
 
         dialog.show();
+
+        RatingBar userRating = (RatingBar)  dialog.findViewById(R.id.user_rate);
+        userRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                String feedback [] = {"Hate it!", "Dislike it.", "It's OK.", "Like it.", "Love it!"};
+                int irate = Math.round(rating) - 1;
+                TextView star_level = (TextView) dialog.findViewById(R.id.star_level);
+                star_level.setVisibility(View.VISIBLE);
+                star_level.setText(feedback[irate]);
+                if(irate <= 2) {
+                    star_level.setTextColor(Color.parseColor("#ED332D"));
+                } else {
+                    star_level.setTextColor(Color.parseColor("#4CAF50"));
+                }
+            }
+        });
     }
 
     private Map<String, String> getRateParams(Map<String, String> params, Dialog dialogView) {

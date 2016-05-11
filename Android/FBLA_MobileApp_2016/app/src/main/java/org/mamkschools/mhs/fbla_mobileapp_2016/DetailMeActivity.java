@@ -29,6 +29,7 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.task.Logout;
 import org.mamkschools.mhs.fbla_mobileapp_2016.task.VerifyAuthcode;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
@@ -163,7 +164,7 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
                     if(!style.equals("null")) {
                         ret.add(new CommentItem(
                                 comment.equals("null") ? "No comment" : comment, user, style));
-                        totalStyle += Math.round(Integer.parseInt(style)/ 2f);
+                        totalStyle += Integer.parseInt(style);
                         Util.log(style);
                         totalComments++;
                     }
@@ -199,14 +200,15 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
 
                     CommentItemAdapter adapter = new CommentItemAdapter(ret, getApplicationContext());
                     commentList.setAdapter(adapter);
-                    double avg = Math.round(totalStyle/totalComments);
-                    avgStar.setText("" + avg);
+                    double avg = (float) totalStyle/totalComments;
+                    DecimalFormat df = new DecimalFormat("#.0");
+                    avgStar.setText(df.format(avg));
                 } else {
                     //noinspection ConstantConditions
                     findViewById(R.id.nocomment_text).setVisibility(View.VISIBLE);
                     //noinspection ConstantConditions
                     findViewById(R.id.commentList).setVisibility(View.GONE);
-                    avgStar.setText("NA");
+                    avgStar.setText("N/A");
                 }
             } else {
                 Util.log("Did not work_111");

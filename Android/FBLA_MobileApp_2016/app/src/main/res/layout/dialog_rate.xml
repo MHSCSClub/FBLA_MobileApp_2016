@@ -22,7 +22,8 @@
         android:gravity="center"
         android:textSize="18sp"
         android:textColor="#4CAF50"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:visibility="invisible"/>
 
     <AutoCompleteTextView
         android:id="@+id/user_comment"

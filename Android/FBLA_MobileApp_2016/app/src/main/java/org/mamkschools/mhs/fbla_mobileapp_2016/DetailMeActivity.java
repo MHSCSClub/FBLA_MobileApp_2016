@@ -24,6 +24,8 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureHelper;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Util;
+import org.mamkschools.mhs.fbla_mobileapp_2016.task.Logout;
+import org.mamkschools.mhs.fbla_mobileapp_2016.task.VerifyAuthcode;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ import java.util.ArrayList;
  * Has detailed + comment stuffs
  * Created by jackphillips on 2/26/16.
  */
-public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, VerifyAuthcode.InvalidAuthcodeListener {
 
     private ImageView myImage;
     private GetPicture picDownload;
@@ -60,6 +62,8 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
         refreshLayout.setOnRefreshListener(this);
         progressBar = (ProgressBar) findViewById(R.id.detail_progress);
         assert progressBar != null;
+
+        new VerifyAuthcode(this, this);
 
         showProgress(true);
 
@@ -93,11 +97,22 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
 
     @Override
     public void onRefresh() {
+        new VerifyAuthcode(this, this);
         refreshing = 2;
         picDownload = new GetPicture();
         picDownload.execute(pid);
         comDownload = new GetComments();
         comDownload.execute(pid);
+    }
+
+    @Override
+    public void onAuthcodeInvalid() {
+        new Logout(this, null);
+    }
+
+    @Override
+    public void onAuthcodeValid() {
+
     }
 
 

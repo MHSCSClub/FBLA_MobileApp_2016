@@ -50,6 +50,8 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureItemAdapter;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SimpleDividerItemDecoration;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Util;
+import org.mamkschools.mhs.fbla_mobileapp_2016.task.Logout;
+import org.mamkschools.mhs.fbla_mobileapp_2016.task.VerifyAuthcode;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -67,7 +69,7 @@ import java.util.TimeZone;
 import im.delight.android.location.SimpleLocation;
 
 
-public class FragmentMe extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener{
+public class FragmentMe extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, VerifyAuthcode.InvalidAuthcodeListener {
     //Some static request number that is attached to the uploader activity
     private static final int PERMISSION_REQUEST_CODE = 2;
     public FloatingActionButton fab;
@@ -89,6 +91,7 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        new VerifyAuthcode(getContext(), this);
         super.onViewCreated(view, savedInstanceState);
 
         fab = (FloatingActionButton) getActivity().findViewById(R.id.cameraButton);
@@ -157,6 +160,7 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
 
     @Override
     public void onRefresh() {
+        new VerifyAuthcode(getContext(), this);
         picGet = new GetMyPictureInfo().execute();
     }
 
@@ -305,6 +309,16 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
             // other 'case' lines to check for other
             // permissions this app might request
         }
+    }
+
+    @Override
+    public void onAuthcodeInvalid() {
+        new Logout(getContext(), null);
+    }
+
+    @Override
+    public void onAuthcodeValid() {
+
     }
 
 

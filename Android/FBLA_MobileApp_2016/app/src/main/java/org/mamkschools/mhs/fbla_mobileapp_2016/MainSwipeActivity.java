@@ -26,6 +26,7 @@ import android.text.Html;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -40,6 +41,9 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.task.Logout;
 import java.io.File;
 
 import im.delight.android.location.SimpleLocation;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 public class MainSwipeActivity extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener, Logout.LogoutCompletionListener{
 

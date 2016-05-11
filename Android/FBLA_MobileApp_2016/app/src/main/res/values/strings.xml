@@ -51,6 +51,23 @@
         industrial work shoes, hiking boots, bare feet, or over-the-knee boots; athletic wear, including sneakers;
         hats or flannel fabric clothing; bolo ties; visible foundation garments.
     </string>
+
+    <!-- Tutorial Strings -->
+    <string name="tut_login">Welcome to "Is this Professional!" In order to use our app you need to create an account. An internet connection is required.</string>
+
+    <string name="tut_eval">This is "Evaluate" screen, where you help out other users by evaluating pictures and making sure they meet the FBLA guidelines.</string>
+    <string name="tut_up">Press this button to show that the outfit is professional and meets dress code guidelines</string>
+    <string name="tut_down">Press this button to show that the outfit is NOT professional and doesn\'t meets dress code guidelines</string>
+    <string name="tut_dress">Press this button to pull up official dresscode guidelines</string>
+    <string name="tut_more">Press this for hidden actions, including logout</string>
+
+    <string name="tut_back">Press this to go back to the rating screen</string>
+    <string name="tut_comment">Press this to leave a helpful comment or suggestion</string>
+    <string name="tut_forward">Press this to go to the next picture and skip leaving a comment</string>
+
+    <string name="tut_me">This is the "Me" screen, where you can upload your own image and view feedback on your own outfits.</string>
+    <string name="tut_upload"> Press this to upload a picture or outfit.</string>
+
     <string name="more_info">More Info</string>
     <string name="ok">OK</string>
 

@@ -63,10 +63,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
 import im.delight.android.location.SimpleLocation;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 
 public class FragmentMe extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, VerifyAuthcode.InvalidAuthcodeListener {
@@ -184,6 +187,27 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
         } else {
             openImageIntent();
         }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            showMeTutorial();
+        }
+    }
+
+    public void showMeTutorial() {
+        MaterialShowcaseSequence seq = new MaterialShowcaseSequence(getActivity(), "ME_TUTORIAL");
+
+        Context context = getActivity().getApplicationContext();
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(500);
+
+        seq.setConfig(config);
+        seq.addSequenceItem(getActivity().findViewById(R.id.tab_layout), context.getString(R.string.tut_me), "GOT IT");
+        seq.addSequenceItem(getActivity().findViewById(R.id.cameraButton), context.getString(R.string.tut_upload), "GOT IT");
+        seq.start();
     }
 
     private void showImageDialog(final Bitmap previewBitmap){

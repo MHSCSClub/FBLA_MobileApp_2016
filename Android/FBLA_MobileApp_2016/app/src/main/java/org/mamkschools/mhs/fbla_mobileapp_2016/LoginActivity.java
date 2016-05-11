@@ -31,6 +31,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.*;
 
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+
 /**
  * A login screen that offers login via username/password.
  */
@@ -97,6 +99,14 @@ public class LoginActivity extends AppCompatActivity {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        //Tutorial
+        new MaterialShowcaseView.Builder(this)
+                .setTarget(findViewById(R.id.imageView2))
+                .setDismissText("GOT IT")
+                .setContentText(getApplicationContext().getString(R.string.tut_login))
+                .singleUse("TUT_LOGIN")
+                .show();
     }
 
     @Override

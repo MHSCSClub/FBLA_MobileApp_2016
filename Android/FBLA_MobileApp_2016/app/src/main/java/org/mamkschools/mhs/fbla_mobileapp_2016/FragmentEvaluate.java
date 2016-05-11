@@ -4,6 +4,7 @@
 
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -49,6 +50,9 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import im.delight.android.location.SimpleLocation;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 /**
  * Fragment for evaluating pictures. This is on the main screen when the app is launched.
@@ -130,9 +134,6 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
         bottomBars[0] = (RelativeLayout) rootView.findViewById(R.id.primary_layout);
         bottomBars[1] = (RelativeLayout) rootView.findViewById(R.id.comment_layout);
         bottomBars[2] = (RelativeLayout) rootView.findViewById(R.id.refresh_layout);
-
-
-
         runFetch(picNumber);
 
         if(pics.size() > 0 && picNumber < pics.size()) {
@@ -145,8 +146,38 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
         }
 
         hideKeyboard();
+        showTutorialRate();
 
         return rootView;
+    }
+
+    private void showTutorialRate() {
+        MaterialShowcaseSequence seq = new MaterialShowcaseSequence(getActivity(), "TUT_RATE");
+
+        Context context = getActivity().getApplicationContext();
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(500);
+
+        seq.setConfig(config);
+        seq.addSequenceItem(getActivity().findViewById(R.id.tab_layout), context.getString(R.string.tut_eval), "GOT IT");
+        seq.addSequenceItem(rootView.findViewById(R.id.up_button), context.getString(R.string.tut_up), "GOT IT");
+        seq.addSequenceItem(rootView.findViewById(R.id.down_button), context.getString(R.string.tut_down), "GOT IT");
+        seq.addSequenceItem(rootView.findViewById(R.id.dress_button), context.getString(R.string.tut_dress), "GOT IT");
+        seq.addSequenceItem(getActivity().findViewById(R.id.more_stuff), context.getString(R.string.tut_more), "GOT IT");
+        seq.start();
+    }
+    private void showTutorialComment() {
+        MaterialShowcaseSequence seq = new MaterialShowcaseSequence(getActivity(), "TUT_COMMENT");
+
+        Context context = getActivity().getApplicationContext();
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(500);
+
+        seq.setConfig(config);
+        seq.addSequenceItem(rootView.findViewById(R.id.back_button), context.getString(R.string.tut_back), "GOT IT");
+        seq.addSequenceItem(rootView.findViewById(R.id.comment_button), context.getString(R.string.tut_comment), "GOT IT");
+        seq.addSequenceItem(rootView.findViewById(R.id.cancel_button), context.getString(R.string.tut_forward), "GOT IT");
+        seq.start();
     }
 
     public int getPictureId(int picture){
@@ -163,10 +194,10 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
             data[1] = pics.get(picture).username;
             double hours = pics.get(picture).hours;
             double miles = pics.get(picture).dist;
-            data[2] = ((int) hours) + (hours == 1 ? " hour ago, " : " hours ago, ");
+            data[2] = ((int) hours) + (hours == 1 ? " hour ago" : " hours ago");
             if(hours >= 24){
                 int days = (int) hours/24;
-                data[2] = days + (days == 1 ? " day ago, " : " days ago, ");
+                data[2] = days + (days == 1 ? " day ago, " : " days ago");
             }
             if(miles > 100){
                 miles = 50;
@@ -277,11 +308,11 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
             public void run() {
                 for (int i = 0; i < bottomBars.length; i++) {
                     bottomBars[i].setVisibility(i == bar ? View.VISIBLE : View.GONE);
-
                 }
                 if (bar == 1) {
                     String[] data = getData(picNumber);
-                    titleLabel.setText(data[0].length() > 20 ? data[0].substring(0, 20) : data[0]);
+                    titleLabel.setText(data[0]);
+                    showTutorialComment();
                 } else if (bar == 0) {
                     titleLabel.setText("Is this Professional?");
                 }else{

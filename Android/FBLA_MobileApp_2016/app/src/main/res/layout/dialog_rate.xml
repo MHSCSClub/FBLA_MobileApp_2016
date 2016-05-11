@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RatingBar
-        android:layout_marginTop="15dp"
+        android:id="@+id/user_rate"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
-        android:id="@+id/user_rate"
         android:layout_gravity="center_horizontal"
-        android:progressDrawable="@drawable/custom_ratingbar"
+        android:layout_marginTop="15dp"
         android:numStars="5"
+        android:progressDrawable="@drawable/custom_ratingbar"
         android:stepSize="1" />
 
     <TextView
+        android:id="@+id/star_level"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/star_level"
         android:layout_marginTop="5dp"
-        android:text="Like it!"
         android:gravity="center"
-        android:textSize="18sp"
+        android:text="Like it!"
         android:textColor="#4CAF50"
+        android:textSize="18sp"
         android:textStyle="bold"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
+
 
     <AutoCompleteTextView
         android:id="@+id/user_comment"
@@ -34,8 +36,9 @@
         android:layout_marginTop="10dp"
         android:gravity="top"
         android:hint="Comment"
-        android:inputType="textMultiLine"
+        android:inputType="textMultiLine|textCapSentences"
+        android:lines="3"
         android:maxLength="800"
-        android:minLines="3"
-        android:lines="3" />
+        android:minLines="3" />
+
 </LinearLayout>

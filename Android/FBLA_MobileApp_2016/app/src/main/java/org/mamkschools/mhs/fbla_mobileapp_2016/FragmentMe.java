@@ -201,10 +201,6 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
         MaterialShowcaseSequence seq = new MaterialShowcaseSequence(getActivity(), "ME_TUTORIAL");
 
         Context context = getActivity().getApplicationContext();
-        ShowcaseConfig config = new ShowcaseConfig();
-        config.setDelay(500);
-
-        seq.setConfig(config);
         seq.addSequenceItem(getActivity().findViewById(R.id.tab_layout), context.getString(R.string.tut_me), "GOT IT");
         seq.addSequenceItem(getActivity().findViewById(R.id.cameraButton), context.getString(R.string.tut_upload), "GOT IT");
         seq.start();

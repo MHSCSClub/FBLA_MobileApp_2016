@@ -13,8 +13,8 @@
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_username">Username is too short</string>
-    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_invalid_username">Username must be five or more characters</string>
+    <string name="error_invalid_password">This password must be eight or more characters</string>
     <string name="error_incorrect_password">The username or password is incorrect. If you do not have an account, please register</string>
     <string name="error_user_exists">User already exists, please try logging in or choose another username.</string>
     <string name="registration_complete">Account registered, now logging in</string>
@@ -62,11 +62,11 @@
     <string name="tut_more">Press this for hidden actions, including logout</string>
 
     <string name="tut_back">Press this to go back to the rating screen</string>
-    <string name="tut_comment">Press this to leave a helpful comment or suggestion</string>
+    <string name="tut_comment">Press this to leave a helpful comment or suggestion that answers the user\'s question</string>
     <string name="tut_forward">Press this to go to the next picture and skip leaving a comment</string>
 
-    <string name="tut_me">This is the "Me" screen, where you can upload your own image and view feedback on your own outfits.</string>
-    <string name="tut_upload"> Press this to upload a picture or outfit.</string>
+    <string name="tut_me">This is the Me screen, where you can upload your own image and view feedback on your own outfits.</string>
+    <string name="tut_upload"> Press this to upload a picture or outfit. Note that "Google Camera" is not supported.</string>
 
     <string name="more_info">More Info</string>
     <string name="ok">OK</string>

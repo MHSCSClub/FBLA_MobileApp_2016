@@ -149,7 +149,6 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
         }
 
         hideKeyboard();
-        showTutorialRate();
 
         return rootView;
     }
@@ -158,10 +157,6 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
         MaterialShowcaseSequence seq = new MaterialShowcaseSequence(getActivity(), "TUT_RATE");
 
         Context context = getActivity().getApplicationContext();
-        ShowcaseConfig config = new ShowcaseConfig();
-        config.setDelay(500);
-
-        seq.setConfig(config);
         seq.addSequenceItem(getActivity().findViewById(R.id.tab_layout), context.getString(R.string.tut_eval), "GOT IT");
         seq.addSequenceItem(rootView.findViewById(R.id.up_button), context.getString(R.string.tut_up), "GOT IT");
         seq.addSequenceItem(rootView.findViewById(R.id.down_button), context.getString(R.string.tut_down), "GOT IT");
@@ -173,10 +168,6 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
         MaterialShowcaseSequence seq = new MaterialShowcaseSequence(getActivity(), "TUT_COMMENT");
 
         Context context = getActivity().getApplicationContext();
-        ShowcaseConfig config = new ShowcaseConfig();
-        config.setDelay(500);
-
-        seq.setConfig(config);
         seq.addSequenceItem(rootView.findViewById(R.id.back_button), context.getString(R.string.tut_back), "GOT IT");
         seq.addSequenceItem(rootView.findViewById(R.id.comment_button), context.getString(R.string.tut_comment), "GOT IT");
         seq.addSequenceItem(rootView.findViewById(R.id.cancel_button), context.getString(R.string.tut_forward), "GOT IT");
@@ -273,11 +264,13 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
             case R.id.up_button:
                 currentRating = 1;
                 Util.log("up");
+                Toast.makeText(getContext(), "Yes, this outfit is professional", Toast.LENGTH_SHORT).show();
                 switchBottomBar(1);
                 break;
             case R.id.down_button:
                 currentRating = 0;
                 Util.log("down");
+                Toast.makeText(getContext(), "No, this outfit is not professional", Toast.LENGTH_SHORT).show();
                 switchBottomBar(1);
                 break;
             case R.id.back_button:
@@ -316,9 +309,10 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
                 if (bar == 1) {
                     String[] data = getData(picNumber);
                     titleLabel.setText(data[0]);
-                    showTutorialComment();
+                    if(pics.size() > 0)
+                        showTutorialComment();
                 } else if (bar == 0) {
-                    titleLabel.setText("Is this Professional?");
+                      titleLabel.setText("Is this Professional?");
                 }else{
                     titleLabel.setText("No More Pictures");
                     infoLabel.setVisibility(View.INVISIBLE);
@@ -352,6 +346,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
                     postParams.put("comment", comment);
                 }
                 new SubmitRating().execute(postParams);
+                Toast.makeText(getContext(), "Comment submitted", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
@@ -572,6 +567,8 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
 
             pics = pictures;
             runOnce = pics.size() > 0;
+            if(pics.size() > 0)
+                showTutorialRate();
             picNumber = 0;
             runFetch(picNumber);
         }

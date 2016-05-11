@@ -94,7 +94,7 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
                     percentLabel.setTextColor(Color.parseColor("#2E7D32"));
                 }
             }else{
-                percentLabel.setText("NA");
+                percentLabel.setText("N/A");
             }
             viewsLabel.setText("" + views);
             setTitle(imgTitle);

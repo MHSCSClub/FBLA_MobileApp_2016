@@ -45,7 +45,6 @@ public class PictureDialog extends Dialog implements View.OnClickListener{
         bigPicture.setImageBitmap(image);
         imageTitle.setText(imageTitleText);
         imageLayout.setOnClickListener(this);
-        Toast.makeText(getContext(), R.string.tap_exit, Toast.LENGTH_SHORT).show();
     }
 
     @Override

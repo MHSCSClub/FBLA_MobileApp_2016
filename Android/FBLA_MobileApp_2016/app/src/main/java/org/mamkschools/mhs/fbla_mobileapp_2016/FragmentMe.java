@@ -400,7 +400,9 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
                     long different = new Date().getTime() -
                             d.getTime();
                     long elapsedHours = (different / (1000 * 60 * 60)) - hours;
-
+                    if(elapsedHours < 0){
+                        elapsedHours = 0;
+                    }
                     ret.add(new PictureItem(title, elapsedHours, likes, dislikes, views, pid));
                 }
             }catch (Exception e){

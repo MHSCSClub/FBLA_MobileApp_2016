@@ -203,6 +203,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
             picDl = new GetPicture();
             picDl.execute(picID);
         }else{
+            showProgress(false);
             image.setImageResource(R.drawable.finish);
             if(runOnce) {
                 image.setImageResource(R.drawable.finish);

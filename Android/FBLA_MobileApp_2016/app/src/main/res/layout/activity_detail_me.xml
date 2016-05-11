@@ -53,6 +53,19 @@
                             android:text="6"
                             android:textColor="#2E7D32"
                             android:textSize="30sp"
+                            android:textStyle="bold"
+                            android:visibility="gone"/>
+
+                        <TextView
+                            android:id="@+id/percent_label"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="bottom|center_horizontal"
+                            android:includeFontPadding="false"
+                            android:text="80%"
+                            android:textColor="#2E7D32"
+                            android:textSize="30sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -90,7 +103,18 @@
                             android:layout_weight="1"
                             android:gravity="center_horizontal"
                             android:includeFontPadding="false"
-                            android:text="Likes"
+                            android:text="Points"
+                            android:textColor="#757575"
+                            android:textSize="13sp"
+                            android:visibility="gone"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:includeFontPadding="false"
+                            android:text="Like it"
                             android:textColor="#757575"
                             android:textSize="13sp" />
 

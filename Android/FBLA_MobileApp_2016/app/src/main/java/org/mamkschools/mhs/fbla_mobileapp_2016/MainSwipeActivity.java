@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -249,9 +250,9 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
-            case LOC_PERM_REQUEST_CODE: {
+            case LOC_PERM_REQUEST_CODE:
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -269,7 +270,9 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
                     startActivity(intent);
                 }
                 return;
-            }
+
+            case FragmentMe.PERMISSION_REQUEST_CODE:
+                myPictures.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
             // other 'case' lines to check for other
             // permissions this app might request

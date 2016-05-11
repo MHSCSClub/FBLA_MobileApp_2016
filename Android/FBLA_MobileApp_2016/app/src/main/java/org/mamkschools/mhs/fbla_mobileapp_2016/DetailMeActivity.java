@@ -154,16 +154,28 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
         protected void onPostExecute(Boolean v) {
             if(v){
                 Util.log("Finished getting my pics");
-                RecyclerView commentList = (RecyclerView) findViewById(R.id.commentList);
+                if(ret.size() != 0) {
+                    //noinspection ConstantConditions
+                    findViewById(R.id.nocomment_text).setVisibility(View.GONE);
 
-                LinearLayoutManager layoutManager=new LinearLayoutManager(getApplicationContext());
-                assert commentList != null;
-                commentList.setLayoutManager(layoutManager);
+                    RecyclerView commentList = (RecyclerView) findViewById(R.id.commentList);
+                    assert commentList != null;
+                    commentList.setVisibility(View.VISIBLE);
 
-                //commentList.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+                    assert commentList != null;
+                    commentList.setLayoutManager(layoutManager);
 
-                CommentItemAdapter adapter = new CommentItemAdapter(ret,getApplicationContext());
-                commentList.setAdapter(adapter);
+                    //commentList.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
+
+                    CommentItemAdapter adapter = new CommentItemAdapter(ret, getApplicationContext());
+                    commentList.setAdapter(adapter);
+                } else {
+                    //noinspection ConstantConditions
+                    findViewById(R.id.nocomment_text).setVisibility(View.VISIBLE);
+                    //noinspection ConstantConditions
+                    findViewById(R.id.commentList).setVisibility(View.GONE);
+                }
             } else {
                 Util.log("Did not work_111");
             }

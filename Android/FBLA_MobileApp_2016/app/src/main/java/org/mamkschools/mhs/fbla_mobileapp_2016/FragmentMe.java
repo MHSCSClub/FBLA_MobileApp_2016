@@ -37,6 +37,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,7 +63,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -71,7 +71,7 @@ import im.delight.android.location.SimpleLocation;
 
 public class FragmentMe extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, VerifyAuthcode.InvalidAuthcodeListener {
     //Some static request number that is attached to the uploader activity
-    private static final int PERMISSION_REQUEST_CODE = 2;
+    public static final int PERMISSION_REQUEST_CODE = 549;
     public FloatingActionButton fab;
     private Uri outputFileUri;
     private static final int PICTURE_REQUEST_CODE = 1;
@@ -79,6 +79,11 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
     private SimpleLocation simpleLocation;
     private ProgressDialog progressDialog;
     private AsyncTask uploadTask;
+    private RecyclerView picList;
+    private TextView noPics;
+    private ProgressBar progressBar;
+
+
 
     private File picLoc;
     private AsyncTask picGet;
@@ -97,12 +102,17 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
         fab = (FloatingActionButton) getActivity().findViewById(R.id.cameraButton);
         fab.setOnClickListener(this);
 
+        //noinspection ConstantConditions
+        picList = (RecyclerView) getView().findViewById(R.id.picList);
+        noPics = (TextView) getView().findViewById(R.id.nopic_text);
+        progressBar = (ProgressBar) getView().findViewById(R.id.view_progress);
+
         swipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.myPicRefresh);
         swipeRefresh.setOnRefreshListener(this);
 
         simpleLocation = new SimpleLocation(getContext());
 
-        picGet = new GetMyPictureInfo().execute();
+        onRefresh();
     }
 
 
@@ -161,6 +171,7 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
     @Override
     public void onRefresh() {
         new VerifyAuthcode(getContext(), this);
+        showProgress(true);
         picGet = new GetMyPictureInfo().execute();
     }
 
@@ -306,6 +317,8 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
                 }
             }
 
+            openImageIntent();
+
             // other 'case' lines to check for other
             // permissions this app might request
         }
@@ -377,17 +390,23 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
 
         @Override
         protected void onPostExecute(Boolean v) {
+            showProgress(false);
             if(v){
-                Util.log("Finished getting my pics");
-                //noinspection ConstantConditions
-                RecyclerView picList = (RecyclerView) getView().findViewById(R.id.picList);
-                LinearLayoutManager layoutManager=new LinearLayoutManager(getContext());
-                picList.setLayoutManager(layoutManager);
+                if(ret.size() != 0) {
+                    Util.log("Finished getting my pics");
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+                    picList.setLayoutManager(layoutManager);
 
-                picList.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
+                    picList.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
 
-                PictureItemAdapter adapter=new PictureItemAdapter(ret,getContext());
-                picList.setAdapter(adapter);
+                    PictureItemAdapter adapter = new PictureItemAdapter(ret, getContext());
+                    picList.setAdapter(adapter);
+                    picList.setVisibility(View.VISIBLE);
+                    noPics.setVisibility(View.GONE);
+                } else {
+                    picList.setVisibility(View.GONE);
+                    noPics.setVisibility(View.VISIBLE);
+                }
             }else{
                 Util.log("Did not work_111");
             }
@@ -454,7 +473,7 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
             }
 
 
-            showProgress(true);
+            showProgressDialog(true);
             try {
                 Bitmap b;
                 {
@@ -483,7 +502,7 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
                 }
                 Toast.makeText(getContext(), "Out of memory, please increase emulator ram or close other apps. If the issue persists, please contact teh developer.", Toast.LENGTH_LONG).show();
             }
-            showProgress(false);
+            showProgressDialog(false);
         }
     }
 
@@ -500,7 +519,7 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
     }
 
 
-    private void showProgress(boolean show){
+    private void showProgressDialog(boolean show){
         if(show){
             progressDialog = ProgressDialog.show(getActivity(), "Loading",
                     "Please wait, uploading picture", true);
@@ -510,6 +529,12 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
         }
     }
 
+
+    private void showProgress(boolean show){
+        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+        noPics.setVisibility(!show ? View.VISIBLE : View.GONE);
+        picList.setVisibility(!show ? View.VISIBLE : View.GONE);
+    }
 
 
     private static class PicUploadParams {
@@ -546,7 +571,7 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
 
         @Override
         protected void onPostExecute(Boolean success) {
-            showProgress(false);
+            showProgressDialog(false);
             if (success) {
                 Util.log("Upload worked");
                 onRefresh();
@@ -578,7 +603,7 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
 
         uploadPic.paramMap.put("geolong", "" + Constants.LONGITUDE);
         uploadPic.paramMap.put("geolat", "" + Constants.LATITUDE);
-        showProgress(true);
+        showProgressDialog(true);
         uploadTask = new PicUpload().execute(uploadPic);
     }
 }

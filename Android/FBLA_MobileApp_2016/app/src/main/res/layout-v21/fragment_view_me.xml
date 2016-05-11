@@ -48,4 +48,20 @@
         app:layout_anchorGravity="bottom|end"
         app:layout_behavior="org.mamkschools.mhs.fbla_mobileapp_2016.lib.FABBehavior" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <ProgressBar android:id="@+id/view_progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="visible"
+            android:padding="100dp"
+            android:layout_marginBottom="60dp"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
+
 </android.support.design.widget.CoordinatorLayout>

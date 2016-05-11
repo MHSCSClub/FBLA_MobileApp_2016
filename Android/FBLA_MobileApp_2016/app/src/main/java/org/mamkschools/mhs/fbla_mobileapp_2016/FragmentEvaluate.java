@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,6 +120,9 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
 
         Button refresh_button = (Button) rootView.findViewById(R.id.refresh_button);
         refresh_button.setOnClickListener(this);
+
+        Button dress_code = (Button) rootView.findViewById(R.id.dress_button);
+        dress_code.setOnClickListener(this);
 
         progressBar = (ProgressBar) rootView.findViewById(R.id.eval_progress);
         evalContent = (ScrollView) rootView.findViewById(R.id.eval_content);
@@ -244,7 +248,6 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
                 switchBottomBar(0);
                 break;
             case R.id.comment_button:
-                switchBottomBar(0);
                 postParams.put("like", "" + Integer.toString(currentRating));
                 getComment(postParams);
                 break;
@@ -259,6 +262,9 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
             case R.id.imageView:
                 new PictureDialog(getContext(),
                         Constants.imageBitmap, titleLabel.getText().toString()).show();
+                break;
+            case R.id.dress_button:
+                showDressCode();
                 break;
         }
     }
@@ -286,7 +292,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
         builder.setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which){
-                new SubmitRating().execute(postParams);
+
             }
         });
         builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
@@ -529,5 +535,25 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
         evalContent.setVisibility(show ? View.GONE : View.VISIBLE);
         progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
     }
+    private void showDressCode(){
+        //Create an alert dialog builder for a new alert dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
+        //Set the title and message
+        builder.setIcon(R.mipmap.ic_launcher)
+                .setMessage(Html.fromHtml(getContext().getString(R.string.dress_code_dialog)))
+                .setTitle("FBLA Official Dress Code");
+
+        //Add an OK button
+        builder.setPositiveButton(R.string.ok,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+        //Create the actual dialog from the builder, then show it.
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 }

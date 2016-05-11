@@ -205,6 +205,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
         }else{
             showProgress(false);
             image.setImageResource(R.drawable.finish);
+            switchBottomBar(2);
             if(runOnce) {
                 image.setImageResource(R.drawable.finish);
                 new GetPictureInfo().execute((Void) null);
@@ -283,6 +284,8 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
                     titleLabel.setText(data[0].length() > 20 ? data[0].substring(0, 20) : data[0]);
                 } else if (bar == 0) {
                     titleLabel.setText("Is this Professional?");
+                }else{
+                    titleLabel.setText("No More Pictures");
                 }
             }
         }, 300);

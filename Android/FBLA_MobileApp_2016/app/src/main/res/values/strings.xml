@@ -56,6 +56,8 @@
 
     <string name="hours_ago" formatted="false">%d hours ago</string>
     <string name="hour_ago" formatted="false">%d hour ago</string>
+    <string name="day_ago" formatted="false">%d day ago</string>
+    <string name="days_ago" formatted="false">%d days ago</string>
 
     <string name="title_activity_legalinfo">Legal Info</string>
     <string name="no_pics">No More Pictures</string>

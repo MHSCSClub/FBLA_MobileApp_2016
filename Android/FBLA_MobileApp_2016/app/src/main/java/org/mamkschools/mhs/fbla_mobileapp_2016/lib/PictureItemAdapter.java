@@ -35,10 +35,23 @@ public class PictureItemAdapter extends RecyclerView.Adapter<PictureItemAdapter.
         holder.rateCount.setText(Integer.toString(Math.abs(pictureList.get(position).getRate())));
         holder.rateImage.setImageResource(pictureList.get(position).getRate() >= 0 ?
                 R.drawable.ic_thumb_up_green_48dp : R.drawable.ic_thumb_down_rd_48dp);
-        holder.hours.setText(String.format(holder.hours.getContext()
-                .getString(pictureList.get(position).getTime() == 1 ?
-                        R.string.hour_ago : R.string.hours_ago)
-                    , pictureList.get(position).getTime()));
+        long time = pictureList.get(position).getTime();
+        int strRes;
+        if(time == 1){
+            strRes = R.string.hour_ago;
+        } else if(time == 24){
+            strRes = R.string.day_ago;
+        } else if(time > 24){
+            strRes = R.string.days_ago;
+            time %= 24;
+        } else {
+            strRes = R.string.hours_ago;
+            time %= 24;
+        }
+        holder.hours.setText(String.format(holder.hours.getContext().getString(strRes), time));
+
+
+
     }
     @Override
     public int getItemCount() {

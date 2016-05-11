@@ -26,6 +26,8 @@
                 android:adjustViewBounds="true"
                 android:cropToPadding="true"
                 android:paddingLeft="100dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:paddingRight="100dp" />
 
             <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
@@ -33,6 +35,8 @@
 
                 <AutoCompleteTextView android:id="@+id/username" android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:hint="Username"
+                    android:nextFocusUp="@id/username"
+                    android:nextFocusLeft="@id/username"
                     android:inputType="text" android:maxLines="1"
                     android:singleLine="true" />
 

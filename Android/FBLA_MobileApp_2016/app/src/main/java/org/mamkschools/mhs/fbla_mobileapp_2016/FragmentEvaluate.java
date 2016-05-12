@@ -254,7 +254,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
         int pid = getPictureId(picNumber);
         postParams.put("pid", "" + pid);
 
-        if(pid == -1){
+        if(pid == -1 && (v.getId() != R.id.refresh_button)){
             Toast.makeText(getContext(), "No pictures left to rate", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -287,6 +287,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
                 break;
             case R.id.refresh_button:
                 new GetPictureInfo().execute((Void) null);
+                Util.log("REFRESH");
                 break;
             case R.id.imageView:
                 new PictureDialog(getContext(),
@@ -315,7 +316,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
                       titleLabel.setText("Is this Professional?");
                 }else{
                     titleLabel.setText("No More Pictures");
-                    infoLabel.setVisibility(View.INVISIBLE);
+                    infoLabel.setVisibility(View.GONE);
                 }
             }
         }, 300);
@@ -569,6 +570,8 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
             runOnce = pics.size() > 0;
             if(pics.size() > 0)
                 showTutorialRate();
+            else
+                Toast.makeText(getContext(), "No pictures left to rate", Toast.LENGTH_SHORT).show();
             picNumber = 0;
             runFetch(picNumber);
         }

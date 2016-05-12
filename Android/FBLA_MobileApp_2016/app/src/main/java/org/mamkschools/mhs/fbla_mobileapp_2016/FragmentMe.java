@@ -10,9 +10,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Point;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -485,8 +488,6 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
                 isCamera = action != null && action.equals(MediaStore.ACTION_IMAGE_CAPTURE);
             }
 
-
-
             if (!isCamera) {
                 outputFileUri = data.getData();
                 Util.log("Using data.getData");
@@ -494,20 +495,47 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
                 Util.log("Using filename");
             }
 
-
             showProgressDialog(true);
             try {
                 Bitmap b;
+                Matrix matrix = new Matrix();
+                int orientation = -1;
                 {
                     byte[] imageBytes = getBytes(getActivity().getContentResolver().openInputStream(outputFileUri));
+                    ExifInterface ei = new ExifInterface(outputFileUri.getPath());
+                    orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+                    Util.log("Orient: " + orientation);
+
+                    switch (orientation) {
+                        case ExifInterface.ORIENTATION_ROTATE_90:
+                            matrix.postRotate(90);
+                            Util.log("Rotate 90");
+                            break;
+                        case ExifInterface.ORIENTATION_ROTATE_180:
+                            matrix.postRotate(180);
+                            Util.log("Rotate 180");
+                            break;
+                        case ExifInterface.ORIENTATION_ROTATE_270:
+                            matrix.postRotate(270);
+                            Util.log("Rotate 270");
+                            break;
+                        default:
+                            matrix.postRotate(0);
+                            Util.log("No rotate");
+                    }
+
                     b = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                 }
-
 
                 int maxDim = Math.max(b.getWidth(), b.getHeight());
                 try {
                     b = Bitmap.createScaledBitmap(b, Util.map(b.getWidth(), 0, maxDim, 0, 4096),
                             Util.map(b.getHeight(), 0, maxDim, 0, 4096), false);
+
+                    //Rotating
+                    b = Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(), matrix, true);
+
                 } catch (OutOfMemoryError outOfMemoryError){
                     Util.log("Out of memory with resize, skipping resize!");
                     outOfMemoryError.printStackTrace();

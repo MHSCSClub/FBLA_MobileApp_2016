@@ -85,6 +85,21 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
     private ScrollView evalContent;
     private ProgressBar progressBar;
 
+    private enum Bar {
+        RATE(0), COMMENT(1), REFRESH(2);
+
+        private final int value;
+        private Bar(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+    private Bar currentBar = Bar.RATE;
+    private boolean user_visible = false;
+
     public static FragmentEvaluate newInstance(int picNumber, File location, SimpleLocation simpleLocation) {
         FragmentEvaluate fragment = new FragmentEvaluate();
         fragment.picNumber = picNumber;
@@ -197,6 +212,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
                 miles = 50;
             }
             data[3] = ((int) miles) + (miles == 1 ? " mile away" : " miles away");
+            Util.log(data[3]);
             return data;
         }
         data[0] = "No More Pictures";
@@ -222,7 +238,8 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
         descriptionLabel.setText(data[1]);
         timeLabel.setText(data[2]);
         distLabel.setText(data[3]);
-        switchBottomBar(0);
+        Util.log("Data " + data[0] + " " + data[1] + " " + data[2] + " " + data[3]);
+        switchBottomBar(Bar.RATE);
         if(picID > 0) {
             showProgress(true);
             picDl = new GetPicture();
@@ -230,11 +247,11 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
         }else{
             showProgress(false);
             image.setImageResource(R.drawable.finish);
-            switchBottomBar(2);
+            switchBottomBar(Bar.REFRESH);
             if(runOnce) {
                 image.setImageResource(R.drawable.finish);
                 new GetPictureInfo().execute((Void) null);
-                switchBottomBar(2);
+                switchBottomBar(Bar.REFRESH);
                 runOnce = false;
             }
         }
@@ -265,23 +282,23 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
                 currentRating = 1;
                 Util.log("up");
                 Toast.makeText(getContext(), "Yes, this outfit is professional", Toast.LENGTH_SHORT).show();
-                switchBottomBar(1);
+                switchBottomBar(Bar.COMMENT);
                 break;
             case R.id.down_button:
                 currentRating = 0;
                 Util.log("down");
                 Toast.makeText(getContext(), "No, this outfit is not professional", Toast.LENGTH_SHORT).show();
-                switchBottomBar(1);
+                switchBottomBar(Bar.COMMENT);
                 break;
             case R.id.back_button:
-                switchBottomBar(0);
+                switchBottomBar(Bar.RATE);
                 break;
             case R.id.comment_button:
                 postParams.put("like", "" + Integer.toString(currentRating));
                 getComment(postParams);
                 break;
             case R.id.cancel_button:
-                switchBottomBar(0);
+                switchBottomBar(Bar.RATE);
                 postParams.put("like", Integer.toString(currentRating));
                 new SubmitRating().execute(postParams);
                 break;
@@ -298,28 +315,47 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
                 break;
         }
     }
-    private void switchBottomBar(final int bar) {
+    private void switchBottomBar(final Bar type) {
+        switchBottomBar(type, 300);
+    }
+
+    private void switchBottomBar(final Bar type, int delay) {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 for (int i = 0; i < bottomBars.length; i++) {
-                    bottomBars[i].setVisibility(i == bar ? View.VISIBLE : View.GONE);
+                    bottomBars[i].setVisibility(i == type.getValue() ? View.VISIBLE : View.GONE);
                 }
                 infoLabel.setVisibility(View.VISIBLE);
-                if (bar == 1) {
+                if (type == Bar.COMMENT) {
                     String[] data = getData(picNumber);
                     titleLabel.setText(data[0]);
                     if(pics.size() > 0)
                         showTutorialComment();
-                } else if (bar == 0) {
+                } else if (type == Bar.RATE) {
                       titleLabel.setText("Is this Professional?");
                 }else{
                     titleLabel.setText("No More Pictures");
                     infoLabel.setVisibility(View.GONE);
                 }
             }
-        }, 300);
+        }, delay);
+        currentBar = type;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        user_visible = isVisibleToUser;
+    }
+
+    public boolean onBackPressed() {
+        if(user_visible && pics.size() > 0 && currentBar == Bar.COMMENT) {
+            switchBottomBar(Bar.RATE, 0);
+            return true;
+        }
+        return false;
     }
 
     private void getComment(final Map<String, String> postParams){

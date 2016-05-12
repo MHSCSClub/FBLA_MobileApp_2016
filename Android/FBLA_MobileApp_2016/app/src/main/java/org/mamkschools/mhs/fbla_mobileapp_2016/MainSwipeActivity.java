@@ -253,6 +253,13 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
     }
 
     @Override
+    public void onBackPressed() {
+        if(((FragmentEvaluate) evaluatePictures).onBackPressed())
+            return;
+        super.onBackPressed();
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {

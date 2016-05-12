@@ -44,7 +44,7 @@
                     android:textColor="#000000"
                     android:textSize="35sp" />
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/info_label"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
@@ -67,11 +67,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginRight="10dp"
-                        android:layout_toRightOf="@+id/by_label"
                         android:gravity="bottom"
                         android:includeFontPadding="false"
-                        android:paddingLeft="3dp"
-                        android:text="Username"
+                        android:paddingLeft="2dp"
+                        android:text="admin"
                         android:textColor="#757575"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -81,7 +80,6 @@
                         android:layout_width="20dp"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toRightOf="@+id/description_label"
                         android:adjustViewBounds="false"
                         android:src="@drawable/ic_alarm_black_48dp" />
 
@@ -89,10 +87,9 @@
                         android:id="@+id/time_label"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginRight="10dp"
-                        android:layout_toRightOf="@+id/time_img"
+                        android:layout_marginRight="8dp"
                         android:gravity="bottom"
-                        android:paddingLeft="5dp"
+                        android:paddingLeft="4dp"
                         android:text="4 hours ago"
                         android:textColor="#757575"
                         android:textSize="15sp" />
@@ -102,7 +99,6 @@
                         android:layout_width="20dp"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toRightOf="@+id/time_label"
                         android:adjustViewBounds="false"
                         android:src="@drawable/ic_location_on_black_48dp" />
 
@@ -111,14 +107,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_centerVertical="true"
-                        android:layout_toRightOf="@+id/dist_img"
                         android:gravity="bottom"
                         android:paddingLeft="2dp"
-                        android:text="3 miles away"
+                        android:text="50 miles away"
                         android:textColor="#757575"
                         android:textSize="15sp" />
 
-                </RelativeLayout>
+                </LinearLayout>
 
             </RelativeLayout>
 
@@ -363,7 +358,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
         <ProgressBar android:id="@+id/eval_progress"
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"

@@ -212,7 +212,15 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
                 miles = 50;
             }
             data[3] = ((int) miles) + (miles == 1 ? " mile away" : " miles away");
-            Util.log(data[3]);
+
+            //Length limits
+            if(data[1].length() >= 9)
+                data[3] = ((int) miles ) + " miles";
+
+            if(data[1].length() > 11)
+                data[1] = data[1].substring(0, 10) + '…';
+            Util.log(data[1]);
+
             return data;
         }
         data[0] = "No More Pictures";

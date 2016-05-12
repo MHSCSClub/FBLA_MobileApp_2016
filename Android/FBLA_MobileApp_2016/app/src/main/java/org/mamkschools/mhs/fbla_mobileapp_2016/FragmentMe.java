@@ -118,6 +118,7 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
 
         simpleLocation = new SimpleLocation(getContext());
 
+        showProgress(true);
         onRefresh();
     }
 
@@ -177,7 +178,6 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
     @Override
     public void onRefresh() {
         new VerifyAuthcode(getContext(), this);
-        showProgress(true);
         picGet = new GetMyPictureInfo().execute();
     }
 

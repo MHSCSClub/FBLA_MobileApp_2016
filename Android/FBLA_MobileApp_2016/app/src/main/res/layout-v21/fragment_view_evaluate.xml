@@ -70,7 +70,10 @@
                         android:gravity="bottom"
                         android:includeFontPadding="false"
                         android:paddingLeft="2dp"
-                        android:text="admin"
+                        android:text="fblaadmin"
+                        android:ellipsize="end"
+                        android:maxLength="11"
+                        android:singleLine="true"
                         android:textColor="#757575"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -91,6 +94,7 @@
                         android:gravity="bottom"
                         android:paddingLeft="4dp"
                         android:text="4 hours ago"
+                        android:singleLine="true"
                         android:textColor="#757575"
                         android:textSize="15sp" />
 
@@ -110,6 +114,7 @@
                         android:gravity="bottom"
                         android:paddingLeft="2dp"
                         android:text="50 miles away"
+                        android:singleLine="true"
                         android:textColor="#757575"
                         android:textSize="15sp" />
 

@@ -12,9 +12,11 @@ import android.preference.PreferenceManager;
  */
 public final class Constants {
     //API URL
-    public static final String API_BASE_URL = "https://ec2-52-3-127-219.compute-1.amazonaws.com/fbla2016/api/";
-    //public static final String API_BASE_URL = "https://aakatz3.aakportfolio.com:9084/fbla2016/api/";
-    //public static final String API_BASE_URL = "https://192.168.1.5/fbla2016/api/";
+    //Dev:
+    public static final String API_BASE_URL = "https://ec2-54-152-175-225.compute-1.amazonaws.com/fbla2016/api/";
+    //Prod: public static final String API_BASE_URL = "https://ec2-52-3-127-219.compute-1.amazonaws.com/fbla2016/api/";
+    //Old: public static final String API_BASE_URL = "https://aakatz3.aakportfolio.com:9084/fbla2016/api/";
+    //Demo: public static final String API_BASE_URL = "https://192.168.1.5/fbla2016/api/";
 
     //Dress code link
     public static final String DRESS_CODE = "http://www.fbla-pbl.org/about-fbla/#dress";

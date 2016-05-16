@@ -137,7 +137,7 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
 
     @Override
     public void onAuthcodeValid() {
-
+        //We don't need to do anything...
     }
 
 
@@ -193,7 +193,6 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
                     commentList.setVisibility(View.VISIBLE);
 
                     LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-                    assert commentList != null;
                     commentList.setLayoutManager(layoutManager);
 
                     //commentList.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));

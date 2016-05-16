@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -289,9 +290,10 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
             // permissions this app might request
         }
     }
+
     private void showDressCode(){
         //Create an alert dialog builder for a new alert dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
 
         //Set the title and message
         builder.setIcon(R.mipmap.ic_launcher)
@@ -305,6 +307,15 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
                         dialog.dismiss();
                     }
                 });
+        builder.setNeutralButton("View Example", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                new PictureDialog(getApplicationContext(),
+                        R.mipmap.dress_code,
+                        "Dress Code").show();
+
+            }
+        });
 
         //Create the actual dialog from the builder, then show it.
         AlertDialog dialog = builder.create();

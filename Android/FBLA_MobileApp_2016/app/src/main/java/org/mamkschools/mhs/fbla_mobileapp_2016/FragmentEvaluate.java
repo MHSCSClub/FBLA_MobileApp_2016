@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -653,6 +654,15 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
                         dialog.dismiss();
                     }
                 });
+        builder.setNeutralButton("View Examples", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                new PictureDialog(getContext(),
+                        R.mipmap.dress_code,
+                        "Dress Code").show();
+
+            }
+        });
 
         //Create the actual dialog from the builder, then show it.
         AlertDialog dialog = builder.create();

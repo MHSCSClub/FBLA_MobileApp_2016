@@ -172,7 +172,7 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
                 showAbout();
                 return true;
             case R.id.action_dress:
-                showDressCode();
+                new DresscodeDialog(this);
                 return true;
             default:
                 return false;
@@ -289,36 +289,5 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
             // other 'case' lines to check for other
             // permissions this app might request
         }
-    }
-
-    private void showDressCode(){
-        //Create an alert dialog builder for a new alert dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-
-        //Set the title and message
-        builder.setIcon(R.mipmap.ic_launcher)
-                .setMessage(Html.fromHtml(getApplicationContext().getString(R.string.dress_code_dialog)))
-                .setTitle("FBLA Official Dress Code");
-
-        //Add an OK button
-        builder.setPositiveButton(R.string.ok,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
-        builder.setNeutralButton("View Example", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                new PictureDialog(getApplicationContext(),
-                        R.mipmap.dress_code,
-                        "Dress Code").show();
-
-            }
-        });
-
-        //Create the actual dialog from the builder, then show it.
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 }

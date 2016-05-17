@@ -320,7 +320,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
                         Constants.imageBitmap, titleLabel.getText().toString()).show();
                 break;
             case R.id.dress_button:
-                showDressCode();
+                new DresscodeDialog(getContext());
                 break;
         }
     }
@@ -637,35 +637,5 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
     private void showProgress(Boolean show){
         evalContent.setVisibility(show ? View.GONE : View.VISIBLE);
         progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-    private void showDressCode(){
-        //Create an alert dialog builder for a new alert dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-        //Set the title and message
-        builder.setIcon(R.mipmap.ic_launcher)
-                .setMessage(Html.fromHtml(getContext().getString(R.string.dress_code_dialog)))
-                .setTitle("FBLA Official Dress Code");
-
-        //Add an OK button
-        builder.setPositiveButton(R.string.ok,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
-        builder.setNeutralButton("View Examples", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                new PictureDialog(getContext(),
-                        R.mipmap.dress_code,
-                        "Dress Code").show();
-
-            }
-        });
-
-        //Create the actual dialog from the builder, then show it.
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 }

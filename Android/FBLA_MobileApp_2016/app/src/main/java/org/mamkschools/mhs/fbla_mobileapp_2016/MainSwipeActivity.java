@@ -6,12 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -23,31 +20,21 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Commands;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Util;
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureHelper;
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.task.Logout;
 
 import java.io.File;
 
 import im.delight.android.location.SimpleLocation;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
-import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 public class MainSwipeActivity extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener, Logout.LogoutCompletionListener{
-
     //Fragments
     private Fragment evaluatePictures;
     private Fragment myPictures;
@@ -117,8 +104,6 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
         }
         Constants.restorePrefs(getApplicationContext());
 
-
-
         if(!isNetworkAvailable()){
             Toast.makeText(getApplicationContext(), "Network is not available. Please connect to the internet", Toast.LENGTH_LONG).show();
             finish();
@@ -151,8 +136,6 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
                 inflater.inflate(R.menu.menu_main_swipe_activity, popup.getMenu());
 
                 popup.show();
-
-                //startActivity(new Intent(getApplicationContext(), null));
                 break;
             default:
                 Toast.makeText(this, "No Assigned Action", Toast.LENGTH_SHORT).show();

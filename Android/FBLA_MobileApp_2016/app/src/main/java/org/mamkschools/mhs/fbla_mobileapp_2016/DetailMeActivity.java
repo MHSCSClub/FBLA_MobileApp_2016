@@ -22,7 +22,6 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Commands;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.CommentItem;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.CommentItemAdapter;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureHelper;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Util;
 import org.mamkschools.mhs.fbla_mobileapp_2016.task.Logout;
@@ -239,7 +238,7 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
         protected void onPostExecute(Boolean v) {
             stopRefresh();
             if(v){
-                image = PictureHelper.getPictureBitmap(picFile);
+                image = Util.getPictureBitmap(picFile);
                 myImage.setImageBitmap(image);
             }else{
                 Util.log("Life will go on");

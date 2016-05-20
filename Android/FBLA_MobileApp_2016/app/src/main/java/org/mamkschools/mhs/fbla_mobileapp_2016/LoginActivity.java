@@ -37,8 +37,6 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
  * A login screen that offers login via username/password.
  */
 public class LoginActivity extends AppCompatActivity {
-
-
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */

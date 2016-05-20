@@ -1,19 +1,16 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016.task;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.mamkschools.mhs.fbla_mobileapp_2016.LoginActivity;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Commands;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Util;
 
 /**
+ * ASynctask to logout user
  * Created by aakat on 5/9/2016.
  */
 public class Logout extends AsyncTask<Void, Void, Boolean> {

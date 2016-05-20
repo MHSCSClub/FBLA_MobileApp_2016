@@ -10,6 +10,7 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Util;
 
 /**
+ * ASyncTask to verify authcode
  * Created by aakat on 5/9/2016.
  */
 public class VerifyAuthcode  extends AsyncTask <Void, Void, Boolean>{

@@ -606,7 +606,8 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
                 } else if (response.getString("status").equals("error")) {
                     return false;
                 } else {
-                    throw new Exception("Impossible status");
+                    throw new IllegalStateException("Impossible status: "
+                            + response.getString("status"));
                 }
             } catch (Exception e) {
                 if (Constants.DEBUG_MODE) {
@@ -616,8 +617,6 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
                 return false;
             }
         }
-
-
 
         @Override
         protected void onPostExecute(Boolean success) {

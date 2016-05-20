@@ -1,21 +1,13 @@
-// Use this for showing/hiding  info layout: showInfoLayout(boolean b);
-
-
-
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +27,6 @@ import org.json.JSONObject;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Commands;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Picture;
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureHelper;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Util;
 import org.mamkschools.mhs.fbla_mobileapp_2016.task.Logout;
@@ -53,8 +44,6 @@ import java.util.TimeZone;
 
 import im.delight.android.location.SimpleLocation;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
-import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 /**
  * Fragment for evaluating pictures. This is on the main screen when the app is launched.
@@ -77,7 +66,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
 
     private int currentRating;
 
-    private ArrayList<Picture> pics = new ArrayList<Picture>();
+    private ArrayList<Picture> pics = new ArrayList<>();
 
     private GetPicture picDl;
 
@@ -90,7 +79,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
         RATE(0), COMMENT(1), REFRESH(2);
 
         private final int value;
-        private Bar(int value) {
+        Bar(int value) {
             this.value = value;
         }
 
@@ -157,7 +146,6 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
 
         if(pics.size() > 0 && picNumber < pics.size()) {
             Util.log("From: " + picNumber);
-            int itemId = pics.get(picNumber).entryid;
             String title = pics.get(picNumber).title;
             String user = pics.get(picNumber).username;
             titleLabel.setText(title);
@@ -266,12 +254,6 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
         }
     }
 
-    public void showInfoLayout(boolean show){
-        View rootView = getView();
-        assert rootView != null;
-        RelativeLayout infoLayout = (RelativeLayout) rootView.findViewById(R.id.info_label);
-        infoLayout.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
 
     @Override
     public void onClick(View v) {
@@ -309,6 +291,8 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
             case R.id.cancel_button:
                 switchBottomBar(Bar.RATE);
                 postParams.put("like", Integer.toString(currentRating));
+
+                //noinspection unchecked
                 new SubmitRating().execute(postParams);
                 break;
             case R.id.refresh_button:
@@ -391,6 +375,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
                 if(!comment.equals("")){
                     postParams.put("comment", comment);
                 }
+                //noinspection unchecked
                 new SubmitRating().execute(postParams);
                 Toast.makeText(getContext(), "Comment submitted", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
@@ -423,21 +408,6 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
         });
     }
 
-    private Map<String, String> getRateParams(Map<String, String> params, Dialog dialogView) {
-        RatingBar style = (RatingBar) dialogView.findViewById(R.id.user_rate);
-        int styleRating = Math.round(style.getRating());
-        params.put("style", "" + styleRating);
-        style.setRating(3);
-
-        EditText commentView = (EditText) rootView.findViewById(R.id.user_comment);
-
-        String comment = commentView.getText().toString();
-        Util.log(comment);
-        commentView.setText("");
-        if(comment.length() > 0)
-            params.put("comment", comment);
-        return params;
-    }
 
     @Override
     public void onAuthcodeInvalid() {
@@ -462,7 +432,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
                 if(Constants.imageBitmap != null){
                     Constants.imageBitmap.recycle();
                 }
-                Constants.imageBitmap = PictureHelper.getPictureBitmap(new File(location, "picture.jpg"));
+                Constants.imageBitmap = Util.getPictureBitmap(new File(location, "picture.jpg"));
             }catch(Exception e){
                 Util.log(e.getMessage());
                 return false;
@@ -516,7 +486,6 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
     }
     private class GetPictureInfo extends AsyncTask<Void, Void, Void> {
 
-        private ArrayList<JSONObject> ret = new ArrayList<>();
         SecureAPI picture = SecureAPI.getInstance(getContext());
         ArrayList<Picture> pictures = new ArrayList<Picture>();
 
@@ -526,7 +495,6 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
             long secondsInMilli = 1000;
             long minutesInMilli = secondsInMilli * 60;
             long hoursInMilli = minutesInMilli * 60;
-            long daysInMilli = hoursInMilli * 24;
 
 
             int dist = 10000;
@@ -582,7 +550,7 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
 
                     long different = new Date().getTime() -
                             d.getTime();
-                    long elapsedHours = (different / (1000 * 60 * 60)) - hours;
+                    long elapsedHours = (different / (hoursInMilli)) - hours;
 
                     if(elapsedHours < 10) {
                         p += 3 * elapsedHours;

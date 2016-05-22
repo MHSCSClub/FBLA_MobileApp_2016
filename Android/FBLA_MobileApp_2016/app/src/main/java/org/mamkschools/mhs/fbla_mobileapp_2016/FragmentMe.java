@@ -206,6 +206,7 @@ public class FragmentMe extends Fragment implements View.OnClickListener, SwipeR
         Context context = getActivity().getApplicationContext();
         seq.addSequenceItem(getActivity().findViewById(R.id.tab_layout), context.getString(R.string.tut_me), "GOT IT");
         seq.addSequenceItem(getActivity().findViewById(R.id.cameraButton), context.getString(R.string.tut_upload), "GOT IT");
+
         seq.start();
     }
 

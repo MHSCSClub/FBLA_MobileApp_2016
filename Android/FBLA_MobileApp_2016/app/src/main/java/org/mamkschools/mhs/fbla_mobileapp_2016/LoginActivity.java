@@ -104,6 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                 .setDismissText("GOT IT")
                 .setContentText(getApplicationContext().getString(R.string.tut_login))
                 .singleUse("TUT_LOGIN")
+                .setDismissOnTouch(true)
                 .show();
     }
 

@@ -14,11 +14,12 @@
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
         android:contentDescription="@string/image_preview"
-        android:visibility="visible"
-        android:layout_alignBottom="@+id/date" />
+        android:visibility="gone"
+        android:layout_alignBottom="@+id/date"
+        android:adjustViewBounds="false" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/TitleText"
         android:text="title"

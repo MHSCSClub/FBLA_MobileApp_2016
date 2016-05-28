@@ -364,6 +364,10 @@
 			if(is_null($params['like']))
 				throw new Exception("Invalid POST data");
 
+			//Style check
+			if(!is_null($params['style']) && intval($params['style']) == 0)
+				$params['style'] = 3;
+
 			$stmt = $db->prepare("SELECT pid FROM pictures WHERE pid=?");
 			$stmt->bind_param('i', $params["pid"]);
 			$stmt->execute();

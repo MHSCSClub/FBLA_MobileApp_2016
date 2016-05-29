@@ -42,14 +42,11 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
     private GetPicture picDownload;
     private GetComments comDownload;
     private SwipeRefreshLayout refreshLayout;
-    private TextView titleText;
     private int pid;
     private int refreshing;
     private Bitmap image;
     private ProgressBar progressBar;
 
-    private int views;
-    private double up;
     private TextView avgStar;
 
 
@@ -81,8 +78,8 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
         if (extras != null) {
             pid = extras.getInt("pid");
             String imgTitle = extras.getString("title");
-            this.views = extras.getInt("views");
-            this.up = extras.getInt("up");
+            int views = extras.getInt("views");
+            double up = extras.getInt("up");
             Util.log("" + up);
             if(views > 0) {
                 double percent = (up / views) * 100;
@@ -156,6 +153,8 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
 
                 JSONArray array = response.getJSONArray("data");
 
+
+
                 for(int i = 0; i < array.length(); i++ ){
                     String style = array.getJSONObject(i).getString("style");
                     String user = array.getJSONObject(i).getString("username");
@@ -163,7 +162,11 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
                     if(!style.equals("null")) {
                         ret.add(new CommentItem(
                                 comment.equals("null") ? "No comment" : comment, user, style));
-                        totalStyle += Integer.parseInt(style);
+                        int styleInt = Integer.parseInt(style);
+                        if(styleInt < 1 || styleInt > 5){
+                            break;
+                        }
+                        totalStyle += styleInt;
                         Util.log(style);
                         totalComments++;
                     }
@@ -199,8 +202,12 @@ public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshL
                     CommentItemAdapter adapter = new CommentItemAdapter(ret, getApplicationContext());
                     commentList.setAdapter(adapter);
                     double avg = (float) totalStyle/totalComments;
-                    DecimalFormat df = new DecimalFormat("#.0");
-                    avgStar.setText(df.format(avg));
+                    if(avg == 0){
+                        avgStar.setText("N/A");
+                    } else {
+                        DecimalFormat df = new DecimalFormat("#.0");
+                        avgStar.setText(df.format(avg));
+                    }
                 } else {
                     //noinspection ConstantConditions
                     findViewById(R.id.nocomment_text).setVisibility(View.VISIBLE);

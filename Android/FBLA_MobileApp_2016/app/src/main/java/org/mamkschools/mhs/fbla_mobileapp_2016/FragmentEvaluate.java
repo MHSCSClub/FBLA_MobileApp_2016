@@ -49,7 +49,8 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
  * Fragment for evaluating pictures. This is on the main screen when the app is launched.
  * Created by jackphillips on 2/16/16.
  */
-public class FragmentEvaluate extends Fragment implements View.OnClickListener, VerifyAuthcode.InvalidAuthcodeListener {
+public class FragmentEvaluate extends Fragment
+        implements View.OnClickListener, VerifyAuthcode.InvalidAuthcodeListener {
     private int picNumber;
     private File location;
     private SimpleLocation simpleLocation;
@@ -90,7 +91,8 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
     private Bar currentBar = Bar.RATE;
     private boolean user_visible = false;
 
-    public static FragmentEvaluate newInstance(int picNumber, File location, SimpleLocation simpleLocation) {
+    public static FragmentEvaluate newInstance(int picNumber, File location,
+                                               SimpleLocation simpleLocation) {
         FragmentEvaluate fragment = new FragmentEvaluate();
         fragment.picNumber = picNumber;
         fragment.location = location;
@@ -102,7 +104,8 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_view_evaluate, container, false);
         titleLabel = (TextView) rootView.findViewById(R.id.title_label);
         titleLabel.setText(R.string.no_pics);
@@ -327,9 +330,9 @@ public class FragmentEvaluate extends Fragment implements View.OnClickListener, 
                     if(pics.size() > 0)
                         showTutorialComment();
                 } else if (type == Bar.RATE) {
-                      titleLabel.setText("Is this Professional?");
+                      titleLabel.setText(R.string.app_name);
                 }else{
-                    titleLabel.setText("No More Pictures");
+                    titleLabel.setText(R.string.no_pics);
                     infoLabel.setVisibility(View.GONE);
                 }
             }

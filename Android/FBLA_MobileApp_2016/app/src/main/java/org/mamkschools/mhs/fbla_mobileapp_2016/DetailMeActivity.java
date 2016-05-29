@@ -36,7 +36,8 @@ import java.util.ArrayList;
  * Has detailed + comment stuffs
  * Created by jackphillips on 2/26/16.
  */
-public class DetailMeActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, VerifyAuthcode.InvalidAuthcodeListener {
+public class DetailMeActivity extends AppCompatActivity
+        implements SwipeRefreshLayout.OnRefreshListener, VerifyAuthcode.InvalidAuthcodeListener {
 
     private ImageView myImage;
     private GetPicture picDownload;

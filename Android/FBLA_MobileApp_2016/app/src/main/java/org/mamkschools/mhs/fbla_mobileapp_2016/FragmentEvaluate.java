@@ -200,17 +200,24 @@ public class FragmentEvaluate extends Fragment
                 int days = (int) hours/24;
                 data[2] = days + (days == 1 ? " day ago, " : " days ago");
             }
-            if(miles > 100){
-                miles = 50;
+            if(miles > 75){
+                data[3] = ("75+ miles away");
+            } else {
+                data[3] = ((int) miles) + (miles == 1 ? " mile away" : " miles away");
             }
-            data[3] = ((int) miles) + (miles == 1 ? " mile away" : " miles away");
 
             //Length limits
-            if(data[1].length() >= 9)
-                data[3] = ((int) miles ) + " miles";
+            if(data[1].length() >= 9) {
+                if(miles > 75) {
+                    data[3] = ("75+ miles");
+                } else {
+                    data[3] = ((int) miles) + (miles == 1 ? " mile" : " miles");
+                }
+            }
 
-            if(data[1].length() > 11)
+            if(data[1].length() > 11) {
                 data[1] = data[1].substring(0, 10) + '…';
+            }
             Util.log(data[1]);
 
             return data;

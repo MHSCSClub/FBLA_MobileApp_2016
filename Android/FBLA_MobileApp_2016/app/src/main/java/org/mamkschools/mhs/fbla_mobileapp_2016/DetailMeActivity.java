@@ -22,14 +22,20 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Commands;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.CommentItem;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.CommentItemAdapter;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureItem;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureItemAdapter;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SimpleDividerItemDecoration;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Util;
 import org.mamkschools.mhs.fbla_mobileapp_2016.task.Logout;
 import org.mamkschools.mhs.fbla_mobileapp_2016.task.VerifyAuthcode;
 
 import java.io.File;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 
 
 /**
@@ -42,6 +48,7 @@ public class DetailMeActivity extends AppCompatActivity
     private ImageView myImage;
     private GetPicture picDownload;
     private GetComments comDownload;
+    private GetMyPictureInfo getInfo;
     private SwipeRefreshLayout refreshLayout;
     private int pid;
     private int refreshing;
@@ -115,18 +122,79 @@ public class DetailMeActivity extends AppCompatActivity
         if(picDownload != null && !picDownload.getStatus().equals(AsyncTask.Status.FINISHED)){
             picDownload.cancel(true);
         }
+        if(getInfo != null && !getInfo.getStatus().equals(AsyncTask.Status.FINISHED)){
+            getInfo.cancel(true);
+        }
     }
 
     @Override
     public void onRefresh() {
         new VerifyAuthcode(this, this);
-        refreshing = 2;
+        refreshing = 3;
+        if(refreshLayout.isRefreshing()) {
+            getInfo = new GetMyPictureInfo();
+            getInfo.execute();
+        }
         picDownload = new GetPicture();
         picDownload.execute(pid);
         comDownload = new GetComments();
         comDownload.execute(pid);
     }
 
+
+    private class GetMyPictureInfo extends AsyncTask<Void, Boolean, Boolean> {
+        SecureAPI picture = SecureAPI.getInstance(getApplicationContext() );
+        int views, likes;
+
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            try {
+                JSONObject response = picture.HTTPSGET("picture/fetch/me?authcode=" + Constants.AUTHCODE);
+                Util.log("picture/fetch/me?authcode=" + Constants.AUTHCODE);
+
+                JSONArray array = response.getJSONArray("data");
+
+                for(int i = 0; i < array.length(); i++ ) {
+                    int dlPid = array.getJSONObject(i).getInt("pid");
+
+
+                    if (pid == dlPid) {
+                        views = array.getJSONObject(i).getInt("views");
+                        likes = array.getJSONObject(i).getInt("likes");
+                        return true;
+                    }
+                }
+            }catch (Exception e){
+                if(Constants.DEBUG_MODE){
+                    Util.log("mypics error " + e.getMessage());
+                }
+            }
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            if(success){
+                TextView percentLabel = (TextView) findViewById(R.id.percent_label);
+                TextView viewsLabel = (TextView) findViewById(R.id.views_label);
+                if(views > 0) {
+                    double percent = (likes / views) * 100;
+                    percentLabel.setText("" +  ((int) percent) + "%");
+                    if(percent < 50){
+                        percentLabel.setTextColor(Color.parseColor("#ED332D"));
+                    }else{
+                        percentLabel.setTextColor(Color.parseColor("#2E7D32"));
+                    }
+                }else{
+                    percentLabel.setText("N/A");
+                }
+                viewsLabel.setText("" + views);
+            }
+            stopRefresh();
+        }
+    }
     @Override
     public void onAuthcodeInvalid() {
         new Logout(this, null);
@@ -269,7 +337,7 @@ public class DetailMeActivity extends AppCompatActivity
     }
     public void stopRefresh(){
         refreshing--;
-        if(refreshing <= 0){
+        if(refreshing <= 0 && refreshLayout.isRefreshing()){
             refreshLayout.setRefreshing(false);
             showProgress(false);
         }

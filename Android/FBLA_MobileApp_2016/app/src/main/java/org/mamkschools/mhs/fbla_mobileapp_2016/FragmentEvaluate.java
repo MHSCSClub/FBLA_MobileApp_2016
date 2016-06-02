@@ -29,8 +29,8 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Picture;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Util;
-import org.mamkschools.mhs.fbla_mobileapp_2016.task.Logout;
-import org.mamkschools.mhs.fbla_mobileapp_2016.task.VerifyAuthcode;
+import org.mamkschools.mhs.fbla_mobileapp_2016.asynctask.Logout;
+import org.mamkschools.mhs.fbla_mobileapp_2016.asynctask.VerifyAuthcode;
 
 import java.io.File;
 import java.text.SimpleDateFormat;

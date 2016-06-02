@@ -29,28 +29,6 @@
 
     <string name="about_title">About</string>
     <string name="about_message">This app was created by Andrew Katz, Yi Zhao, and Jack Phillips. \nCopyright © 2016 Andrew Katz, Yi Zhao, and Jack Phillips. \nAll Rights Reserved.</string>
-    <string name="dress_code_dialog">
-        &lt;h2&gt; Males: &lt;/h2&gt;
-        • Business suit with collared dress shirt and necktie&lt;br/&gt;
-        • Sport coat, dress slacks, collared shirt, and necktie&lt;br/&gt;
-        • Dress slacks, collared shirt, and necktie&lt;br/&gt;
-        • Banded collar shirt may be worn only if sport coat or business suit is worn&lt;br/&gt;
-        • Dress shoes and socks&lt;br/&gt;
-        &lt;h2&gt; Females: &lt;/h2&gt;
-        • Business suit with blouse&lt;br/&gt;
-        • Business pantsuit with blouse&lt;br/&gt;
-        • Skirt or dress slacks with blouse or sweater&lt;br/&gt;
-        • Capris or gauchos with coordinating jacket/suit, worn below the knee &lt;br/&gt;
-        • Dress shoes &lt;br/&gt;
-        &lt;h3&gt; Inappropriate Attire (For Both Men and Women) &lt;/h3&gt;
-        Jewelry in visible body piercing, other than ears; denim or chambray fabric clothing of any kind,
-        overalls, shorts, skorts, stretch or stirrup pants, exercise or bike shorts; backless, see-through,
-        tight-fitting, spaghetti straps, strapless, extremely short, or low-cut blouses/tops/dresses/skirts;
-        T-shirts, Lycra™, spandex, midriff tops, tank tops, bathing suits; sandals, athletic shoes,
-        industrial work shoes, hiking boots, bare feet, or over-the-knee boots; athletic wear, including sneakers;
-        hats or flannel fabric clothing; bolo ties; visible foundation garments.
-        &lt;h3&gt;CLARIFICATION&lt;/h3&gt;—Many women’s two-piece suits are currently designed so that they do not require a blouse. Therefore, this will be accepted. In addition, sling-back shoes, open-toe shoes, and sleeveless dresses are accepted.
-    </string>
 
     <!-- Tutorial Strings -->
     <string name="tut_login">Welcome to "Is this Professional!" In order to use our app you need to create an account. An internet connection is required.</string>

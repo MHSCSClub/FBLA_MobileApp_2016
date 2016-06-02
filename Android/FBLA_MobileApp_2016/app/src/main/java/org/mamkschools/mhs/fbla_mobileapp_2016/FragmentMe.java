@@ -10,7 +10,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -54,8 +53,8 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureItemAdapter;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SimpleDividerItemDecoration;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Util;
-import org.mamkschools.mhs.fbla_mobileapp_2016.task.Logout;
-import org.mamkschools.mhs.fbla_mobileapp_2016.task.VerifyAuthcode;
+import org.mamkschools.mhs.fbla_mobileapp_2016.asynctask.Logout;
+import org.mamkschools.mhs.fbla_mobileapp_2016.asynctask.VerifyAuthcode;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -66,13 +65,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
 import im.delight.android.location.SimpleLocation;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
-import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 
 public class FragmentMe extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, VerifyAuthcode.InvalidAuthcodeListener {

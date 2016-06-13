@@ -46,6 +46,8 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.mamkschools.mhs.fbla_mobileapp_2016.asynctask.Logout;
+import org.mamkschools.mhs.fbla_mobileapp_2016.asynctask.VerifyAuthcode;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Commands;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureItem;
@@ -53,8 +55,6 @@ import org.mamkschools.mhs.fbla_mobileapp_2016.lib.PictureItemAdapter;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SimpleDividerItemDecoration;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Util;
-import org.mamkschools.mhs.fbla_mobileapp_2016.asynctask.Logout;
-import org.mamkschools.mhs.fbla_mobileapp_2016.asynctask.VerifyAuthcode;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

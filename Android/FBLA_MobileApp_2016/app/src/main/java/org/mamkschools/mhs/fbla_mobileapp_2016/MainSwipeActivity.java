@@ -27,8 +27,9 @@ import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 import org.mamkschools.mhs.fbla_mobileapp_2016.asynctask.Logout;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Util;
 
 import java.io.File;
 
@@ -251,7 +252,7 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+                    Util.log("Perms work");
                     // permission was granted, yay! we can do what we need
 
                 } else {

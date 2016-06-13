@@ -31,9 +31,9 @@
     <string name="about_message">This app was created by Andrew Katz, Yi Zhao, and Jack Phillips. \nCopyright © 2016 Andrew Katz, Yi Zhao, and Jack Phillips. \nAll Rights Reserved.</string>
 
     <!-- Tutorial Strings -->
-    <string name="tut_login">Welcome to "Is this Professional!" In order to use our app you need to create an account. An internet connection is required.</string>
+    <string name="tut_login">Welcome to \"Is this Professional!\" In order to use our app you need to create an account. An internet connection is required.</string>
 
-    <string name="tut_eval">This is "Evaluate" screen, where you help out other users by evaluating pictures and making sure they meet the FBLA guidelines.</string>
+    <string name="tut_eval">This is \"Evaluate\" screen, where you help out other users by evaluating pictures and making sure they meet the FBLA guidelines.</string>
     <string name="tut_up">Press this button to show that the outfit is professional and meets dress code guidelines</string>
     <string name="tut_down">Press this button to show that the outfit is NOT professional and doesn\'t meets dress code guidelines</string>
     <string name="tut_dress">Press this button to pull up official dresscode guidelines</string>

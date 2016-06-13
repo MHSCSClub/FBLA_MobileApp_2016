@@ -18,14 +18,14 @@ import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.mamkschools.mhs.fbla_mobileapp_2016.asynctask.Logout;
+import org.mamkschools.mhs.fbla_mobileapp_2016.asynctask.VerifyAuthcode;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Commands;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.CommentItem;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.CommentItemAdapter;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
 import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Util;
-import org.mamkschools.mhs.fbla_mobileapp_2016.asynctask.Logout;
-import org.mamkschools.mhs.fbla_mobileapp_2016.asynctask.VerifyAuthcode;
 
 import java.io.File;
 import java.text.DecimalFormat;

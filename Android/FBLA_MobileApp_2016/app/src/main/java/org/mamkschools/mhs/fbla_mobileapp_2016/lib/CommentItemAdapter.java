@@ -1,15 +1,12 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016.lib;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.mamkschools.mhs.fbla_mobileapp_2016.DetailMeActivity;
 import org.mamkschools.mhs.fbla_mobileapp_2016.R;
 
 import java.util.ArrayList;
@@ -36,10 +33,11 @@ public class CommentItemAdapter extends RecyclerView.Adapter<CommentItemAdapter.
         holder.userName.setText(commentList.get(position).getUser());
         int rating = Integer.parseInt(commentList.get(position).getStyleRating());
         Util.log("" + rating);
-        int fill = Math.min(rating, 5); //Math.round(rating / 2f); //convert from 10 pt system to 5 pt system, take this out!! when we change rating
+        int fill = Math.max(0, Math.min(rating, 5));
+
 
         char stars[] = new char[5];
-        Arrays.fill(stars, '★');
+        Arrays.fill(stars, '\u2605');
 
         holder.style_fill.setText(stars, 0, fill);
         holder.style_unfill.setText(stars, 0, 5 - fill);

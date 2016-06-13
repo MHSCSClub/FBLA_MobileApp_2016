@@ -1,4 +1,5 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -7,13 +8,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
-
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,12 +23,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.*;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Commands;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Constants;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.SecureAPI;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Util;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 

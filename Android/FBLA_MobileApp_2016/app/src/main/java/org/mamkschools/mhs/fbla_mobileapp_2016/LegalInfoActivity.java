@@ -1,11 +1,11 @@
 package org.mamkschools.mhs.fbla_mobileapp_2016;
 
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.widget.TextView;
 
-import org.mamkschools.mhs.fbla_mobileapp_2016.lib.*;
+import org.mamkschools.mhs.fbla_mobileapp_2016.lib.Util;
 
 import java.util.Scanner;
 

@@ -170,6 +170,7 @@ public class DetailMeActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(Boolean success) {
+            Util.log("GetMyPictureInfo-done");
             if(success){
                 TextView percentLabel = (TextView) findViewById(R.id.percent_label);
                 TextView viewsLabel = (TextView) findViewById(R.id.views_label);
@@ -247,6 +248,7 @@ public class DetailMeActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(Boolean v) {
+            Util.log("GetComments done");
             if(v){
                 Util.log("Finished getting my pics");
                 if(ret.size() != 0) {
@@ -313,6 +315,7 @@ public class DetailMeActivity extends AppCompatActivity
             }else{
                 Util.log("Life will go on");
             }
+            Util.log("GetPicture done");
         }
     }
     @Override
@@ -331,6 +334,7 @@ public class DetailMeActivity extends AppCompatActivity
     }
     public void stopRefresh(){
         refreshing--;
+        Util.log("Stopping refresh - " + refreshing);
         if(refreshing <= 0 && refreshLayout.isRefreshing()){
             refreshLayout.setRefreshing(false);
             showProgress(false);
@@ -346,7 +350,7 @@ public class DetailMeActivity extends AppCompatActivity
     }
 
     private void showProgress(boolean show){
-        refreshLayout.setVisibility(show ? View.GONE : View.VISIBLE);
-        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+        refreshLayout.setVisibility(show ? View.VISIBLE : View.GONE);
+        progressBar.setVisibility(show ? View.GONE : View.VISIBLE);
     }
 }

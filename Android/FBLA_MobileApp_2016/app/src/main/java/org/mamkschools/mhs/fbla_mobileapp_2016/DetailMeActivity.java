@@ -123,12 +123,13 @@ public class DetailMeActivity extends AppCompatActivity
 
     @Override
     public void onRefresh() {
-        new VerifyAuthcode(this, this);
-        refreshing = 3;
-        if(refreshLayout.isRefreshing()) {
-            getInfo = new GetMyPictureInfo();
-            getInfo.execute();
+        if(!refreshLayout.isRefreshing()) {
+            showProgress(true);
         }
+        refreshing = 3;
+        new VerifyAuthcode(this, this);
+        getInfo = new GetMyPictureInfo();
+        getInfo.execute();
         picDownload = new GetPicture();
         picDownload.execute(pid);
         comDownload = new GetComments();
@@ -335,8 +336,10 @@ public class DetailMeActivity extends AppCompatActivity
     public void stopRefresh(){
         refreshing--;
         Util.log("Stopping refresh - " + refreshing);
-        if(refreshing <= 0 && refreshLayout.isRefreshing()){
-            refreshLayout.setRefreshing(false);
+        if(refreshing <=1){
+            if(refreshLayout.isRefreshing()) {
+                refreshLayout.setRefreshing(false);
+            }
             showProgress(false);
         }
     }
@@ -350,7 +353,7 @@ public class DetailMeActivity extends AppCompatActivity
     }
 
     private void showProgress(boolean show){
-        refreshLayout.setVisibility(show ? View.VISIBLE : View.GONE);
-        progressBar.setVisibility(show ? View.GONE : View.VISIBLE);
+        refreshLayout.setVisibility(show ? View.GONE : View.VISIBLE);
+        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 }

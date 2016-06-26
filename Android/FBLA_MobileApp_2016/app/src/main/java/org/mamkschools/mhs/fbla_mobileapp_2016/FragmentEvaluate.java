@@ -47,50 +47,42 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 
 /**
  * Fragment for evaluating pictures. This is on the main screen when the app is launched.
+ * Controls entire first tab of app (Evaluate tab)
  * Created by jackphillips on 2/16/16.
  */
 public class FragmentEvaluate extends Fragment
         implements View.OnClickListener, VerifyAuthcode.InvalidAuthcodeListener {
+    //General variables
     private int picNumber;
     private File location;
     private SimpleLocation simpleLocation;
     private boolean runOnce = true;
+    private int currentRating;
 
+    //Views
     private View rootView;
-
     private ImageView image;
     private TextView descriptionLabel;
     private TextView titleLabel;
     private TextView timeLabel;
     private TextView distLabel;
     private View infoLabel;
-
-    private int currentRating;
-
-    private ArrayList<Picture> pics = new ArrayList<>();
-
-    private GetPicture picDl;
-
-    private RelativeLayout [] bottomBars = new RelativeLayout[3];
-
     private ScrollView evalContent;
     private ProgressBar progressBar;
 
-    private enum Bar {
-        RATE(0), COMMENT(1), REFRESH(2);
+    private ArrayList<Picture> pics = new ArrayList<>();
+    private RelativeLayout[] bottomBars = new RelativeLayout[3];
 
-        private final int value;
-        Bar(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
-    }
+    private GetPicture picDl;
     private Bar currentBar = Bar.RATE;
     private boolean user_visible = false;
 
+    //Required empty public constructor
+    public FragmentEvaluate() {
+
+    }
+
+    //Intended way of creating fragment
     public static FragmentEvaluate newInstance(int picNumber, File location,
                                                SimpleLocation simpleLocation) {
         FragmentEvaluate fragment = new FragmentEvaluate();
@@ -99,9 +91,6 @@ public class FragmentEvaluate extends Fragment
         fragment.simpleLocation = simpleLocation;
         return fragment;
     }
-
-    public FragmentEvaluate() {}
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -147,7 +136,7 @@ public class FragmentEvaluate extends Fragment
         bottomBars[2] = (RelativeLayout) rootView.findViewById(R.id.refresh_layout);
         runFetch(picNumber);
 
-        if(pics.size() > 0 && picNumber < pics.size()) {
+        if (pics.size() > 0 && picNumber < pics.size()) {
             Util.log("From: " + picNumber);
             String title = pics.get(picNumber).title;
             String user = pics.get(picNumber).username;
@@ -171,6 +160,7 @@ public class FragmentEvaluate extends Fragment
         seq.addSequenceItem(getActivity().findViewById(R.id.more_stuff), context.getString(R.string.tut_more), "GOT IT");
         seq.start();
     }
+
     private void showTutorialComment() {
         MaterialShowcaseSequence seq = new MaterialShowcaseSequence(getActivity(), "TUT_COMMENT");
 
@@ -181,41 +171,41 @@ public class FragmentEvaluate extends Fragment
         seq.start();
     }
 
-    public int getPictureId(int picture){
-        if(pics.size() > 0 && picture < pics.size()) {
+    public int getPictureId(int picture) {
+        if (pics.size() > 0 && picture < pics.size()) {
             return pics.get(picture).entryid;
         }
         return -1;
     }
 
-    public String[] getData(int picture){
+    public String[] getData(int picture) {
         String[] data = new String[4];
-        if(pics.size() > 0 && picture < pics.size()) {
+        if (pics.size() > 0 && picture < pics.size()) {
             data[0] = pics.get(picture).title;
             data[1] = pics.get(picture).username;
             double hours = pics.get(picture).hours;
             double miles = pics.get(picture).dist;
             data[2] = ((int) hours) + (hours == 1 ? " hour ago" : " hours ago");
-            if(hours >= 24){
-                int days = (int) hours/24;
+            if (hours >= 24) {
+                int days = (int) hours / 24;
                 data[2] = days + (days == 1 ? " day ago, " : " days ago");
             }
-            if(miles > 75){
+            if (miles > 75) {
                 data[3] = ("75+ miles away");
             } else {
                 data[3] = ((int) miles) + (miles == 1 ? " mile away" : " miles away");
             }
 
             //Length limits
-            if(data[1].length() >= 9) {
-                if(miles > 75) {
+            if (data[1].length() >= 9) {
+                if (miles > 75) {
                     data[3] = ("75+ miles");
                 } else {
                     data[3] = ((int) miles) + (miles == 1 ? " mile" : " miles");
                 }
             }
 
-            if(data[1].length() > 11) {
+            if (data[1].length() > 11) {
                 data[1] = data[1].substring(0, 10) + '…';
             }
             Util.log(data[1]);
@@ -247,15 +237,15 @@ public class FragmentEvaluate extends Fragment
         distLabel.setText(data[3]);
         Util.log("Data " + data[0] + " " + data[1] + " " + data[2] + " " + data[3]);
         switchBottomBar(Bar.RATE);
-        if(picID > 0) {
+        if (picID > 0) {
             showProgress(true);
             picDl = new GetPicture();
             picDl.execute(picID);
-        }else{
+        } else {
             showProgress(false);
             image.setImageResource(R.drawable.finish);
             switchBottomBar(Bar.REFRESH);
-            if(runOnce) {
+            if (runOnce) {
                 image.setImageResource(R.drawable.finish);
                 new GetPictureInfo().execute((Void) null);
                 switchBottomBar(Bar.REFRESH);
@@ -264,7 +254,6 @@ public class FragmentEvaluate extends Fragment
         }
     }
 
-
     @Override
     public void onClick(View v) {
         new VerifyAuthcode(getContext(), this);
@@ -272,12 +261,12 @@ public class FragmentEvaluate extends Fragment
         int pid = getPictureId(picNumber);
         postParams.put("pid", "" + pid);
 
-        if(pid == -1 && (v.getId() != R.id.refresh_button)){
+        if (pid == -1 && (v.getId() != R.id.refresh_button)) {
             Toast.makeText(getContext(), "No pictures left to rate", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        switch(v.getId()){
+        switch (v.getId()) {
 
             case R.id.up_button:
                 currentRating = 1;
@@ -318,6 +307,7 @@ public class FragmentEvaluate extends Fragment
                 break;
         }
     }
+
     private void switchBottomBar(final Bar type) {
         switchBottomBar(type, 300);
     }
@@ -334,11 +324,11 @@ public class FragmentEvaluate extends Fragment
                 if (type == Bar.COMMENT) {
                     String[] data = getData(picNumber);
                     titleLabel.setText(data[0]);
-                    if(pics.size() > 0)
+                    if (pics.size() > 0)
                         showTutorialComment();
                 } else if (type == Bar.RATE) {
-                      titleLabel.setText(R.string.app_name);
-                }else{
+                    titleLabel.setText(R.string.app_name);
+                } else {
                     titleLabel.setText(R.string.no_pics);
                     infoLabel.setVisibility(View.GONE);
                 }
@@ -354,18 +344,18 @@ public class FragmentEvaluate extends Fragment
     }
 
     public boolean onBackPressed() {
-        if(user_visible && pics.size() > 0 && currentBar == Bar.COMMENT) {
+        if (user_visible && pics.size() > 0 && currentBar == Bar.COMMENT) {
             switchBottomBar(Bar.RATE, 0);
             return true;
         }
         return false;
     }
 
-    private void getComment(final Map<String, String> postParams){
+    private void getComment(final Map<String, String> postParams) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener(){
+        builder.setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which){
+            public void onClick(DialogInterface dialog, int which) {
 
             }
         });
@@ -382,7 +372,7 @@ public class FragmentEvaluate extends Fragment
                         Math.round(userRating.getRating())));
 
                 String comment = editCommentText.getText().toString().trim();
-                if(!comment.equals("")){
+                if (!comment.equals("")) {
                     postParams.put("comment", comment);
                 }
                 //noinspection unchecked
@@ -399,17 +389,17 @@ public class FragmentEvaluate extends Fragment
 
         dialog.show();
 
-        RatingBar userRating = (RatingBar)  dialog.findViewById(R.id.user_rate);
+        RatingBar userRating = (RatingBar) dialog.findViewById(R.id.user_rate);
         userRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
 
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                String feedback [] = {"Hate it!", "Dislike it.", "It's OK.", "Like it.", "Love it!"};
+                String feedback[] = {"Hate it!", "Dislike it.", "It's OK.", "Like it.", "Love it!"};
                 int irate = Math.round(rating) - 1;
                 TextView star_level = (TextView) dialog.findViewById(R.id.star_level);
                 star_level.setVisibility(View.VISIBLE);
                 star_level.setText(feedback[irate]);
-                if(irate <= 1) {
+                if (irate <= 1) {
                     star_level.setTextColor(Color.parseColor("#ED332D"));
                 } else {
                     star_level.setTextColor(Color.parseColor("#4CAF50"));
@@ -417,7 +407,6 @@ public class FragmentEvaluate extends Fragment
             }
         });
     }
-
 
     @Override
     public void onAuthcodeInvalid() {
@@ -430,20 +419,52 @@ public class FragmentEvaluate extends Fragment
 
     }
 
+    public void hideKeyboard() {
+        try {
+            InputMethodManager inputManager = (InputMethodManager)
+                    getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+            inputManager.hideSoftInputFromWindow(
+                    getActivity().getCurrentFocus().getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        } catch (Exception ignored) {
+
+        }
+    }
+
+    private void showProgress(Boolean show) {
+        evalContent.setVisibility(show ? View.GONE : View.VISIBLE);
+        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    private enum Bar {
+        RATE(0), COMMENT(1), REFRESH(2);
+
+        private final int value;
+
+        Bar(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
     private class GetPicture extends AsyncTask<Integer, Void, Boolean> {
         SecureAPI picture = SecureAPI.getInstance(getContext());
 
         @Override
         protected Boolean doInBackground(Integer... params) {
-            try{
+            try {
                 int pid = params[0];
                 Util.log("picture/" + pid + "?authcode=" + Constants.AUTHCODE);
                 picture.HTTPSFETCHPIC("picture/" + pid + "?authcode=" + Constants.AUTHCODE, new File(location, "picture.jpg"));
-                if(Constants.imageBitmap != null){
+                if (Constants.imageBitmap != null) {
                     Constants.imageBitmap.recycle();
                 }
                 Constants.imageBitmap = Util.getPictureBitmap(new File(location, "picture.jpg"));
-            }catch(Exception e){
+            } catch (Exception e) {
                 Util.log(e.getMessage());
                 return false;
             }
@@ -452,13 +473,13 @@ public class FragmentEvaluate extends Fragment
 
         @Override
         protected void onPostExecute(Boolean v) {
-            if(v){
+            if (v) {
                 image.setImageBitmap(null);
                 image.setImageBitmap(Constants.imageBitmap);
                 //ViewGroup.MarginLayoutParams imageViewParams = new ViewGroup.MarginLayoutParams(ViewGroup.MarginLayoutParams.MATCH_PARENT, ViewGroup.MarginLayoutParams.WRAP_CONTENT);
                 showProgress(false);
                 //image.setScaleType(ImageView.ScaleType.CENTER);
-            }else{
+            } else {
                 Util.log("Life will go on");
             }
         }
@@ -476,7 +497,7 @@ public class FragmentEvaluate extends Fragment
             try {
                 result = picture.HTTPSPOST("picture/" + finalParams.get("pid")
                         + "/comment?authcode=" + Constants.AUTHCODE, finalParams);
-            } catch(Exception e) {
+            } catch (Exception e) {
                 return false;
             }
             return true;
@@ -484,7 +505,7 @@ public class FragmentEvaluate extends Fragment
 
         @Override
         protected void onPostExecute(Boolean v) {
-            if(v) {
+            if (v) {
                 Util.log("Rating worked");
                 picNumber += 1;
                 runFetch(picNumber);
@@ -494,6 +515,7 @@ public class FragmentEvaluate extends Fragment
             }
         }
     }
+
     private class GetPictureInfo extends AsyncTask<Void, Void, Void> {
 
         SecureAPI picture = SecureAPI.getInstance(getContext());
@@ -511,7 +533,6 @@ public class FragmentEvaluate extends Fragment
             int view = 15;
 
 
-
             Util.log(Constants.LATITUDE + " " + Constants.LONGITUDE);
 
             try {
@@ -525,24 +546,23 @@ public class FragmentEvaluate extends Fragment
                 Constants.LONGITUDE = simpleLocation.getLongitude();
 
 
-
-                for(int i = 0; i < array.length(); i++ ){
+                for (int i = 0; i < array.length(); i++) {
 
                     int views = array.getJSONObject(i).getInt("views");
                     int pid = array.getJSONObject(i).getInt("pid");
-                    double geolat =  array.getJSONObject(i).getDouble("geolat");
+                    double geolat = array.getJSONObject(i).getDouble("geolat");
                     double geolong = array.getJSONObject(i).getDouble("geolong");
-                    double distance =  Math.round(array.getJSONObject(i).getDouble("dist"));
+                    double distance = Math.round(array.getJSONObject(i).getDouble("dist"));
                     String title = array.getJSONObject(i).getString("title");
                     String username = array.getJSONObject(i).getString("username");
                     String created = array.getJSONObject(i).getString("created");
 
                     //Calculates priority
                     int p;
-                    if(views <= 10)
-                        p = (int) ((30 * Math.log(11 - views))/(Math.log(11)) + 40);
+                    if (views <= 10)
+                        p = (int) ((30 * Math.log(11 - views)) / (Math.log(11)) + 40);
                     else
-                        p = 30/(views - 10);
+                        p = 30 / (views - 10);
 
                     SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
@@ -557,12 +577,11 @@ public class FragmentEvaluate extends Fragment
                     Util.log("" + hours);
 
 
-
                     long different = new Date().getTime() -
                             d.getTime();
                     long elapsedHours = (different / (hoursInMilli)) - hours;
 
-                    if(elapsedHours < 10) {
+                    if (elapsedHours < 10) {
                         p += 3 * elapsedHours;
                     } else {
                         p += 30;
@@ -572,8 +591,8 @@ public class FragmentEvaluate extends Fragment
                     pictures.add(new Picture(pid, geolat, geolong, created, title, username, priority, (double) elapsedHours, distance));
 
                 }
-            }catch (Exception e){
-                if(Constants.DEBUG_MODE){
+            } catch (Exception e) {
+                if (Constants.DEBUG_MODE) {
                     Util.log(e.getMessage());
                 }
             }
@@ -591,29 +610,12 @@ public class FragmentEvaluate extends Fragment
 
             pics = pictures;
             runOnce = pics.size() > 0;
-            if(pics.size() > 0)
+            if (pics.size() > 0)
                 showTutorialRate();
             else
                 Toast.makeText(getContext(), "No pictures left to rate", Toast.LENGTH_SHORT).show();
             picNumber = 0;
             runFetch(picNumber);
         }
-    }
-    public void hideKeyboard(){
-        try {
-            InputMethodManager inputManager = (InputMethodManager)
-                    getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-
-            inputManager.hideSoftInputFromWindow(
-                    getActivity().getCurrentFocus().getWindowToken(),
-                    InputMethodManager.HIDE_NOT_ALWAYS);
-        }catch (Exception ignored){
-
-        }
-    }
-
-    private void showProgress(Boolean show){
-        evalContent.setVisibility(show ? View.GONE : View.VISIBLE);
-        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 }

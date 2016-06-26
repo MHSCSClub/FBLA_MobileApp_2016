@@ -105,18 +105,13 @@ public class MainSwipeActivity extends AppCompatActivity implements View.OnClick
         }
         Constants.restorePrefs(getApplicationContext());
 
-        if(!isNetworkAvailable()){
+        if(!Util.isNetworkAvailable(getApplicationContext())){
             Toast.makeText(getApplicationContext(), "Network is not available. Please connect to the internet", Toast.LENGTH_LONG).show();
             finish();
         }
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
+
 
 
     @Override

@@ -183,8 +183,13 @@ public class FragmentEvaluate extends Fragment
         if (pics.size() > 0 && picture < pics.size()) {
             data[0] = pics.get(picture).title;
             data[1] = pics.get(picture).username;
-            double hours = pics.get(picture).hours;
+            double hours = Math.max(pics.get(picture).hours, 0);
             double miles = pics.get(picture).dist;
+            if(Constants.DEMO_MODE){
+                hours = Math.min(hours, 1);
+                miles = 0;
+            }
+
             data[2] = ((int) hours) + (hours == 1 ? " hour ago" : " hours ago");
             if (hours >= 24) {
                 int days = (int) hours / 24;

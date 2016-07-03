@@ -12,9 +12,9 @@ import android.preference.PreferenceManager;
  */
 public final class Constants {
     //API URL
-    //Dev:
-    public static final String API_BASE_URL = "https://ec2-54-152-175-225.compute-1.amazonaws.com/fbla2016/api/";
-    //Prod: public static final String API_BASE_URL  = "https://ec2-52-3-127-219.compute-1.amazonaws.com/fbla2016/api/";
+    //Dev: public static final String API_BASE_URL = "https://ec2-54-152-175-225.compute-1.amazonaws.com/fbla2016/api/";
+    //Prod:
+    public static final String API_BASE_URL  = "https://ec2-52-3-127-219.compute-1.amazonaws.com/fbla2016/api/";
     //Old: public static final String API_BASE_URL = "https://aakatz3.aakportfolio.com:9084/fbla2016/api/";
     //Demo: public static final String API_BASE_URL = "https://192.168.1.5/fbla2016/api/";
 
@@ -28,11 +28,15 @@ public final class Constants {
     //Variable to see if prefs restored yet
     public static boolean PREFS_RESTORED = false;
 
+    //Variables to store the user's latitude and longitude
     public static double LATITUDE;
     public static double LONGITUDE;
 
     //Single ImageBitmap for most bitmaps; *should* help with memory usage
     public static Bitmap imageBitmap = null;
+
+    //Constant to deal with Demo Mode: sets time to 0 or 1 hours, and miles away to 0
+    public static final boolean DEMO_MODE = false;
 
     private Constants(){
         //Do nothing constructor, exists to defeat instantiation.

@@ -27,6 +27,10 @@ public class Picture {
         this.title = title;
         this.username = username;
         this.priority = priority;
-        this.hours = hours;
+        this.hours = Math.max(0, hours);
+        if(Constants.DEMO_MODE) {
+            this.hours = Math.min(hours, 1);
+            this.dist = 0;
+        }
     }
 }

@@ -117,13 +117,6 @@ public class LoginActivity extends AppCompatActivity {
         Constants.savePrefs(getApplicationContext(), false);
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid username, missing fields, etc.), the
@@ -143,7 +136,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = mPasswordView.getText().toString();
 
         //Check if internet is accessible
-        if(!isNetworkAvailable()){
+        if(!Util.isNetworkAvailable(getApplicationContext())){
             Toast.makeText(getApplicationContext(),
                     "Please connect to the internet in order to login", Toast.LENGTH_SHORT).show();
             return;

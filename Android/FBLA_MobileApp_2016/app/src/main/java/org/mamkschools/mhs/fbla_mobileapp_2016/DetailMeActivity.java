@@ -85,6 +85,7 @@ public class DetailMeActivity extends AppCompatActivity
             Util.log("" + up);
             if(views > 0) {
                 double percent = (up / views) * 100;
+                assert percentLabel != null;
                 percentLabel.setText("" +  ((int) percent) + "%");
                 if(percent < 50){
                     percentLabel.setTextColor(Color.parseColor("#ED332D"));
@@ -92,9 +93,11 @@ public class DetailMeActivity extends AppCompatActivity
                     percentLabel.setTextColor(Color.parseColor("#2E7D32"));
                 }
             }else{
+                assert percentLabel != null;
                 percentLabel.setText("N/A");
             }
-            viewsLabel.setText("" + views);
+            assert viewsLabel != null;
+            viewsLabel.setText(Integer.toString(views));
             setTitle(imgTitle);
             onRefresh();
         }
